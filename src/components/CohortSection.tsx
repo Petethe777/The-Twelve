@@ -973,7 +973,7 @@ export default function CohortSection() {
 
       {/* Main interactive spotlight card */}
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-[#FAF7EF]/40 border border-[#E9D5B8]/60 p-6 md:p-8 rounded-[3rem] shadow-2xs space-y-8">
+        <div className="bg-[#FAF7EF]/40 border border-[#E9D5B8]/60 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[3rem] shadow-2xs space-y-8">
           
           {/* Header Row of the spotlight */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pb-6 border-b border-[#E9D5B8]/50">
@@ -1052,7 +1052,7 @@ export default function CohortSection() {
             <div className="lg:col-span-8 flex flex-col justify-between space-y-4">
               
               {/* Outer Board Frame */}
-              <div className="w-full aspect-[4/5] bg-[#9D8E5F] border-8 border-double border-[#72643a] rounded-[2.5rem] relative overflow-hidden flex flex-col justify-between p-4 md:p-6 shadow-lg select-none">
+              <div className="w-full aspect-[4/5] bg-[#9D8E5F] border-4 sm:border-8 border-double border-[#72643a] rounded-[1.5rem] sm:rounded-[2.5rem] relative overflow-hidden flex flex-col justify-between p-3 sm:p-4 md:p-6 shadow-lg select-none">
                 
                 {/* Vintage Sketch Board Background items */}
                 <div className="absolute inset-0 bg-radial from-[#B0A170]/10 to-[#807243]/20 pointer-events-none" />
@@ -1065,17 +1065,23 @@ export default function CohortSection() {
                 </div>
 
                 {/* Centered High Resolution portrait */}
-                <div className="absolute top-[18%] bottom-[12%] left-[28%] right-[28%] rounded-2xl overflow-hidden border-2 border-dashed border-[#FDFBF7]/30 shadow-2xl z-10 bg-[#FAF7EF]/5">
-                  <img 
-                    src={selectedMember.image}
-                    onError={(e) => {
-                      // Fallback in case they haven't uploaded images for other members yet
-                      (e.target as HTMLImageElement).src = "/assets/images/The_Twelve_Logo preview.png";
-                    }}
-                    className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
-                    alt={selectedMember.name} 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute top-[8%] bottom-[20%] left-[20%] right-[20%] sm:top-[12%] sm:bottom-[18%] sm:left-[26%] sm:right-[26%] rounded-xl sm:rounded-2xl overflow-hidden border border-dashed border-[#FDFBF7]/30 shadow-2xl z-10 bg-[#FAF7EF]/5 flex flex-col">
+                  <div className="flex-1 w-full relative overflow-hidden">
+                    <img 
+                      src={selectedMember.image}
+                      onError={(e) => {
+                        // Fallback in case they haven't uploaded images for other members yet
+                        (e.target as HTMLImageElement).src = "/assets/images/The_Twelve_Logo preview.png";
+                      }}
+                      className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
+                      alt={selectedMember.name} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  {/* Full Name display centered inside the profile view */}
+                  <div className="bg-[#1C1917]/95 text-[#FAF7EF] py-1 md:py-2 px-1 md:px-3 text-center border-t border-[#FAF7EF]/10 font-serif text-[10px] sm:text-xs font-bold uppercase tracking-widest truncate">
+                    {selectedMember.name}
+                  </div>
                 </div>
 
                 {/* SVG Connecting Hand-Drawn Style Curved Arrows Layer */}
@@ -1121,14 +1127,14 @@ export default function CohortSection() {
                     key={`dot-${selectedMemberId}-${activeFactIndex}`}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute z-21 w-3.5 h-3.5 bg-[#1C1917] rounded-full border border-[#FAF7EF] flex items-center justify-center shadow-lg"
+                    className="absolute z-21 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-[#1C1917] rounded-full border border-[#FAF7EF] flex items-center justify-center shadow-lg"
                     style={{ 
                       left: `${facts[activeFactIndex].targetX}%`, 
                       top: `${facts[activeFactIndex].targetY}%`,
                       transform: 'translate(-50%, -50%)'
                     }}
                   >
-                    <span className="w-1.5 h-1.5 bg-[#FAF7EF] rounded-full animate-ping" />
+                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-[#FAF7EF] rounded-full animate-ping" />
                   </motion.div>
                 )}
 
@@ -1140,7 +1146,7 @@ export default function CohortSection() {
                     <button
                       key={`btn-${selectedMemberId}-${fact.id}`}
                       onClick={() => setActiveFactIndex(idx)}
-                      className={`absolute z-30 max-w-[120px] text-center p-1.5 rounded-xl transition-all font-serif font-semibold leading-tight text-[8px] sm:text-[9px] cursor-pointer shadow-xs ${
+                      className={`absolute z-30 max-w-[70px] sm:max-w-[120px] text-center p-0.5 sm:p-1.5 rounded-md sm:rounded-xl transition-all font-serif font-semibold leading-tight text-[5px] xs:text-[6px] sm:text-[8px] md:text-[9px] cursor-pointer shadow-2xs sm:shadow-xs ${
                         isActive 
                           ? 'bg-[#1C1917] text-[#FAF7EF] scale-105 border border-[#1C1917]' 
                           : 'text-[#1C1917] bg-white/10 hover:bg-white/35'
@@ -1152,7 +1158,7 @@ export default function CohortSection() {
                         transform: 'translateY(-50%)'
                       }}
                     >
-                      {fact.short.replace(/ • Proudly South African.*/, "").replace(/ \(Matthew.*\)/, "").replace(/ • .*/, "")}
+                      {fact.short.replace(/ • Proudly South African.*/, "").replace(/ (Matthew.*)/, "").replace(/ • .*/, "")}
                     </button>
                   );
                 })}

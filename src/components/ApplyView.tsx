@@ -658,11 +658,11 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                   </button>
                 </div>
               ) : (
-                <div className="bg-white border border-[#EADCC2] rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-start">
+                <div className="bg-white border border-[#EADCC2] rounded-[1.5rem] sm:rounded-[2.5rem] p-4 sm:p-6 md:p-10 shadow-sm max-w-4xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                   
                   {/* Left steps indicator tracker sidebar */}
-                  <div className="w-full md:w-1/4 space-y-4 md:border-r border-[#FAF7EF] md:pr-6 shrink-0 text-left">
-                    <span className="text-[9px] font-mono text-[#9A7D3C] font-black uppercase tracking-widest block mb-2">STEPS CONTROL CENTER</span>
+                  <div className="w-full md:w-1/4 flex flex-row overflow-x-auto md:flex-col gap-2 md:gap-4 md:border-r border-[#FAF7EF] md:pr-6 shrink-0 text-left pb-4 md:pb-0 scrollbar-none">
+                    <span className="text-[9px] font-mono text-[#9A7D3C] font-black uppercase tracking-widest hidden md:block mb-2">STEPS CONTROL CENTER</span>
                     
                     {[
                       { step: 1, title: 'Personal Info' },
@@ -675,23 +675,24 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                     ].map((st) => (
                       <button
                         key={st.step}
+                        type="button"
                         onClick={() => {
                           if (st.step < formStep || agreedIndemnity || true) {
                             setFormStep(st.step);
                           }
                         }}
-                        className={`w-full flex items-center space-x-2.5 p-2 rounded-xl transition-all cursor-pointer text-left ${
+                        className={`flex-shrink-0 flex items-center space-x-2 p-2 px-3 md:px-2 rounded-xl transition-all cursor-pointer text-left ${
                           formStep === st.step
                             ? 'bg-[#1C1917] text-white'
-                            : 'hover:bg-[#FAF7EF] text-stone-600'
+                            : 'hover:bg-[#FAF7EF] text-stone-600 bg-[#FAF7EF]/20'
                         }`}
                       >
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[10px] font-bold ${
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[10px] font-bold flex-shrink-0 ${
                           formStep === st.step ? 'bg-[#9A7D3C] text-white' : 'bg-[#FAF7EF] text-[#9A7D3C]'
                         }`}>
                           {st.step}
                         </div>
-                        <span className="text-[11px] font-serif font-black uppercase tracking-wider truncate">{st.title}</span>
+                        <span className="text-[10px] md:text-[11px] font-serif font-black uppercase tracking-wider whitespace-nowrap">{st.title}</span>
                       </button>
                     ))}
 
@@ -703,7 +704,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                   {/* Right: Actual Form Fields based on step */}
                   <form onSubmit={handleSubmitForm} className="flex-1 w-full text-left space-y-6">
                     <div className="border-b border-[#FAF7EF] pb-4">
-                      <h4 className="font-serif text-lg font-black text-[#1C1917] uppercase tracking-wider">
+                      <h4 className="font-serif text-sm sm:text-base md:text-lg font-black text-[#1C1917] uppercase tracking-wider leading-snug">
                         Page {formStep} of 7: {[
                           'Personal Information Registration',
                           'Address & Account Contacts',
@@ -714,7 +715,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                           'Sacred Indemnity Agreement & File Upload Checklist'
                         ][formStep - 1]}
                       </h4>
-                      <p className="text-[10px] text-[#9A7D3C] font-mono font-bold uppercase tracking-widest">COHORT ENROLLMENT SHEET</p>
+                      <p className="text-[9px] sm:text-[10px] text-[#9A7D3C] font-mono font-bold uppercase tracking-widest mt-1">COHORT ENROLLMENT SHEET</p>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -1141,7 +1142,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                           <div className="space-y-6">
                             
                             {/* Terms Checkbox */}
-                            <div className="p-4 bg-[#FAF7EF] border border-[#EADCC2] rounded-2D select-none text-stone-800 space-y-4">
+                            <div className="p-4 bg-[#FAF7EF] border border-[#EADCC2] rounded-2xl select-none text-stone-800 space-y-4">
                               <h5 className="font-serif font-black text-xs uppercase tracking-wide border-b pb-1">Covenant, Agreement & Indemnity</h5>
                               <p className="text-[10.5px] leading-relaxed font-light font-sans text-left">
                                 By signing, I declare that I stand capable and aligned to enter the Covenant under David&apos;s supervising authority. I pledge to pay the full program fees in accordance with the specified package (e.g. R54,000 standard or R90,000 accommodation, or monthly rates R4,500 / R7,500), avoid drinking/smoking/vaping and sexual sin, obey lights-out curfew split-ups (Mon-Thu: 10pm, Fri-Sun: 12am), and submit assignments punctually.
@@ -1199,7 +1200,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         <button
                           type="button"
                           onClick={handlePrevStep}
-                          className="px-5 py-2.5 border border-stone-205 text-stone-700 rounded-lg text-xs font-serif uppercase tracking-wider hover:bg-stone-50 cursor-pointer"
+                          className="px-5 py-2.5 border border-stone-200 text-stone-700 rounded-lg text-xs font-serif uppercase tracking-wider hover:bg-stone-50 cursor-pointer"
                         >
                           Back
                         </button>

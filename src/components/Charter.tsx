@@ -710,7 +710,7 @@ export default function Charter() {
             <div className="lg:col-span-8 flex flex-col justify-between space-y-4">
               
               {/* Outer Board Frame */}
-              <div className="w-full aspect-[4/5] bg-[#9D8E5F] border-8 border-double border-[#72643a] rounded-[2.5rem] relative overflow-hidden flex flex-col justify-between p-4 md:p-6 shadow-lg select-none">
+              <div className="w-full aspect-[4/5] bg-[#9D8E5F] border-4 sm:border-8 border-double border-[#72643a] rounded-[1.5rem] sm:rounded-[2.5rem] relative overflow-hidden flex flex-col justify-between p-3 sm:p-4 md:p-6 shadow-lg select-none">
                 
                 {/* Vintage Sketch Board Background items */}
                 <div className="absolute inset-0 bg-radial from-[#B0A170]/10 to-[#807243]/20 pointer-events-none" />
@@ -723,13 +723,19 @@ export default function Charter() {
                 </div>
 
                 {/* Centered High Resolution portrait */}
-                <div className="absolute top-[18%] bottom-[12%] left-[28%] right-[28%] rounded-2xl overflow-hidden border-2 border-dashed border-[#FDFBF7]/30 shadow-2xl z-10 bg-[#FAF7EF]/5">
-                  <img 
-                    src={memberImg} 
-                    className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
-                    alt={selectedMember === 'DAVID' ? "David Hunter" : selectedMember === 'JOSH' ? 'Josh Munn' : "Zoe Padbury"} 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute top-[8%] bottom-[20%] left-[20%] right-[20%] sm:top-[12%] sm:bottom-[18%] sm:left-[26%] sm:right-[26%] rounded-xl sm:rounded-2xl overflow-hidden border border-dashed border-[#FDFBF7]/30 shadow-2xl z-10 bg-[#FAF7EF]/5 flex flex-col">
+                  <div className="flex-1 w-full relative overflow-hidden">
+                    <img 
+                      src={memberImg} 
+                      className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
+                      alt={selectedMember === 'DAVID' ? "David Hunter" : selectedMember === 'JOSH' ? 'Josh Munn' : "Zoe Padbury"} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  {/* Full Name display centered inside the profile view */}
+                  <div className="bg-[#1C1917]/95 text-[#FAF7EF] py-1 md:py-2 px-1 md:px-3 text-center border-t border-[#FAF7EF]/10 font-serif text-[10px] sm:text-xs font-bold uppercase tracking-widest truncate">
+                    {selectedMember === 'DAVID' ? 'David Hunter' : selectedMember === 'JOSH' ? 'Josh Munn' : 'Zoe Padbury'}
+                  </div>
                 </div>
 
                 {/* SVG Connecting Hand-Drawn Style Curved Arrows Layer */}
@@ -775,19 +781,36 @@ export default function Charter() {
                     key={`dot-${selectedMember}-${activeFactIndex}`}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute z-21 w-3.5 h-3.5 bg-[#1C1917] rounded-full border border-[#FAF7EF] flex items-center justify-center shadow-lg"
+                    className="absolute z-21 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-[#1C1917] rounded-full border border-[#FAF7EF] flex items-center justify-center shadow-lg"
                     style={{ 
                       left: `${facts[activeFactIndex].targetX}%`, 
                       top: `${facts[activeFactIndex].targetY}%`,
                       transform: 'translate(-50%, -50%)'
                     }}
                   >
-                    <span className="w-1.5 h-1.5 bg-[#FAF7EF] rounded-full animate-ping" />
+                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-[#FAF7EF] rounded-full animate-ping" />
                   </motion.div>
                 )}
 
+                {/* Scoped CSS Style to make absolute note buttons beautifully small on mobile screen resolutions */}
+                <style>{`
+                  @media (max-width: 639px) {
+                    .team-notes-container button {
+                      max-width: 68px !important;
+                      padding: 2.5px 4px !important;
+                      border-radius: 6px !important;
+                      font-size: 5px !important;
+                      line-height: 1.15 !important;
+                    }
+                    .team-notes-container button strong {
+                      font-size: 5px !important;
+                    }
+                  }
+                `}</style>
+
                 {/* Conditionally Render DAVID Notes or ZOE Notes */}
-                {selectedMember === 'DAVID' ? (
+                <div className="block team-notes-container">
+                  {selectedMember === 'DAVID' ? (
                   <>
                     {/* Top Left Note */}
                     <button
@@ -1187,6 +1210,7 @@ export default function Charter() {
                     </button>
                   </>
                 )}
+                </div>
 
               </div>
 

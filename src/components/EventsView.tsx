@@ -434,49 +434,31 @@ export default function EventsView() {
               Explore the physical steps of our South Africa residency. Dwell in the recorded memories of past missions, toggle the creative interactive calendar, and register directly to attend public open events.
             </p>
           </div>
-
-          {/* Golden Highlight Selection Tabs */}
-          <div className="bg-[#FAF7EF] border border-[#EADCC2] rounded-2xl p-1.5 flex items-center shadow-2xs self-stretch md:self-auto">
-            <button
-              id="upcoming-tab-btn"
-              onClick={() => setActiveTab('upcoming')}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-xs font-serif tracking-wider uppercase cursor-pointer transition-all ${
-                activeTab === 'upcoming'
-                  ? 'bg-[#1C1917] text-[#FDFBF7] shadow-sm font-bold'
-                  : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
-              }`}
-            >
-              <Calendar className="w-4 h-4" />
-              <span>Upcoming Assemblies</span>
-            </button>
-            <button
-              id="past-tab-btn"
-              onClick={() => setActiveTab('past')}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-xs font-serif tracking-wider uppercase cursor-pointer transition-all ${
-                activeTab === 'past'
-                  ? 'bg-[#1C1917] text-[#FDFBF7] shadow-sm font-bold'
-                  : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
-              }`}
-            >
-              <FileText className="w-4 h-4" />
-              <span>Past Events</span>
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Main Container switching with AnimatePresence */}
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
-        <AnimatePresence mode="wait">
-          {activeTab === 'upcoming' ? (
-            <motion.div
-              key="upcoming-panel"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
-            >
+      {/* Main Container containing BOTH sections (Ordered logically via CSS Flexbox) */}
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col space-y-20 pb-16">
+        
+        {/* upcoming/calendar block (Visually ordered after past events) */}
+        <div className="order-2 w-full space-y-8">
+          <div className="border-b border-[#EADCC2]/60 pb-2">
+            <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
+              UPCOMING ASSEMBLIES & SCHEDULING
+            </span>
+            <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">
+              Interactive Portal & Calendar
+            </h2>
+          </div>
+
+          <motion.div
+            key="upcoming-panel"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+          >
               
               {/* Interactive Creative Calendar (Left Block, 7 COLS) */}
               <div className="lg:col-span-7 bg-[#FAF7EF] border border-[#EADCC2]/80 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
@@ -736,15 +718,42 @@ export default function EventsView() {
               </div>
 
             </motion.div>
-          ) : (
-            <motion.div
-              key="past-panel"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-10"
-            >
+        </div>
+
+        {/* past-panel block (Visually ordered first before upcoming calendar) */}
+        <div className="order-1 w-full space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EADCC2]/60 pb-2">
+            <div className="space-y-1">
+              <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans animate-pulse">
+                RECORDS & ARCHIVES
+              </span>
+              <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">
+                Past Assemblies & Missions
+              </h2>
+            </div>
+            
+            {/* Elegant horizontal swipe/scroll indicator */}
+            <div className="flex items-center gap-2 text-[#9A7D3C]">
+              <span className="text-[10px] sm:text-xs font-serif uppercase tracking-wider font-bold">
+                Swipe / Scroll to explore history
+              </span>
+              <motion.div
+                animate={{ x: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              >
+                <ArrowRight className="w-4.5 h-4.5" />
+              </motion.div>
+            </div>
+          </div>
+
+          <motion.div
+            key="past-panel"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-10"
+          >
                   {/* Horizontal timeline of past logs */}
               <div className="relative w-full">
                 
@@ -1014,8 +1023,8 @@ export default function EventsView() {
               </div>
 
             </motion.div>
-          )}
-        </AnimatePresence>
+        </div>
+
       </div>
 
       {/* 4. Elegant Interactive Admissions/RSVP Guest Pass Modal */}
