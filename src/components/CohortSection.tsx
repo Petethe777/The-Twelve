@@ -35,7 +35,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'ANDREW',
     name: 'Andrew',
-    image: '/src/assets/images/Andrew.png',
+    image: '/assets/images/Andrew.png',
     role: 'Cohort Member',
     motto: "Treasures in Heaven over earthly riches",
     bio: "Andrew is a passionate and dedicated member of the Discipleship Cohort. Rooted in South Africa, he combines a deep study of the Scriptures with a spirit of joyful service and real-life peer engagement.",
@@ -146,7 +146,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'MICAELLA',
     name: 'Micaella',
-    image: '/src/assets/images/Micaella.png',
+    image: '/assets/images/Micaella.png',
     role: 'Cohort Member',
     motto: "Stand still and watch the Lord's hand",
     bio: "Micaella brings a heart of kindness and creative discipline to our community workspace, encouraging peers to standardize their focus around joy.",
@@ -257,7 +257,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'JARRYD',
     name: 'Jarryd',
-    image: '/src/assets/images/Jarryd.png',
+    image: '/assets/images/Jarryd.png',
     role: 'Cohort Member',
     motto: "It ain't about how hard you can get hit, but how hard you can keep moving forward.",
     bio: "Currently based in Hillcrest, KZN, Jarryd matches natural athletic grit and a love for playing rugby with a deep, perseverant, and funny character. He is a steadfast friend and dependable companion in the Discipleship Cohort.",
@@ -368,7 +368,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'TEHILLAH',
     name: 'Tehillah',
-    image: '/src/assets/images/Tehillah.png',
+    image: '/assets/images/Tehillah.png',
     role: 'Cohort Member',
     motto: "Come to me, all who are weary and burdened, and I will give you rest.",
     bio: "Tehillah is an inspiring, warm, and creative member of our discipleship cohort. Born in 2007, she combines musical worship with a keen focus on child psychology and counseling.",
@@ -479,7 +479,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'BEN',
     name: 'Ben',
-    image: '/src/assets/images/Ben.png',
+    image: '/assets/images/Ben.png',
     role: 'Cohort Member',
     motto: "Put others before yourself, as Jesus did.",
     bio: "Born on July 16 and living in South Africa, Ben is a steadfast, brave, and faithful disciple who thrives on learning about God and His works. He models a selfless posture of putting others first, bringing a warm heart and helpful hands to cohort community services.",
@@ -590,7 +590,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'KAITLYN',
     name: 'Kaitlyn',
-    image: '/src/assets/images/Kaitlyn.png',
+    image: '/assets/images/Kaitlyn.png',
     role: 'Cohort Member',
     motto: "He set my feet upon a rock • Psalm 40:1–3",
     bio: "Born on February 11, 2007, Kaitlyn anchors her journey in absolute patience and resilience. She carries a heart of loyalty and deep-rooted faith, dreaming of teaching contemporary, modern, and jazz dance to inspire future generations.",
@@ -701,7 +701,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'JAMES',
     name: 'James',
-    image: '/src/assets/images/James.png',
+    image: '/assets/images/James.png',
     role: 'Cohort Member',
     motto: "Christ died for us while we were sinners • Romans 5:8",
     bio: "Born on June 20, 2007 and living in South Africa, James is best described as 'wise... most of the time!' He merges an active athletic drive with a deep love for coffee and fearless Biblical characters.",
@@ -812,7 +812,7 @@ const COHORT_DATA: CohortMember[] = [
   {
     id: 'CAELYN',
     name: 'Caelyn',
-    image: '/src/assets/images/Caelyn.png',
+    image: '/assets/images/Caelyn.png',
     role: 'Cohort Member',
     motto: "Inseparable from God's love • Romans 8:38–39",
     bio: "Born on August 10, 2007 in Durban, Caelyn is a set-apart, called, and rooted young disciple. Extremely close with her parents as an only child, she lives out her calling with vibrant joy, tasty cooking, and beautiful worship.",
@@ -1070,7 +1070,7 @@ export default function CohortSection() {
                     src={selectedMember.image}
                     onError={(e) => {
                       // Fallback in case they haven't uploaded images for other members yet
-                      (e.target as HTMLImageElement).src = "/src/assets/images/The_Twelve_Logo preview.png";
+                      (e.target as HTMLImageElement).src = "/assets/images/The_Twelve_Logo preview.png";
                     }}
                     className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
                     alt={selectedMember.name} 

@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, BookOpen, Clock, Home, Flame, Mail, Award, Users, Calendar, Heart, ClipboardList } from 'lucide-react';
 
-const theTwelveLogoImg = "/src/assets/images/the_twelve_logo.png";
+const theTwelveLogoImg = "/assets/images/the_twelve_logo.png";
 
 interface NavbarProps {
   currentTab: string;

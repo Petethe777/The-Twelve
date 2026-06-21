@@ -5,20 +5,8 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-// @ts-ignore
-import ncmiVideo from '../assets/NCMI_National_Elders_2026.mp4';
-// @ts-ignore
-import ncmiVideo2 from '../assets/NCMI_National_Elders_2026_Day_2.mp4';
-// @ts-ignore
-import businessVideo from '../assets/Business_Morning_Meeting.mp4';
-// @ts-ignore
-import trustVideo from '../assets/Trust_Building.mp4';
-// @ts-ignore
-import zambiaVideo1 from '../assets/Zambia_Mission_Trip_Part_1.mp4';
-// @ts-ignore
-import zambiaVideo2 from '../assets/Zambia_Mission_Trip_Part_2.mp4';
-// @ts-ignore
-import botswanaVideo from '../assets/Botswana_Missions_Trip.mp4';
+// Loaded directly from public directory at runtime
+
 import { 
   Calendar, 
   Clock, 
@@ -81,7 +69,7 @@ const PAST_EVENTS: PastEvent[] = [
     location: 'Durban Beach Front, South Africa',
     description: 'The Twelve spent an unforgettable morning doing focus and team building activities on the Durban beachfront. They engaged in shoreline trust-runs, a custom sandcastle challenge to sculpt fortress models with buckets, and completed the session with a joyous group paddle out into the ocean waves.',
     mediaType: 'video',
-    mediaUrl: trustVideo,
+    mediaUrl: '/assets/Trust_Building.mp4',
     duration: '00:26'
   },
   {
@@ -92,8 +80,8 @@ const PAST_EVENTS: PastEvent[] = [
     location: 'Durban Central Hall, South Africa',
     description: 'The Twelve actively participated in the NCMI National Elders 2026 conference. Our cohort members coordinated the registry/resource decks, served meals (including Day 3 tarts & fruits), and assisted the physical floor plan set ups.',
     mediaType: 'video',
-    mediaUrl: ncmiVideo,
-    mediaUrls: [ncmiVideo, ncmiVideo2],
+    mediaUrl: '/assets/NCMI_National_Elders_2026.mp4',
+    mediaUrls: ['/assets/NCMI_National_Elders_2026.mp4', '/assets/NCMI_National_Elders_2026_Day_2.mp4'],
     duration: '00:19 & 00:08'
   },
   {
@@ -104,7 +92,7 @@ const PAST_EVENTS: PastEvent[] = [
     location: 'Durban, South Africa',
     description: 'The Twelve served breakfast at the high-profile Business Morning Meeting hosting Andrew Kirby, CEO of Toyota in South Africa. Our team was privileged to coordinate dining hospitality and engage with commercial and civic executives.',
     mediaType: 'video',
-    mediaUrl: businessVideo,
+    mediaUrl: '/assets/Business_Morning_Meeting.mp4',
     duration: '00:10'
   },
   {
@@ -115,7 +103,7 @@ const PAST_EVENTS: PastEvent[] = [
     location: 'Zambia',
     description: 'The Twelve embarked on a powerful, cross-border church partnership and outreach mission to Zambia. The cohort participated in outdoor ministry coordinates, helped with building development setups, and formed strong local community ties.',
     mediaType: 'video',
-    mediaUrls: [zambiaVideo1, zambiaVideo2],
+    mediaUrls: ['/assets/Zambia_Mission_Trip_Part_1.mp4', '/assets/Zambia_Mission_Trip_Part_2.mp4'],
     duration: '00:11 & 00:09'
   },
   {
@@ -126,7 +114,7 @@ const PAST_EVENTS: PastEvent[] = [
     location: 'Botswana',
     description: 'The Twelve travelled to Botswana for an intensive week of cross-border outreach and regional ministry support. The team engaged in local youth mentorship programs, facilitated active community workshops, and partnered with regional leaders to build lasting discipleship structures.',
     mediaType: 'video',
-    mediaUrl: botswanaVideo,
+    mediaUrl: '/assets/Botswana_Missions_Trip.mp4',
     duration: '00:16'
   }
 ];
@@ -1194,7 +1182,7 @@ export default function EventsView() {
                       {/* Header block with logo */}
                       <div className="px-6 py-4 border-b border-dashed border-[#9A7D3C]/40 bg-zinc-950 flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <img src="/src/assets/images/the_twelve_logo.png" className="w-6 h-6 object-contain filter invert-0" />
+                          <img src="/assets/images/the_twelve_logo.png" className="w-6 h-6 object-contain filter invert-0" />
                           <div className="flex flex-col text-[8px] leading-tight select-none">
                             <span className="font-serif font-black tracking-widest uppercase">THE TWELVE</span>
                             <span className="text-[#9A7D3C] font-bold">DISCIPLE SOUTH AFRICA</span>

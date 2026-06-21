@@ -209,7 +209,7 @@ export default function Portal({ onEnter }: PortalProps) {
           className="relative p-2"
         >
           <img 
-            src="/src/assets/images/The_Twelve_Logo preview.png" 
+            src="/assets/images/The_Twelve_Logo preview.png" 
             className="w-32 md:w-44 h-auto object-contain mx-auto drop-shadow-[0_2px_10px_rgba(154,125,60,0.15)]" 
             alt="The Twelve Logo"
           />

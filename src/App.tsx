@@ -79,7 +79,7 @@ export default function App() {
             <div className="flex items-center space-x-2.5">
               <div className="bg-[#FAF7EF] p-1 rounded-xl w-10 h-10 flex items-center justify-center overflow-hidden border border-white/10">
                 <img 
-                  src="/src/assets/images/the_twelve_logo.png" 
+                  src="/assets/images/the_twelve_logo.png" 
                   alt="The Twelve Logo" 
                   className="w-full h-full object-contain" 
                 />

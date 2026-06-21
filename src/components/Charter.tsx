@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SACRED_VALUES, ASH_VALUES } from '../data';
 import { Sparkles, Trophy, Heart, Flame, Shield, ArrowUpRight, Scale, Users, CheckCircle, ExternalLink } from 'lucide-react';
 
-const davidHunterImg = "/src/assets/images/David Hunter.png";
+const davidHunterImg = "/assets/images/David Hunter.png";
 
 const DAVID_FACTS = [
   {
@@ -121,7 +121,7 @@ const DAVID_FACTS = [
   }
 ];
 
-const zoePadburyImg = "/src/assets/images/zoe_padbury.png";
+const zoePadburyImg = "/assets/images/zoe_padbury.png";
 
 const ZOE_FACTS = [
   {
@@ -216,7 +216,7 @@ const ZOE_FACTS = [
   }
 ];
 
-const joshMunnImg = "/src/assets/images/Josh Munn.png";
+const joshMunnImg = "/assets/images/Josh Munn.png";
 
 const JOSH_FACTS = [
   {
