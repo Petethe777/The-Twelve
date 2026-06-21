@@ -1,0 +1,6 @@
+{
+  "name": "The Twelve Discipleship Program",
+  "description": "An interactive, modern, and distinguished digital home for The Twelve Discipleship Program in South Africa. Explore our mission, core values, code of conduct, house details, emergency contacts, and experience unique, visual testimonies of transformed lives.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
