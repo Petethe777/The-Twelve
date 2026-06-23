@@ -240,11 +240,11 @@ export default function Witness() {
           <Feather className="w-3.5 h-3.5 animate-bounce" />
           <span>The Living Experiences</span>
         </span>
-        <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight leading-tight">
-          THE COHORT ARCHIVE
+        <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight leading-tight font-extrabold uppercase">
+          THE TEAM ARCHIVE
         </h2>
         <p className="text-sm md:text-base text-[#1C1917]/70 font-light">
-          Each cohort member leaves an indelible footprint in our development journey. Read their stories, review their metrics of progress, and record your own testimony.
+          Each team member leaves an indelible footprint in our development journey. Read their stories, review their metrics of progress, and record your own testimony.
         </p>
       </div>
 
@@ -256,7 +256,7 @@ export default function Witness() {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#EADCC2] pb-6 mb-8 gap-4">
           <div>
-            <h3 className="font-serif text-xl text-[#1C1917] font-bold">The Field of Cohort Members</h3>
+            <h3 className="font-serif text-xl text-[#1C1917] font-bold">The Field of Team Members</h3>
             <span className="text-[10px] tracking-wider text-[#9A7D3C] font-black uppercase">
               Click on any golden node to review their active impact journal
             </span>

@@ -22,7 +22,7 @@ export default function Navbar({ currentTab, onSelectTab, onRestart }: NavbarPro
     { 
       id: 'home', 
       label: 'Home', 
-      description: 'The Welcome Portal, live highlights, and cohort member spotlight', 
+      description: 'The Welcome Portal, live highlights, and team member spotlight', 
       icon: Home, 
       tag: 'Section I' 
     },
@@ -43,14 +43,14 @@ export default function Navbar({ currentTab, onSelectTab, onRestart }: NavbarPro
     { 
       id: 'partner', 
       label: 'Partner', 
-      description: 'Sponsor dynamic regional missions trips & monthly cohort discipleship stipends', 
+      description: 'Sponsor dynamic regional missions trips & monthly team discipleship stipends', 
       icon: Heart, 
       tag: 'Section IV' 
     },
     { 
       id: 'apply', 
       label: 'Apply', 
-      description: 'Cohort Application, daily routine handbook, cost structure review, and manuals catalog', 
+      description: 'Team Application, daily routine handbook, cost structure review, and manuals catalog', 
       icon: ClipboardList, 
       tag: 'Section V' 
     },
@@ -211,7 +211,7 @@ export default function Navbar({ currentTab, onSelectTab, onRestart }: NavbarPro
               {/* Connected Pages list */}
               <div className="my-auto py-6 space-y-3">
                 <span className="text-[9px] tracking-widest text-[#9A7D3C] font-black uppercase block mb-2">
-                  EXPLORE COHORT SECTIONS
+                  EXPLORE TEAM SECTIONS
                 </span>
 
                 {pages.map((page) => {

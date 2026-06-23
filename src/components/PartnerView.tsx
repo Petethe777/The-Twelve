@@ -71,7 +71,7 @@ export default function PartnerView() {
       role: "Community Relations Rep",
       location: "CityHill",
       quote: "The Twelve have been absolute pillars. Their work ethic and heart are unmatched!",
-      fullStory: "Our partnership with The Twelve was spectacular. During major national events, cohort members single-handedly coordinated the sound, prepared meals, managed registrars, and set up complex floor guidelines with an unmatched spirit of active excellence and joy.",
+      fullStory: "Our partnership with The Twelve was spectacular. During major national events, team members single-handedly coordinated the sound, prepared meals, managed registrars, and set up complex floor guidelines with an unmatched spirit of active excellence and joy.",
       x: "top-[1%] left-[2%] md:left-[5%]",
       delay: 0,
       scale: 1
@@ -82,7 +82,7 @@ export default function PartnerView() {
       role: "Youth Ministry Lead",
       location: "Durban",
       quote: "These disciples hold a standard of moral rectitude that is extremely rare today.",
-      fullStory: "The study hours and house chores program at The Twelve create a rare balance of academic rigor and service. Their cohort represents a standard of spiritual discipline and integrity that is serving as a blueprint for young South Africans.",
+      fullStory: "The study hours and house chores program at The Twelve create a rare balance of academic rigor and service. Their team represents a standard of spiritual discipline and integrity that is serving as a blueprint for young South Africans.",
       x: "top-[7%] right-[2%] md:right-[6%]",
       delay: 2.1,
       scale: 0.97
@@ -90,7 +90,7 @@ export default function PartnerView() {
     {
       id: "t-3",
       author: "Sarah Hunter",
-      role: "Cohort Parent",
+      role: "Team Parent",
       location: "Joburg",
       quote: "Watching my son grow into a highly disciplined, selfless leader is a true miracle.",
       fullStory: "Before joining the program, my son was unsure about his future. Through the systematic academic studies and physically demanding missions trips, he returned home with a profound sense of accountability, deep spiritual grit, and absolute ownership of his actions.",
@@ -115,7 +115,7 @@ export default function PartnerView() {
       role: "Outreach Coordinator",
       location: "Zambia",
       quote: "They didn't just visit; they built infrastructure and mentored our youth with humility.",
-      fullStory: "The cohort was invaluable on our recent local church build. From laying brick works to hosting outdoor soccer academies, they engaged directly with orphans and youths, and established continuous mentoring frameworks that will endure for decades.",
+      fullStory: "The team was invaluable on our recent local church build. From laying brick works to hosting outdoor soccer academies, they engaged directly with orphans and youths, and established continuous mentoring frameworks that will endure for decades.",
       x: "top-[32%] left-[1%] md:left-[4%]",
       delay: 3.2,
       scale: 1.05
@@ -126,7 +126,7 @@ export default function PartnerView() {
       role: "Regional Leader",
       location: "Gaborone",
       quote: "The Botswana missions drive was highly structured. Absolute strategic partners.",
-      fullStory: "During the intensive April missions timeline, the cohort managed the core fuel routing, coordinated the local registry, and facilitated complex workshops with absolute punctuality and care. They are genuine, ready, and highly efficient.",
+      fullStory: "During the intensive April missions timeline, the team managed the core fuel routing, coordinated the local registry, and facilitated complex workshops with absolute punctuality and care. They are genuine, ready, and highly efficient.",
       x: "top-[41%] right-[3%] md:right-[8%]",
       delay: 4.0,
       scale: 0.95
@@ -220,10 +220,10 @@ export default function PartnerView() {
   };
 
   const getSponsorshipImpact = (amount: number) => {
-    if (amount < 200) return "Provides comprehensive theological books and research study guides for one cohort member.";
+    if (amount < 200) return "Provides comprehensive theological books and research study guides for one team member.";
     if (amount < 500) return "Provides complete study materials, leadership portfolios, and modules for two disciples.";
     if (amount < 1000) return "Sponsors active local transport grids and fuel for municipal youth community outreaches.";
-    if (amount < 2500) return "Sponsors a cohort member's monthly living and discipleship stipend, covering meals & chores support.";
+    if (amount < 2500) return "Sponsors a team member's monthly living and discipleship stipend, covering meals & chores support.";
     if (amount < 5000) return "Funds core team accommodation and safety resources for an entire regional missions trip.";
     return "Provides full educational tuition, community residence development, and regional outreach support for multiple members.";
   };
@@ -266,7 +266,7 @@ export default function PartnerView() {
           cost: 150,
           term: "per month",
           subtitle: "Intellectual & Spiritual Prep",
-          desc: "Equips a disciple with full academic dossiers, theological textbooks, systematic booklets, and active research portfolios for the leadership cohort curriculum.",
+          desc: "Equips a disciple with full academic dossiers, theological textbooks, systematic booklets, and active research portfolios for the leadership team curriculum.",
           perks: ["Termly curriculum logs", "Personal alumni newsletter", "Prayer updates"]
         };
       case 'stipend':
@@ -442,11 +442,11 @@ export default function PartnerView() {
                   </div>
                   <div>
                     <span className="text-[9px] font-mono text-[#9A7D3C] font-black uppercase tracking-wider block">MISSION CORE II</span>
-                    <h3 className="font-serif text-lg font-bold text-[#1C1917]">Sponsor a Cohort Member</h3>
+                    <h3 className="font-serif text-lg font-bold text-[#1C1917]">Sponsor a Team Member</h3>
                   </div>
                 </div>
                 <div className="px-3 py-1 rounded-full bg-stone-900 text-[#FAF7EF] text-[8.5px] font-mono font-bold uppercase tracking-wider">
-                  The 2026 Cohort
+                  The 2026 Team
                 </div>
               </div>
 
@@ -585,7 +585,7 @@ export default function PartnerView() {
                   Alternative Ways to Support & Co-Labour
                 </h3>
                 <p className="text-[12px] text-[#1C1917]/70 leading-relaxed font-light">
-                  There are countless ways to stand with the cohort that do not require financial contributions. From mentoring our disciples to donating operational supplies, hosting a team, or offering guest-speaker lessons—your skills and presence are highly valued.
+                  There are countless ways to stand with the team that do not require financial contributions. From mentoring our disciples to donating operational supplies, hosting a team, or offering guest-speaker lessons—your skills and presence are highly valued.
                 </p>
               </div>
 
@@ -751,7 +751,7 @@ export default function PartnerView() {
             
             <div className="md:col-span-4 space-y-3">
               <p className="text-[11.5px] text-[#1C1917]/70 leading-relaxed font-light">
-                Interact with the dynamic gauge to locate and preview how specific stewardship contributions support cohort milestones physically.
+                Interact with the dynamic gauge to locate and preview how specific stewardship contributions support team milestones physically.
               </p>
               
               <div className="flex flex-wrap gap-2 pt-1">
@@ -882,7 +882,7 @@ export default function PartnerView() {
                 <div className="p-4 bg-stone-900/45 border border-stone-800/60 rounded-2xl flex items-start space-x-3.5">
                   <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-[11px] font-mono uppercase tracking-wider font-extrabold text-white">VERIFIED COHORT STEWARDSHIP</h4>
+                    <h4 className="text-[11px] font-mono uppercase tracking-wider font-extrabold text-white">VERIFIED TEAM STEWARDSHIP</h4>
                     <p className="text-[10.5px] text-stone-400 font-light leading-snug">David manages program allocations with full financial and administrative rectitude, audited transparently.</p>
                   </div>
                 </div>
@@ -1081,7 +1081,7 @@ export default function PartnerView() {
                   
                   <div className="bg-[#FAF7EF] p-4 rounded-2xl text-[11px] text-[#1C1917]/70 leading-relaxed space-y-2 font-light">
                     <p>
-                      <strong>Thank you, {formName}!</strong> Your commitment to support <strong>{pledgeType === 'missions' ? 'Global Outreaches' : 'Cohort Disciples'}</strong> with <strong>R {pledgeAmount}</strong> is recorded.
+                      <strong>Thank you, {formName}!</strong> Your commitment to support <strong>{pledgeType === 'missions' ? 'Global Outreaches' : 'Team Disciples'}</strong> with <strong>R {pledgeAmount}</strong> is recorded.
                     </p>
                     <p className="text-stone-500">
                       We have sent a comprehensive stewardship prospectus and bank allocation details to <strong>{formEmail}</strong>. Welcome to the covenant partnership!

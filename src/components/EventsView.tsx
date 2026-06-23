@@ -92,7 +92,7 @@ const PAST_EVENTS: PastEvent[] = [
     date: 'May 06, 2026',
     category: 'National Conference',
     location: 'Durban Central Hall, South Africa',
-    description: 'The Twelve actively participated in the NCMI National Elders 2026 conference. Our cohort members coordinated the registry/resource decks, served meals (including Day 3 tarts & fruits), and assisted the physical floor plan set ups.',
+    description: 'The Twelve actively participated in the NCMI National Elders 2026 conference. Our team members coordinated the registry/resource decks, served meals (including Day 3 tarts & fruits), and assisted the physical floor plan set ups.',
     mediaType: 'video',
     mediaUrl: '/assets/NCMI_National_Elders_2026.mp4',
     mediaUrls: ['/assets/NCMI_National_Elders_2026.mp4', '/assets/NCMI_National_Elders_2026_Day_2.mp4'],
@@ -115,7 +115,7 @@ const PAST_EVENTS: PastEvent[] = [
     date: 'April 11, 2026',
     category: 'Global Missions',
     location: 'Zambia',
-    description: 'The Twelve embarked on a powerful, cross-border church partnership and outreach mission to Zambia. The cohort participated in outdoor ministry coordinates, helped with building development setups, and formed strong local community ties.',
+    description: 'The Twelve embarked on a powerful, cross-border church partnership and outreach mission to Zambia. The team participated in outdoor ministry coordinates, helped with building development setups, and formed strong local community ties.',
     mediaType: 'video',
     mediaUrls: ['/assets/Zambia_Mission_Trip_Part_1.mp4', '/assets/Zambia_Mission_Trip_Part_2.mp4'],
     duration: '00:11 & 00:09'
@@ -176,7 +176,7 @@ const UPCOMING_EVENTS: UpcomingEvent[] = [
     category: 'Internal Feast',
     spotsLeft: 0,
     isPrivate: true,
-    description: 'A private solemn banquet for cohort parents, direct guardians, and legal sponsors to review progress and write dedication letters.'
+    description: 'A private solemn banquet for team parents, direct guardians, and legal sponsors to review progress and write dedication letters.'
   },
   {
     id: 'up-5',
@@ -202,14 +202,14 @@ const UPCOMING_EVENTS: UpcomingEvent[] = [
   },
   {
     id: 'up-7',
-    title: 'Cohort Graduation & Covenant Feast',
+    title: 'Team Graduation & Covenant Feast',
     date: '2026-12-18',
     time: '05:00 PM - 10:00 PM',
     location: 'Legacy Estate, Pietermaritzburg',
     category: 'Graduation',
     spotsLeft: 15,
     isPrivate: false,
-    description: 'The formal physical graduation ceremony and covenant declaration dinner for the 2026 discipleship cohort.'
+    description: 'The formal physical graduation ceremony and covenant declaration dinner for the 2026 discipleship team.'
   }
 ];
 
@@ -265,6 +265,90 @@ const CALENDAR_MONTHS = [
     startDayOfWeek: 2, // Tuesday
   }
 ];
+
+// Helper to generate a direct, foolproof Google Calendar link for any event to avoid iframe OAuth popups blocking
+const getGoogleCalendarTemplateUrl = (event: any) => {
+  if (!event) return '';
+  const titleEncoded = encodeURIComponent(event.title || 'Official Event');
+  
+  // Prepare elegant description
+  let cleanDesc = event.description || '';
+  cleanDesc += `\n\nDate: ${event.date}\nTime: ${event.time || ''}\nLocation: ${event.location || ''}\n\nSynced from The Twelve Discipleship Program South Africa.`;
+  const descEncoded = encodeURIComponent(cleanDesc);
+  const locEncoded = encodeURIComponent(event.location || 'The Twelve Headquarters, Hillcrest');
+  
+  let datesStr = '';
+  const cleanDate = (event.date || '').replace(/-/g, ''); // e.g., '20260622'
+  
+  // Check if it's all day
+  const isAllDay = !event.time || event.time.toLowerCase() === 'all-day' || event.time.toLowerCase() === 'all day';
+  
+  if (isAllDay) {
+    const dateParts = (event.date || '').split('-');
+    if (dateParts.length === 3) {
+      const year = parseInt(dateParts[0], 10);
+      const month = parseInt(dateParts[1], 10) - 1;
+      const day = parseInt(dateParts[2], 10);
+      const d = new Date(year, month, day);
+      d.setDate(d.getDate() + 1);
+      const nextYear = d.getFullYear();
+      const nextMonth = String(d.getMonth() + 1).padStart(2, '0');
+      const nextDay = String(d.getDate()).padStart(2, '0');
+      const nextDateStr = `${nextYear}${nextMonth}${nextDay}`;
+      datesStr = `${cleanDate}/${nextDateStr}`;
+    } else {
+      datesStr = `${cleanDate}/${cleanDate}`;
+    }
+  } else {
+    const parseTimeLocal = (timeStr: string) => {
+      const parts = timeStr.trim().split(' ');
+      const timePart = parts[0];
+      const ampm = parts[1];
+      const [hoursStr, minutesStr] = timePart.split(':');
+      let hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+      
+      if (ampm === 'PM' && hours !== 12) {
+        hours += 12;
+      } else if (ampm === 'AM' && hours === 12) {
+        hours = 0;
+      }
+      
+      const padHour = hours < 10 ? '0' + hours : String(hours);
+      const padMin = minutes < 10 ? '0' + minutes : String(minutes);
+      return `${padHour}${padMin}00`;
+    };
+    
+    let startStr = '080000';
+    let endStr = '170000';
+    
+    if (event.time && event.time.includes('-')) {
+      const timeSplit = event.time.split('-');
+      if (timeSplit.length === 2) {
+        try {
+          startStr = parseTimeLocal(timeSplit[0]);
+          endStr = parseTimeLocal(timeSplit[1]);
+        } catch (e) {
+          console.error("Error parsing times during link generation:", e);
+        }
+      }
+    } else if (event.time) {
+      try {
+        startStr = parseTimeLocal(event.time);
+        const hourNum = parseInt(startStr.slice(0, 2), 10);
+        const endHour = (hourNum + 1) % 24;
+        const padEndHour = endHour < 10 ? '0' + endHour : String(endHour);
+        endStr = `${padEndHour}${startStr.slice(2)}`;
+      } catch (e) {
+        console.error("Error parsing single time:", e);
+      }
+    }
+    
+    datesStr = `${cleanDate}T${startStr}/${cleanDate}T${endStr}`;
+  }
+  
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titleEncoded}&dates=${datesStr}&details=${descEncoded}&location=${locEncoded}&ctz=Africa/Johannesburg`;
+};
 
 export default function EventsView() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -339,6 +423,9 @@ export default function EventsView() {
   const [syncStatus, setSyncStatus] = useState<{ [eventId: string]: 'idle' | 'syncing' | 'success' | 'error' }>({});
   const [authError, setAuthError] = useState<string | null>(null);
   const [isInIframe, setIsInIframe] = useState<boolean>(false);
+  const [isSimpleSynced, setIsSimpleSynced] = useState<boolean>(() => {
+    return localStorage.getItem('twelve_calendar_synced') === 'true';
+  });
 
   React.useEffect(() => {
     setIsInIframe(window.self !== window.top);
@@ -365,27 +452,16 @@ export default function EventsView() {
     return () => unsubscribe();
   }, []);
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = () => {
     setAuthError(null);
     try {
-      const result = await googleSignIn();
-      if (result) {
-        setUser(result.user);
-        setToken(result.accessToken);
-        setNeedsAuth(false);
-        await loadUpcomingGoogleEvents(result.accessToken);
-        
-        // Open the specific shared Google Calendar link so they are prompted to add and sync it with their Google account
-        window.open("https://calendar.google.com/calendar/u/0?cid=Y180OGVlMTFhZDRhNDliYjc4ZTVkY2ZiNmM4ODQ1ZGI1NjZmZDhlOGI0ZDRjYjFiYjk5MDYwYzFkOGM5Nzk4NmI1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20", "_blank");
-      }
+      // Persist that the user has successfully connected and integrated the calendar feed!
+      localStorage.setItem('twelve_calendar_synced', 'true');
+      setIsSimpleSynced(true);
     } catch (error: any) {
       console.error("Login failed:", error);
       let errMsg = error?.message || String(error);
-      if (errMsg.includes("web-storage-unsupported") || errMsg.includes("iframe") || errMsg.includes("popup")) {
-        setAuthError("Google Sign-In is restricted inside preview iframes. Please launch the application in a new tab to authorize.");
-      } else {
-        setAuthError(errMsg);
-      }
+      setAuthError(errMsg);
     }
   };
 
@@ -425,6 +501,10 @@ export default function EventsView() {
     } finally {
       setIsLoadingEvents(false);
     }
+  };
+
+  const handleAddEventToCalendarUrl = (eventId: string) => {
+    setSyncStatus(prev => ({ ...prev, [eventId]: 'success' }));
   };
 
   const handleAddEventToCalendar = async (event: any) => {
@@ -580,7 +660,7 @@ export default function EventsView() {
 
   const activeMonth = CALENDAR_MONTHS[currentMonthIndex];
   
-  // Format dates matching the selected month & day, and auto-add Mon-Thu Cohort Private Events
+  // Format dates matching the selected month & day, and auto-add Mon-Thu Team Private Events
   const getEventForDay = (day: number) => {
     const monthNum = activeMonth.monthIndex + 1;
     const formattedDate = `2026-${monthNum < 10 ? '0' + monthNum : monthNum}-${day < 10 ? '0' + day : day}`;
@@ -602,7 +682,7 @@ export default function EventsView() {
     const dayOfWeek = date.getDay();
     if (dayOfWeek >= 1 && dayOfWeek <= 4) {
       let title = '';
-      let category = 'Cohort Core';
+      let category = 'Team Core';
       let description = '';
       let time = '08:00 AM - 05:00 PM';
       let location = 'The Twelve Headquarters, Hillcrest';
@@ -614,7 +694,7 @@ export default function EventsView() {
       } else if (dayOfWeek === 2) {
         title = 'Tuesday Civic Duty & Service';
         category = 'Community Outreach';
-        description = 'The cohort deploys to local clinic centers and under-resourced public secondary schools in Durban to contribute physical labor and tutoring services.';
+        description = 'The team deploys to local clinic centers and under-resourced public secondary schools in Durban to contribute physical labor and tutoring services.';
       } else if (dayOfWeek === 3) {
         title = 'Wednesday Character Development';
         category = 'Character Lab';
@@ -705,16 +785,60 @@ export default function EventsView() {
               )}
             </div>
 
-            {needsAuth ? (
+            {isSimpleSynced ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-4">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
+                    <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <span className="font-serif text-xs font-bold text-emerald-950 uppercase tracking-wide">
+                      Twelve Calendar Connected!
+                    </span>
+                    <p className="text-[11px] text-emerald-800 leading-relaxed font-sans">
+                      The Twelve Google Calendar integration has been triggered. All official program dates and residency assemblies will display in your Google Calendar feed.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <a
+                    href="https://calendar.google.com/calendar/u/0?cid=Y180OGVlMTFhZDRhNDliYjc4ZTVkY2ZiNmM4ODQ1ZGI1NjZmZDhlOGI0ZDRjYjFiYjk5MDYwYzFkOGM5Nzk4NmI1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-[#9A7D3C] hover:bg-[#7D642D] text-white rounded-xl py-2 px-3 text-[10px] font-sans font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs text-center"
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Open My Calendar Feed</span>
+                    <ExternalLink className="w-2.5 h-2.5 opacity-80" />
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem('twelve_calendar_synced');
+                      setIsSimpleSynced(false);
+                    }}
+                    className="text-[10px] text-zinc-500 hover:text-zinc-800 font-sans border border-[#EADCC2]/60 py-2 px-3 rounded-xl hover:bg-[#FAF7EF] transition-colors cursor-pointer"
+                  >
+                    Reset link
+                  </button>
+                </div>
+              </div>
+            ) : needsAuth ? (
               <div className="space-y-4 font-sans">
                 <p className="text-xs text-[#1C1917]/60 leading-relaxed font-sans">
-                  Sign in with Google to sync residency assemblies directly to your private Google Calendar and view your upcoming schedule.
+                  Connect "The Twelve" official calendar with your Google Account to view and synchronize all assemblies and programs.
                 </p>
 
                 {/* Google Sign In Material Button */}
-                <button 
+                <a 
+                  href="https://calendar.google.com/calendar/u/0?cid=Y180OGVlMTFhZDRhNDliYjc4ZTVkY2ZiNmM4ODQ1ZGI1NjZmZDhlOGI0ZDRjYjFiYjk5MDYwYzFkOGM5Nzk4NmI1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={handleGoogleLogin}
-                  className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl py-2.5 px-4 shadow-xs transition-all cursor-pointer text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  className="w-full flex items-center justify-center gap-3 bg-[#9A7D3C] hover:bg-[#7D642D] border border-[#9A7D3C] rounded-2xl py-2.5 px-4 shadow-xs transition-all cursor-pointer text-xs font-bold text-white hover:shadow-md text-center"
                 >
                   <svg className="w-5 h-5 flex-shrink-0" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -722,8 +846,8 @@ export default function EventsView() {
                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
                   </svg>
-                  <span>Connect with Google Calendar</span>
-                </button>
+                  <span>Connect to Google Calendar</span>
+                </a>
 
                 {/* Helpful prompt when inside an iframe */}
                 {isInIframe && (
@@ -1018,7 +1142,7 @@ export default function EventsView() {
                   </div>
                   <div className="flex items-center space-x-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-500 block" />
-                    <span>Cohort-Exclusive Assembly</span>
+                    <span>Team-Exclusive Assembly</span>
                   </div>
                   <div className="flex items-center space-x-1.5">
                     <span className="w-4 h-4 border border-[#9A7D3C] bg-[#F9F5EC] rounded-md block" />
@@ -1109,31 +1233,29 @@ export default function EventsView() {
 
                       {/* Google Calendar Sync button */}
                       <div className="mt-4 pt-4 border-t border-white/10 flex flex-col space-y-2">
-                        <button
-                          onClick={() => handleAddEventToCalendar(selectedEvent)}
-                          className={`uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-all cursor-pointer ${
+                        <a
+                          href={getGoogleCalendarTemplateUrl(selectedEvent)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => handleAddEventToCalendarUrl(selectedEvent.id)}
+                          className={`uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-all cursor-pointer text-center ${
                             syncStatus[selectedEvent.id] === 'success'
                               ? 'bg-emerald-950/50 border border-emerald-500/50 text-emerald-300'
-                              : syncStatus[selectedEvent.id] === 'syncing'
-                              ? 'bg-[#9A7D3C]/30 border border-[#9A7D3C] text-white/70 animate-pulse'
                               : 'bg-transparent border border-white/20 hover:bg-white/5 text-white'
                           }`}
-                          disabled={syncStatus[selectedEvent.id] === 'syncing'}
                         >
                           {syncStatus[selectedEvent.id] === 'success' ? (
                             <>
                               <Check className="w-3.5 h-3.5" />
                               <span>Added to Google Calendar</span>
                             </>
-                          ) : syncStatus[selectedEvent.id] === 'syncing' ? (
-                            <span>Adding to Calendar...</span>
                           ) : (
                             <>
                               <Calendar className="w-3.5 h-3.5 text-[#9A7D3C]" />
                               <span>Add to Google Calendar</span>
                             </>
                           )}
-                        </button>
+                        </a>
                       </div>
 
                     </motion.div>

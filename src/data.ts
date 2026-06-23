@@ -82,7 +82,7 @@ export const HOUSE_ROSTER: HouseRole[] = [
     day: "Wednesday",
     cookingTeam: ["Jarryd", "James"],
     cleaningTeam: ["Andrew", "Ben"],
-    dutyDetail: "Cohort peer-review sessions / Curfew at 10:00 PM"
+    dutyDetail: "Team peer-review sessions / Curfew at 10:00 PM"
   },
   {
     day: "Thursday",
@@ -99,12 +99,12 @@ export const HOUSE_ROSTER: HouseRole[] = [
   {
     day: "Saturday",
     cookingTeam: ["Team Effort (Rostered)"],
-    cleaningTeam: ["Whole Cohort (Facility Maintenance)"],
+    cleaningTeam: ["Whole Team (Facility Maintenance)"],
     dutyDetail: "Local community development programs & development logistics / Flexible evening hours"
   },
   {
     day: "Sunday",
-    cookingTeam: ["Cohort dining events"],
+    cookingTeam: ["Team dining events"],
     cleaningTeam: ["Kitchen Team A"],
     dutyDetail: "General assembly, team presentation block, and goal setting session"
   }
@@ -141,7 +141,7 @@ export const INITIAL_TESTIMONIES: Testimony[] = [
   {
     id: "t1",
     name: "Andrew",
-    classYear: "Cohort 2026",
+    classYear: "Team 2026",
     homeProvince: "Gauteng",
     category: "Professional Growth",
     testimonyText: "Connecting deeply in fellowship at The Twelve has entirely transformed my walk. Studying the Word together with the guys and sharing in community chore rosters has built a grit in me that I didn't know I possessed. It is about laying up treasures in Heaven rather than chasing earthly comforts.",
@@ -153,7 +153,7 @@ export const INITIAL_TESTIMONIES: Testimony[] = [
   {
     id: "t2",
     name: "Jarryd",
-    classYear: "Cohort 2026",
+    classYear: "Team 2026",
     homeProvince: "KwaZulu-Natal",
     category: "Radical Resilience",
     testimonyText: "Playing rugby and practicing sportsmanship taught me to tackle physical resistance, but here at The Twelve, I've learned spiritual perseverance. Responding to trials with a sense of humor and standing strong under pressure is how true discipleship is modeled. It's about how hard you can get hit and keep moving forward.",
@@ -165,7 +165,7 @@ export const INITIAL_TESTIMONIES: Testimony[] = [
   {
     id: "t3",
     name: "Kaitlyn",
-    classYear: "Cohort 2026",
+    classYear: "Team 2026",
     homeProvince: "Free State",
     category: "Collaborative Leadership",
     testimonyText: "Waiting patiently on the Lord and serving behind the scenes with administrative care has defined my year here. In chore grids or dance tracks, I've found that true leaders serve first. He set my feet on a solid rock, putting a new song of praise in my heart.",
@@ -177,7 +177,7 @@ export const INITIAL_TESTIMONIES: Testimony[] = [
   {
     id: "t4",
     name: "Caelyn",
-    classYear: "Cohort 2026",
+    classYear: "Team 2026",
     homeProvince: "KwaZulu-Natal",
     category: "Civic Empowerment",
     testimonyText: "Being part of our regional youth outreaches and cooking alongside others has made me realize how called and set-apart we really are. As an only child, navigating this large, energetic sibling circle showed me the deep beauty of Christian family. There is absolutely nothing that can separate us from His love.",

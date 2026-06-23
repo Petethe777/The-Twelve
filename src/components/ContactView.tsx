@@ -117,7 +117,7 @@ export default function ContactView() {
                 📅 APPLICATIONS WINDOW
               </span>
               <p className="text-[11px] text-[#1C1917]/70 leading-normal font-light">
-                Applications for the upcoming 12-member capacity cohort cycle are currently <strong>OPEN</strong>. 
+                Applications for the upcoming 12-member capacity team cycle are currently <strong>OPEN</strong>. 
                 Our team conducts selection panels quarterly in South Africa.
               </p>
             </div>
@@ -210,7 +210,7 @@ export default function ContactView() {
                       className="w-full px-3 py-3 rounded-xl border border-[#E9D5B8] bg-[#FDFBF7] text-[#1C1917] focus:outline-none focus:border-[#9A7D3C] text-xs font-bold"
                     >
                       <option value="General Program Inquiry">General Program Inquiry</option>
-                      <option value="Cohort Application Process">Upcoming Cohort Cycle Application</option>
+                      <option value="Team Application Process">Upcoming Team Cycle Application</option>
                       <option value="Partner of Excellence Sponsorship">Partner of Excellence Sponsorship</option>
                       <option value="Direct Director Appointment">Direct appointment with Robbie / David</option>
                     </select>

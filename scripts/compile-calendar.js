@@ -25,7 +25,7 @@ const FALLBACK_EVENTS = [
     "date": "2026-06-22",
     "time": "12:00 PM - 12:30 PM",
     "location": "The Twelve Headquarters, Hillcrest",
-    "category": "Cohort Commons",
+    "category": "Team Commons",
     "spotsLeft": 15,
     "isPrivate": false,
     "description": "Shared timing for internal group meals and common connection."
@@ -47,7 +47,7 @@ const FALLBACK_EVENTS = [
     "date": "2026-06-23",
     "time": "09:30 AM - 12:00 PM",
     "location": "The Twelve Headquarters, Hillcrest",
-    "category": "Cohort Commons",
+    "category": "Team Commons",
     "spotsLeft": 10,
     "isPrivate": false,
     "description": "Activity morning coordinates and friendly exercises."
@@ -90,8 +90,8 @@ const FALLBACK_EVENTS = [
     "title": "Day Off",
     "date": "2026-06-28",
     "time": "All Day",
-    "location": "Cohort Rest Settings",
-    "category": "Cohort Commons",
+    "location": "Team Rest Settings",
+    "category": "Team Commons",
     "spotsLeft": 0,
     "isPrivate": true,
     "description": "Covenant rest period for study review and restoration."
@@ -124,10 +124,10 @@ const FALLBACK_EVENTS = [
     "date": "2026-07-06",
     "time": "09:30 AM - 10:30 AM",
     "location": "The Twelve Headquarters, Hillcrest",
-    "category": "Cohort Commons",
+    "category": "Team Commons",
     "spotsLeft": 12,
     "isPrivate": false,
-    "description": "A high-character team-building and trust challenge designed to help cohort members face physical and mental goals."
+    "description": "A high-character team-building and trust challenge designed to help team members face physical and mental goals."
   },
   {
     "id": "fallback-up-12",
@@ -156,11 +156,11 @@ const FALLBACK_EVENTS = [
     "title": "T12 Holiday Break",
     "date": "2026-07-13",
     "time": "All Day",
-    "location": "Cohort Rest Session",
-    "category": "Cohort Commons",
+    "location": "Team Rest Session",
+    "category": "Team Commons",
     "spotsLeft": 0,
     "isPrivate": true,
-    "description": "Official mid-year cohort holidays and home rest breaks."
+    "description": "Official mid-year team holidays and home rest breaks."
   },
   {
     "id": "fallback-up-15",
@@ -222,11 +222,11 @@ const FALLBACK_EVENTS = [
     "title": "T12 Holidays",
     "date": "2026-09-18",
     "time": "All Day",
-    "location": "Cohort Rest Settings",
-    "category": "Cohort Commons",
+    "location": "Team Rest Settings",
+    "category": "Team Commons",
     "spotsLeft": 0,
     "isPrivate": true,
-    "description": "Secondary season rest break for cohort members."
+    "description": "Secondary season rest break for team members."
   },
   {
     "id": "fallback-up-21",
@@ -256,10 +256,10 @@ const FALLBACK_EVENTS = [
     "date": "2026-12-18",
     "time": "All Day",
     "location": "Everskye",
-    "category": "Cohort Commons",
+    "category": "Team Commons",
     "spotsLeft": 0,
     "isPrivate": true,
-    "description": "The absolute landmark celebration and graduation covenant feast at Everskye. A formal night honoring our 2026 cohort graduates."
+    "description": "The absolute landmark celebration and graduation covenant feast at Everskye. A formal night honoring our 2026 team graduates."
   }
 ];
 
@@ -281,7 +281,7 @@ function determineCategory(summary) {
     return 'Service Leadership';
   }
   if (s.includes('lunch') || s.includes('tea') || s.includes('dinner') || s.includes('holiday') || s.includes('holidays') || s.includes('rest') || s.includes('fellowship') || s.includes('dance') || s.includes('fast') || s.includes('morning')) {
-    return 'Cohort Commons';
+    return 'Team Commons';
   }
   return 'Shared Assembly';
 }

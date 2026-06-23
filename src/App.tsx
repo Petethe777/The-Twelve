@@ -91,7 +91,7 @@ export default function App() {
             </div>
             <p className="text-xs text-white/50 leading-relaxed font-light">
               Equipping South Africa&apos;s youth with deep spiritual resilience, practical discipleship foundations, and 
-              character discipline. A rigorous cohort cycle built on mutual progress and service.
+              character discipline. A rigorous team cycle built on mutual progress and service.
             </p>
           </div>
 

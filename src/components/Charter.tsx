@@ -60,7 +60,7 @@ const DAVID_FACTS = [
     id: 6,
     short: "Size 11 shoes",
     category: "Movement Pace",
-    extended: "Big shoes to fill! David sets the literal stride of hard physical pacing, running alongside cohorts through muddy outreach paths and local township development events.",
+    extended: "Big shoes to fill! David sets the literal stride of hard physical pacing, running alongside team members through muddy outreach paths and local township development events.",
     noteX: 20, noteY: 92,
     targetX: 43, targetY: 92,
     arrowD: "M 20 92 Q 32 94 43 92"
@@ -69,7 +69,7 @@ const DAVID_FACTS = [
     id: 7,
     short: "Bucket list: shark cage diving, skydiving, and travelling to Norway, Italy, and Australia.",
     category: "High Ambition",
-    extended: "An adventurous spirit is infectious. David urges the cohort to target monumental dreams, refuse comfort-zone security, and approach their personal calling with deep faith.",
+    extended: "An adventurous spirit is infectious. David urges the team to target monumental dreams, refuse comfort-zone security, and approach their personal calling with deep faith.",
     noteX: 82, noteY: 10,
     targetX: 58, targetY: 30,
     arrowD: "M 82 10 Q 70 18 58 30"
@@ -245,7 +245,7 @@ const JOSH_FACTS = [
     id: 3,
     short: "Favourite food: Chicken Chow Mein",
     category: "Culinary Comfort",
-    extended: "Fueling long cohort exercises and fellowship discussions, Josh's go-to meal is a hot, savory plate of Chicken Chow Mein, embodying his simple, down-to-earth style.",
+    extended: "Fueling long team exercises and fellowship discussions, Josh's go-to meal is a hot, savory plate of Chicken Chow Mein, embodying his simple, down-to-earth style.",
     noteX: 16,
     noteY: 42,
     targetX: 41,
@@ -278,7 +278,7 @@ const JOSH_FACTS = [
     id: 6,
     short: "Competitive",
     category: "Action Drive",
-    extended: "Josh brings healthy competition and high focus to everything he tackles. He pushes his cohort peers to set higher performance marks and exceed their comfort zones.",
+    extended: "Josh brings healthy competition and high focus to everything he tackles. He pushes his team peers to set higher performance marks and exceed their comfort zones.",
     noteX: 84,
     noteY: 58,
     targetX: 58,
@@ -359,7 +359,7 @@ export default function Charter() {
           <span>Our Foundation</span>
         </motion.div>
         <p className="text-sm md:text-base text-[#1C1917]/70 leading-relaxed font-light">
-          We believe in equipping future leaders with exceptional professional and personal standards. Explore the core principles that guide our cohort's path.
+          We believe in equipping future leaders with exceptional professional and personal standards. Explore the core principles that guide our team's path.
         </p>
       </div>
 
@@ -394,7 +394,7 @@ export default function Charter() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-[#E1D4BB]/60">
             <div>
               <span className="block text-2xl font-serif text-[#9A7D3C] font-bold">12</span>
-              <span className="text-[10px] tracking-wider text-[#1C1917]/60 uppercase font-bold">Capacity Cohort / Yr</span>
+              <span className="text-[10px] tracking-wider text-[#1C1917]/60 uppercase font-bold">Capacity Team / Yr</span>
             </div>
             <div>
               <span className="block text-2xl font-serif text-[#9A7D3C] font-bold">100%</span>
@@ -646,7 +646,7 @@ export default function Charter() {
             <div className="md:col-span-8 lg:col-span-9">
               <p className="text-xs md:text-sm text-[#1C1917]/85 font-light leading-relaxed border-l-2 border-[#9A7D3C] pl-6 py-1 font-serif">
                 {selectedMember === 'DAVID' 
-                  ? "David is the founder of The Twelve who handles day-to-day operations of the organization. He looks after the ground-level administration and logistical alignment, running alongside peers, pushing and growing the cohort as we move forward together."
+                  ? "David is the founder of The Twelve who handles day-to-day operations of the organization. He looks after the ground-level administration and logistical alignment, running alongside peers, pushing and growing the team as we move forward together."
                   : selectedMember === 'JOSH'
                     ? "Josh is a director at The Twelve who leads hands-on mentorship within the team. Deeply anchored in James 2:26, Josh combines a heart for real-life working faith with specialized barista training, helping our young leaders grow spiritually, competitively, and practically."
                     : "Zoe is our creative Social Media Manager, managing storytelling, community highlights, and creative communication channels. Pursuing studies in Pretoria while deeply connected in Hillcrest, she grounds our operational narrative with warm leadership and profound faith."
@@ -661,7 +661,7 @@ export default function Charter() {
             {/* LEFT SIDE: Words & interactive list */}
             <div className="lg:col-span-4 flex flex-col justify-between py-2 space-y-4">
               <div>
-                <span className="text-[9px] font-black text-[#9A7D3C] tracking-wider uppercase block mb-1">COHORT HIGHLIGHT INDEX</span>
+                <span className="text-[9px] font-black text-[#9A7D3C] tracking-wider uppercase block mb-1">TEAM HIGHLIGHT INDEX</span>
                 <h4 className="font-serif text-base text-[#1C1917] font-bold">Interactive Records</h4>
                 <p className="text-xs text-[#1C1917]/60">
                   Select any point to trace its handwritten target on {selectedMember === 'DAVID' ? "David's" : selectedMember === 'JOSH' ? "Josh's" : "Zoe's"} chalkboard portrait.

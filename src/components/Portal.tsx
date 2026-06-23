@@ -234,7 +234,7 @@ export default function Portal({ onEnter }: PortalProps) {
           >
             THE TWELVE
             <span className="block font-sans text-lg md:text-2xl font-light text-[#9A7D3C] tracking-[0.3em] uppercase mt-2">
-              Discipleship Cohort
+              Discipleship Team
             </span>
           </motion.h1>
         </div>

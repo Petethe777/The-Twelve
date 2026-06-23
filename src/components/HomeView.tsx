@@ -28,7 +28,7 @@ export default function HomeView({ onExplore }: HomeViewProps) {
             <Users className="w-5 h-5" />
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">COHORT SCALE</span>
+            <span className="text-[9px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">TEAM SCALE</span>
             <h4 className="font-serif text-sm font-bold text-[#1C1917] leading-tight">12 Members Maximum</h4>
             <p className="text-[11px] text-[#1C1917]/70 font-light leading-relaxed font-sans">
               We focus purely on deep, systematic mentorship with only twelve carefully chosen individuals yearly.
@@ -59,14 +59,14 @@ export default function HomeView({ onExplore }: HomeViewProps) {
             <span className="text-[9px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">CIVIC IMPACT</span>
             <h4 className="font-serif text-sm font-bold text-[#1C1917] leading-tight">10k+ Dedicated Hours</h4>
             <p className="text-[11px] text-[#1C1917]/70 font-light leading-relaxed font-sans">
-              Our cohort contributes thousands of hours of service to community clinics and secondary schools.
+              Our team contributes thousands of hours of service to community clinics and secondary schools.
             </p>
           </div>
         </div>
 
       </div>
 
-      {/* 3. Interactive Cohort Members Spotlight Section */}
+      {/* 3. Interactive Team Members Spotlight Section */}
       <CohortSection />
 
     </div>

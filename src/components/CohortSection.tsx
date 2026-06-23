@@ -36,9 +36,9 @@ const COHORT_DATA: CohortMember[] = [
     id: 'ANDREW',
     name: 'Andrew',
     image: '/assets/images/Andrew.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Treasures in Heaven over earthly riches",
-    bio: "Andrew is a passionate and dedicated member of the Discipleship Cohort. Rooted in South Africa, he combines a deep study of the Scriptures with a spirit of joyful service and real-life peer engagement.",
+    bio: "Andrew is a passionate and dedicated member of the Discipleship Team. Rooted in South Africa, he combines a deep study of the Scriptures with a spirit of joyful service and real-life peer engagement.",
     chalkboardWatermark: 'ANDREW',
     colorTheme: 'text-[#4C6B7B]/20',
     facts: [
@@ -147,7 +147,7 @@ const COHORT_DATA: CohortMember[] = [
     id: 'MICAELLA',
     name: 'Micaella',
     image: '/assets/images/Micaella.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Stand still and watch the Lord's hand",
     bio: "Micaella brings a heart of kindness and creative discipline to our community workspace, encouraging peers to standardize their focus around joy.",
     chalkboardWatermark: 'MICAELLA',
@@ -258,9 +258,9 @@ const COHORT_DATA: CohortMember[] = [
     id: 'JARRYD',
     name: 'Jarryd',
     image: '/assets/images/Jarryd.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "It ain't about how hard you can get hit, but how hard you can keep moving forward.",
-    bio: "Currently based in Hillcrest, KZN, Jarryd matches natural athletic grit and a love for playing rugby with a deep, perseverant, and funny character. He is a steadfast friend and dependable companion in the Discipleship Cohort.",
+    bio: "Currently based in Hillcrest, KZN, Jarryd matches natural athletic grit and a love for playing rugby with a deep, perseverant, and funny character. He is a steadfast friend and dependable companion in the Discipleship Team.",
     chalkboardWatermark: 'JARRYD',
     colorTheme: 'text-[#4C6B7B]/20',
     facts: [
@@ -369,9 +369,9 @@ const COHORT_DATA: CohortMember[] = [
     id: 'TEHILLAH',
     name: 'Tehillah',
     image: '/assets/images/Tehillah.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Come to me, all who are weary and burdened, and I will give you rest.",
-    bio: "Tehillah is an inspiring, warm, and creative member of our discipleship cohort. Born in 2007, she combines musical worship with a keen focus on child psychology and counseling.",
+    bio: "Tehillah is an inspiring, warm, and creative member of our discipleship team. Born in 2007, she combines musical worship with a keen focus on child psychology and counseling.",
     chalkboardWatermark: 'TEHILLAH',
     colorTheme: 'text-[#CE9EB9]/25',
     facts: [
@@ -480,9 +480,9 @@ const COHORT_DATA: CohortMember[] = [
     id: 'BEN',
     name: 'Ben',
     image: '/assets/images/Ben.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Put others before yourself, as Jesus did.",
-    bio: "Born on July 16 and living in South Africa, Ben is a steadfast, brave, and faithful disciple who thrives on learning about God and His works. He models a selfless posture of putting others first, bringing a warm heart and helpful hands to cohort community services.",
+    bio: "Born on July 16 and living in South Africa, Ben is a steadfast, brave, and faithful disciple who thrives on learning about God and His works. He models a selfless posture of putting others first, bringing a warm heart and helpful hands to team community services.",
     chalkboardWatermark: 'BEN',
     colorTheme: 'text-[#50664B]/20',
     facts: [
@@ -591,7 +591,7 @@ const COHORT_DATA: CohortMember[] = [
     id: 'KAITLYN',
     name: 'Kaitlyn',
     image: '/assets/images/Kaitlyn.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "He set my feet upon a rock • Psalm 40:1–3",
     bio: "Born on February 11, 2007, Kaitlyn anchors her journey in absolute patience and resilience. She carries a heart of loyalty and deep-rooted faith, dreaming of teaching contemporary, modern, and jazz dance to inspire future generations.",
     chalkboardWatermark: 'KAITLYN',
@@ -601,7 +601,7 @@ const COHORT_DATA: CohortMember[] = [
         id: 1,
         short: "Born 11 Feb 2007 • South Africa",
         category: "Roots & Identity",
-        extended: "Kaitlyn is a brilliant Free State-born disciple representing quiet strength and diligent focus in the Discipleship Cohort.",
+        extended: "Kaitlyn is a brilliant Free State-born disciple representing quiet strength and diligent focus in the Discipleship Team.",
         noteX: 18,
         noteY: 10,
         targetX: 42,
@@ -702,7 +702,7 @@ const COHORT_DATA: CohortMember[] = [
     id: 'JAMES',
     name: 'James',
     image: '/assets/images/James.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Christ died for us while we were sinners • Romans 5:8",
     bio: "Born on June 20, 2007 and living in South Africa, James is best described as 'wise... most of the time!' He merges an active athletic drive with a deep love for coffee and fearless Biblical characters.",
     chalkboardWatermark: 'JAMES',
@@ -800,7 +800,7 @@ const COHORT_DATA: CohortMember[] = [
         id: 9,
         short: "Discipleship: Focus & Discipline",
         category: "Discipleship Heart",
-        extended: "James maintains the rhythm of study and competitive sports devotion in our cohort, keeping brothers focused and unified.",
+        extended: "James maintains the rhythm of study and competitive sports devotion in our team, keeping brothers focused and unified.",
         noteX: 18,
         noteY: 74,
         targetX: 36,
@@ -813,7 +813,7 @@ const COHORT_DATA: CohortMember[] = [
     id: 'CAELYN',
     name: 'Caelyn',
     image: '/assets/images/Caelyn.png',
-    role: 'Cohort Member',
+    role: 'Team Member',
     motto: "Inseparable from God's love • Romans 8:38–39",
     bio: "Born on August 10, 2007 in Durban, Caelyn is a set-apart, called, and rooted young disciple. Extremely close with her parents as an only child, she lives out her calling with vibrant joy, tasty cooking, and beautiful worship.",
     chalkboardWatermark: 'CAELYN',
@@ -936,7 +936,7 @@ export default function CohortSection() {
   };
 
   return (
-    <div id="cohort-spotlight-section" className="space-y-12 py-16 border-t border-[#EADCC2]/40 bg-zinc-50/10">
+    <div id="team-spotlight-section" className="space-y-12 py-16 border-t border-[#EADCC2]/40 bg-zinc-50/10">
       
       {/* Section Header */}
       <div className="text-center space-y-4 max-w-2xl mx-auto px-4">
@@ -945,7 +945,7 @@ export default function CohortSection() {
           <span>The Sovereign Seed</span>
         </span>
         <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight leading-tight">
-          COHORT MEMBERS
+          TEAM MEMBERS
         </h2>
         <p className="text-sm md:text-base text-[#1C1917]/70 font-light font-serif">
           Grounded young disciples walking out their calling under shared values, intentional study, and community service.
@@ -1003,7 +1003,7 @@ export default function CohortSection() {
             {/* LEFT SIDE: Words & interactive list */}
             <div className="lg:col-span-4 flex flex-col justify-between py-2 space-y-4">
               <div>
-                <span className="text-[9px] font-black text-[#9A7D3C] tracking-wider uppercase block mb-1">COHORT HIGHLIGHT INDEX</span>
+                <span className="text-[9px] font-black text-[#9A7D3C] tracking-wider uppercase block mb-1">TEAM HIGHLIGHT INDEX</span>
                 <h4 className="font-serif text-base text-[#1C1917] font-bold">Interactive Records</h4>
                 <p className="text-xs text-[#1C1917]/60">
                   Select any point to trace its handwritten target on {selectedMember.name}&apos;s chalkboard portrait.
@@ -1092,7 +1092,7 @@ export default function CohortSection() {
                 >
                   <defs>
                     <marker 
-                      id="sketch-cohort-arrow" 
+                      id="sketch-team-arrow" 
                       viewBox="0 0 10 10" 
                       refX="6" 
                       refY="5" 
@@ -1113,7 +1113,7 @@ export default function CohortSection() {
                       strokeWidth="1.2"
                       strokeLinecap="round"
                       fill="none"
-                      markerEnd="url(#sketch-cohort-arrow)"
+                      markerEnd="url(#sketch-team-arrow)"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
                       transition={{ duration: 0.5, ease: "easeOut" }}

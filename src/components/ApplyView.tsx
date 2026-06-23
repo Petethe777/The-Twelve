@@ -183,10 +183,10 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center space-x-2.5 bg-amber-50/70 border border-[#9A7D3C]/40 px-3.5 py-1.5 rounded-full">
           <ClipboardList className="w-4 h-4 text-[#9A7D3C]" />
-          <span className="text-[10px] font-mono text-[#9A7D3C] font-black uppercase tracking-widest">COHORT ENROLLMENT PROTOCOL</span>
+          <span className="text-[10px] font-mono text-[#9A7D3C] font-black uppercase tracking-widest">TEAM ENROLLMENT PROTOCOL</span>
         </div>
         <h1 className="font-serif text-3xl md:text-5xl font-black text-[#1C1917] tracking-tight">
-          Apply for the Next Cohort
+          Apply for the Next Team
         </h1>
         <p className="text-xs md:text-sm text-[#1C1917]/70 leading-relaxed font-light">
           Commit one year of your life to absolute accountability, rigorous spiritual growth, 
@@ -337,7 +337,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                     </li>
                     <li className="flex items-start gap-2.5 font-light">
                       <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#9A7D3C] shrink-0" />
-                      <span><strong>Intimacy Limit:</strong> One-on-one boy/girl relationships within the cohort are strictly prohibited. Treat opposite sex as brothers/sisters in Christ.</span>
+                      <span><strong>Intimacy Limit:</strong> One-on-one boy/girl relationships within the team are strictly prohibited. Treat opposite sex as brothers/sisters in Christ.</span>
                     </li>
                     <li className="flex items-start gap-2.5 font-light">
                       <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#9A7D3C] shrink-0" />
@@ -390,7 +390,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
               {/* Day in Life interactive schedule */}
               <div className="space-y-6 text-left">
                 <div className="text-center md:text-left">
-                  <h3 className="font-serif text-2xl font-black text-[#1C1917]">Interactive Cohort Daily Routine</h3>
+                  <h3 className="font-serif text-2xl font-black text-[#1C1917]">Interactive Team Daily Routine</h3>
                   <p className="text-xs text-[#1C1917]/70 font-light mt-1">A sample of the rigorous hours maintained to shape character and foster absolute alignment.</p>
                 </div>
 
@@ -715,7 +715,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                           'Sacred Indemnity Agreement & File Upload Checklist'
                         ][formStep - 1]}
                       </h4>
-                      <p className="text-[9px] sm:text-[10px] text-[#9A7D3C] font-mono font-bold uppercase tracking-widest mt-1">COHORT ENROLLMENT SHEET</p>
+                      <p className="text-[9px] sm:text-[10px] text-[#9A7D3C] font-mono font-bold uppercase tracking-widest mt-1">TEAM ENROLLMENT SHEET</p>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -896,7 +896,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
 
                             <div className="space-y-1.5">
                               <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">What expectations do you have of this program? *</label>
-                              <textarea required name="programExpectations" value={formData.programExpectations} onChange={handleInputChange} rows={3} placeholder="Expectations from team leadership, mentors, and cohorts..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              <textarea required name="programExpectations" value={formData.programExpectations} onChange={handleInputChange} rows={3} placeholder="Expectations from team leadership, mentors, and team peers..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                             </div>
 
                             <div className="space-y-3.5 border-t pt-4">
