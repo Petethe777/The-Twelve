@@ -73,4 +73,13 @@ for (const pdf of pdfs) {
   }
 }
 
+// Compile latest live calendar events from Google iCal
+import { execSync } from 'child_process';
+try {
+  console.log("Triggering Google Calendar live compiler...");
+  execSync('node scripts/compile-calendar.js', { stdio: 'inherit' });
+} catch (err) {
+  console.error("Warning: Calendar compilation process encountered an issue:", err);
+}
+
 console.log('Automated assets preparation completed.');

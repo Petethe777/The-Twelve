@@ -40,7 +40,7 @@ interface FloatingTestimony {
 
 export default function PartnerView() {
   const [selectedTestimony, setSelectedTestimony] = useState<FloatingTestimony | null>(null);
-  const [activeMissionsDestination, setActiveMissionsDestination] = useState<'botswana' | 'zambia' | 'general'>('botswana');
+  const [activeMissionsDestination, setActiveMissionsDestination] = useState<'trips' | 'general'>('trips');
   const [sponsorMemberTier, setSponsorMemberTier] = useState<'study' | 'stipend' | 'full' | 'custom'>('stipend');
   const [customAmount, setCustomAmount] = useState<number>(350);
   
@@ -54,6 +54,14 @@ export default function PartnerView() {
   const [formEmail, setFormEmail] = useState('');
   const [formFrequency, setFormFrequency] = useState<'once' | 'monthly'>('monthly');
   const [formNotes, setFormNotes] = useState('');
+
+  // Non-financial contribution form states
+  const [nonFinancialName, setNonFinancialName] = useState('');
+  const [nonFinancialEmail, setNonFinancialEmail] = useState('');
+  const [nonFinancialPhone, setNonFinancialPhone] = useState('');
+  const [nonFinancialInterest, setNonFinancialInterest] = useState('Mentoring & Tutoring');
+  const [nonFinancialMessage, setNonFinancialMessage] = useState('');
+  const [nonFinancialSuccess, setNonFinancialSuccess] = useState(false);
 
   // Floating Reviews & Testimonies arranged strategically to populate the whole page background
   const testimoniesList: FloatingTestimony[] = [
@@ -222,47 +230,27 @@ export default function PartnerView() {
 
   const getMissionsImpactData = () => {
     switch (activeMissionsDestination) {
-      case 'botswana':
+      case 'trips':
         return {
-          title: "Botswana Strategic Outreach",
-          target: "R 25,000",
-          progress: 18400,
-          percent: 74,
-          dates: "April 02 - April 08, 2026",
-          details: "Supporting youth leadership workshops, sports outreach equipment, and partnership with regional assemblies in Gaborone.",
+          title: "Mission Trips",
+          dates: "Dates to be announced",
+          details: "Supporting our team travel fuel, cross-border transit permits, outreach gear, materials logistics, and local discipleship setups in key destination fields.",
           tiers: [
-            { amt: 350, desc: "Outreach Materials Packet" },
-            { amt: 1200, desc: "Team Transit Fuel Share" },
-            { amt: 4500, desc: "Community Support & Outreach Logistics" }
-          ]
-        };
-      case 'zambia':
-        return {
-          title: "Zambia Church Development",
-          target: "R 35,000",
-          progress: 24500,
-          percent: 70,
-          dates: "April 11 - April 19, 2026",
-          details: "Funding physical building set-ups, local pastor conference coordinates, registry/resource decks, and dynamic feeding program grids.",
-          tiers: [
-            { amt: 500, desc: "Food / Meals Grid support" },
-            { amt: 2200, desc: "Building materials & Toolings" },
-            { amt: 6000, desc: "Conference hosting & Registry setups" }
+            { amt: 500, desc: "Outreach Materials Packet" },
+            { amt: 1500, desc: "Team Transit Fuel Share" },
+            { amt: 5000, desc: "Community Support & Outreach Logistics" }
           ]
         };
       case 'general':
-        default:
+      default:
         return {
-          title: "Global Missions Core Reserve",
-          target: "R 50,000",
-          progress: 32000,
-          percent: 64,
-          dates: "Ongoing Cycle",
-          details: "Strategic emergencies fund, global cross-border permits, and materials transit frameworks across South Africa, Zambia, and Botswana.",
+          title: "General Fund",
+          dates: "Ongoing cycle",
+          details: "Our general fund supports continuous operational needs, strategic leadership equips, materials printing, and emergency residency setups throughout the year.",
           tiers: [
             { amt: 400, desc: "Bibles & Literature Dispatch" },
-            { amt: 1500, desc: "Border, Medical, & Logistical Permits" },
-            { amt: 5000, desc: "General Team Travel & Gear Canopy" }
+            { amt: 1200, desc: "Core Stewardship Reserve" },
+            { amt: 3500, desc: "General Residency & Care Fund" }
           ]
         };
     }
@@ -358,39 +346,29 @@ export default function PartnerView() {
                   </div>
                   <div>
                     <span className="text-[9px] font-mono text-[#9A7D3C] font-black uppercase tracking-wider block">MISSION CORE I</span>
-                    <h3 className="font-serif text-lg font-bold text-[#1C1917]">Sponsor a Missions Trip</h3>
+                    <h3 className="font-serif text-lg font-bold text-[#1C1917]">Sponsor our Mission Trips</h3>
                   </div>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-[8.5px] font-mono font-bold uppercase tracking-wider">
-                  April 2026 Outreaches
+                <div className="px-3 py-1 rounded-full bg-[#9A7D3C]/10 text-[#9A7D3C] text-[8.5px] font-mono font-bold uppercase tracking-wider">
+                  Dates Pending
                 </div>
               </div>
 
               <p className="text-[12px] text-[#1C1917]/70 leading-relaxed font-light">
-                We travel on intensive cross-border developmental drives to support regional assemblies. Sponsoring a missions trip directly offsets essential fuel, transit permits, Bibles, and local meal distributions in Zambia and Botswana.
+                We travel on intensive cross-border developmental drives to support regional assemblies. Sponsoring a missions trip directly offsets essential fuel, transit permits, Bibles, and local meal distributions in our various destinations such as Botswana, Zambia, and other locations.
               </p>
 
               {/* Destination selector tabs */}
-              <div className="grid grid-cols-3 gap-2 p-1.5 bg-[#FAF7EF] rounded-xl border border-[#E9D5B8]/50">
+              <div className="grid grid-cols-2 gap-2 p-1.5 bg-[#FAF7EF] rounded-xl border border-[#E9D5B8]/50">
                 <button
-                  onClick={() => setActiveMissionsDestination('botswana')}
+                  onClick={() => setActiveMissionsDestination('trips')}
                   className={`py-2 text-[10px] font-serif uppercase tracking-widest font-black rounded-lg transition-all cursor-pointer ${
-                    activeMissionsDestination === 'botswana'
+                    activeMissionsDestination === 'trips'
                       ? 'bg-[#1C1917] text-white shadow-xs'
                       : 'text-[#1C1917]/60 hover:text-[#1C1917] hover:bg-[#EADCC2]/10'
                   }`}
                 >
-                  Botswana
-                </button>
-                <button
-                  onClick={() => setActiveMissionsDestination('zambia')}
-                  className={`py-2 text-[10px] font-serif uppercase tracking-widest font-black rounded-lg transition-all cursor-pointer ${
-                    activeMissionsDestination === 'zambia'
-                      ? 'bg-[#1C1917] text-white shadow-xs'
-                      : 'text-[#1C1917]/60 hover:text-[#1C1917] hover:bg-[#EADCC2]/10'
-                  }`}
-                >
-                  Zambia
+                  Mission Trips
                 </button>
                 <button
                   onClick={() => setActiveMissionsDestination('general')}
@@ -404,7 +382,7 @@ export default function PartnerView() {
                 </button>
               </div>
 
-              {/* Active Destination Card with dynamic meter */}
+              {/* Active Destination Card without progress tracker */}
               <div className="p-4 rounded-2xl bg-[#FAF7EF]/40 border border-[#E9D5B8]/40 space-y-3">
                 <div className="flex justify-between items-center text-xs font-serif font-black text-[#1C1917]">
                   <span className="tracking-wide">{currentMissions.title}</span>
@@ -414,22 +392,6 @@ export default function PartnerView() {
                 <p className="text-[11px] text-[#1C1917]/70 leading-relaxed font-light">
                   {currentMissions.details}
                 </p>
-
-                {/* Progress bar */}
-                <div className="space-y-1.5 pt-1">
-                  <div className="flex justify-between text-[10px] font-mono leading-none">
-                    <span className="text-[#1C1917]/40">Fundraising Track:</span>
-                    <span className="text-[#1C1917] font-bold">{currentMissions.progress} / {currentMissions.target} ({currentMissions.percent}%)</span>
-                  </div>
-                  <div className="w-full h-2 bg-stone-200 rounded-full overflow-hidden">
-                    <motion.div 
-                      className="bg-[#9A7D3C] h-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${currentMissions.percent}%` }}
-                      transition={{ duration: 1, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
               </div>
 
               {/* Preset support levels for this mission */}
@@ -604,6 +566,173 @@ export default function PartnerView() {
 
         {/* 
           =========================================
+          SECTION 3: ALTERNATIVE & NON-FINANCIAL CONTRIBUTIONS
+          =========================================
+        */}
+        <div className="bg-white border border-[#E9D5B8] rounded-[2rem] p-6 lg:p-8 shadow-xs hover:shadow-sm transition-all duration-300 relative">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#9A7D3C] rounded-t-[2rem]" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            
+            {/* Left Column: Information and the WhatsApp Direct Liaison */}
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="inline-flex items-center space-x-1.5 bg-[#9A7D3C]/10 border border-[#9A7D3C]/35 text-[#9A7D3C] px-3.5 py-1.5 rounded-full text-[9px] uppercase tracking-widest font-black font-mono">
+                  <Sparkles className="w-3 h-3" />
+                  <span>Other Contributions</span>
+                </div>
+                <h3 className="font-serif text-2xl font-black text-[#1C1917]">
+                  Alternative Ways to Support & Co-Labour
+                </h3>
+                <p className="text-[12px] text-[#1C1917]/70 leading-relaxed font-light">
+                  There are countless ways to stand with the cohort that do not require financial contributions. From mentoring our disciples to donating operational supplies, hosting a team, or offering guest-speaker lessons—your skills and presence are highly valued.
+                </p>
+              </div>
+
+              {/* Direct Liaison with David - WhatsApp Button */}
+              <div className="p-5 rounded-2xl bg-emerald-50/40 border border-emerald-500/10 space-y-4">
+                <div className="flex items-center space-x-3 text-emerald-800">
+                  <div className="p-2 bg-emerald-500/10 rounded-xl">
+                    <MessageCircle className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-mono text-emerald-700 font-black uppercase tracking-wider block">DIRECT LEADERSHIP CORRESPONDENCE</span>
+                    <h4 className="font-serif text-sm font-bold">Chat Directly with David Hunter</h4>
+                  </div>
+                </div>
+                <p className="text-[11px] text-[#1C1917]/70 leading-relaxed font-light">
+                  Have a unique idea, strategic partnership, or want to discuss the residency face-to-face? Reach out to David Hunter immediately on WhatsApp to connect.
+                </p>
+                <a
+                  href="https://wa.me/27815411335?text=Hi%20David%2C%20I%27m%20visiting%20The%20Twelve%20Partner%20Page%20and%20would%20like%20to%20connect%20with%20you%20directly."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center space-x-2 w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-serif font-bold uppercase tracking-widest transition-colors shadow-xs hover:shadow-sm"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>Chat on WhatsApp</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Alternate Contribution Form */}
+            <div className="bg-[#FAF7EF]/40 border border-[#E9D5B8]/40 rounded-2xl p-5 md:p-6 space-y-4">
+              <h4 className="font-serif text-sm font-black text-[#1C1917] border-b border-[#E9D5B8]/40 pb-2">
+                Register Your Non-Financial Contribution
+              </h4>
+              
+              {!nonFinancialSuccess ? (
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!nonFinancialName || !nonFinancialEmail) return;
+                    setNonFinancialSuccess(true);
+                  }}
+                  className="space-y-3"
+                >
+                  <div className="space-y-1">
+                    <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Full Name:</label>
+                    <input
+                      type="text"
+                      required
+                      value={nonFinancialName}
+                      onChange={(e) => setNonFinancialName(e.target.value)}
+                      placeholder="e.g. Robbie Krause"
+                      className="w-full px-4 py-2 bg-white border border-[#E9D5B8] rounded-xl text-xs focus:ring-1 focus:ring-[#9A7D3C] focus:border-[#9A7D3C] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Email Address:</label>
+                    <input
+                      type="email"
+                      required
+                      value={nonFinancialEmail}
+                      onChange={(e) => setNonFinancialEmail(e.target.value)}
+                      placeholder="e.g. robbie@example.com"
+                      className="w-full px-4 py-2 bg-white border border-[#E9D5B8] rounded-xl text-xs focus:ring-1 focus:ring-[#9A7D3C] focus:border-[#9A7D3C] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Phone Number (Optional):</label>
+                    <input
+                      type="text"
+                      value={nonFinancialPhone}
+                      onChange={(e) => setNonFinancialPhone(e.target.value)}
+                      placeholder="e.g. +27 82 123 4567"
+                      className="w-full px-4 py-2 bg-white border border-[#E9D5B8] rounded-xl text-xs focus:ring-1 focus:ring-[#9A7D3C] focus:border-[#9A7D3C] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Primary Area of Interest:</label>
+                    <select
+                      value={nonFinancialInterest}
+                      onChange={(e) => setNonFinancialInterest(e.target.value)}
+                      className="w-full px-3 py-2 bg-white border border-[#E9D5B8] rounded-xl text-xs focus:ring-1 focus:ring-[#9A7D3C] focus:border-[#9A7D3C] focus:outline-none"
+                    >
+                      <option value="Mentoring & Tutoring">Mentoring & Academic Tutoring</option>
+                      <option value="Media & Creative Tech">Media & Creative Staged Design</option>
+                      <option value="Host a Mission Team">Host or Lodge a Mission Team</option>
+                      <option value="Catering & Cooking supplies">Catering & Meals Logistics</option>
+                      <option value="Construction & Physical Chores">Building & Manual Construction Labor</option>
+                      <option value="Prayer Partner">Intercessory Prayer Partnership</option>
+                      <option value="Special Guest Speaker Lessons">Guest Speaker Theological Lectures</option>
+                      <option value="Other Area">Other Custom Collaboration</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Message / Collaboration Idea:</label>
+                    <textarea
+                      rows={3}
+                      value={nonFinancialMessage}
+                      onChange={(e) => setNonFinancialMessage(e.target.value)}
+                      placeholder="Describe how you'd love to partner or any ideas you carry..."
+                      className="w-full px-4 py-2 bg-white border border-[#E9D5B8] rounded-xl text-xs focus:ring-1 focus:ring-[#9A7D3C] focus:border-[#9A7D3C] focus:outline-none resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 bg-[#1C1917] hover:bg-[#9A7D3C] text-white rounded-xl font-serif text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer text-center"
+                  >
+                    Register My Support
+                  </button>
+                </form>
+              ) : (
+                <div className="py-8 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center mx-auto">
+                    <CheckCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h5 className="font-serif text-xs font-bold text-[#1C1917]">Registration Received!</h5>
+                    <p className="text-[10px] text-[#1C1917]/60 leading-normal font-light max-w-xs mx-auto mt-1">
+                      Thank you for co-labouring with The Twelve residency. David Hunter and our staff will review your details and contact you directly to discuss arrangements.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setNonFinancialName('');
+                      setNonFinancialEmail('');
+                      setNonFinancialPhone('');
+                      setNonFinancialMessage('');
+                      setNonFinancialSuccess(false);
+                    }}
+                    className="mt-2 text-[9px] font-mono text-[#9A7D3C] uppercase tracking-wider underline hover:text-[#1C1917] transition-colors"
+                  >
+                    Register Another Interest
+                  </button>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+
+        {/* 
+          =========================================
           INTERACTIVE IMPACT PREVIEWER
           =========================================
         */}
@@ -622,7 +751,7 @@ export default function PartnerView() {
             
             <div className="md:col-span-4 space-y-3">
               <p className="text-[11.5px] text-[#1C1917]/70 leading-relaxed font-light">
-                Interact with the dynamic gauge to locate and preview how specific sponsorship contributions support cohort milestones physically.
+                Interact with the dynamic gauge to locate and preview how specific stewardship contributions support cohort milestones physically.
               </p>
               
               <div className="flex flex-wrap gap-2 pt-1">
@@ -640,6 +769,25 @@ export default function PartnerView() {
                   </button>
                 ))}
               </div>
+
+              {/* Enter custom manual amount */}
+              <div className="space-y-1.5 pt-2">
+                <label className="text-[9.5px] text-[#1C1917]/60 uppercase font-black font-mono tracking-wider block">Or enter any custom amount (ZAR):</label>
+                <div className="relative rounded-xl border border-[#E9D5B8] bg-white overflow-hidden shadow-2xs">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-stone-400">R</span>
+                  <input
+                    type="number"
+                    min="1"
+                    value={customAmount || ''}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      setCustomAmount(isNaN(val) ? 0 : val);
+                    }}
+                    placeholder="Enter custom amount"
+                    className="w-full pl-8 pr-4 py-2 bg-transparent text-xs font-mono font-bold text-[#1C1917] outline-none placeholder:text-stone-300"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="md:col-span-8 p-5 bg-white border border-[#E9D5B8] rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-6">
@@ -648,6 +796,14 @@ export default function PartnerView() {
                 <p className="text-xs md:text-sm text-[#1C1917] font-serif font-black leading-relaxed">
                   "{getSponsorshipImpact(customAmount)}"
                 </p>
+                {/* Button to pledge this amount */}
+                <button
+                  onClick={() => handleOpenPledge('member', customAmount)}
+                  className="mt-3 inline-flex items-center space-x-2 px-4 py-2.5 bg-[#9A7D3C] hover:bg-[#1C1917] text-white rounded-xl text-[11px] font-serif font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  <span>Pledge This Amount</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
               <div className="px-6 py-5 bg-[#FAF7EF] border border-[#E9D5B8]/50 rounded-[1.5rem] flex flex-col justify-center items-center text-center w-full sm:w-auto flex-shrink-0 min-w-[140px] shadow-2xs">
                 <span className="text-[9px] text-[#1C1917]/40 leading-none uppercase font-mono font-bold tracking-wider mb-1">AUDIT STAMP</span>

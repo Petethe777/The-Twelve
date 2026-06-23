@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 // Loaded directly from public directory at runtime
 
@@ -29,8 +29,21 @@ import {
   UserPlus, 
   Sparkles, 
   ArrowRight,
-  Sparkle
+  Sparkle,
+  LogOut,
+  AlertCircle
 } from 'lucide-react';
+
+import { 
+  initAuth, 
+  googleSignIn, 
+  logout, 
+  fetchUpcomingCalendarEvents, 
+  fetchResidencyCalendarEvents,
+  RESIDENCY_CALENDAR_ID,
+  addEventToGoogleCalendar, 
+  GoogleCalendarEvent 
+} from '../lib/firebase';
 
 // Interfaces
 interface PastEvent {
@@ -199,8 +212,15 @@ const UPCOMING_EVENTS: UpcomingEvent[] = [
   }
 ];
 
-// Months list for the Creative Calendar (July to December 2026)
+// Months list for the Creative Calendar (June to December 2026)
 const CALENDAR_MONTHS = [
+  {
+    name: 'June 2026',
+    year: 2026,
+    monthIndex: 5, // 0-indexed count
+    daysInMonth: 30,
+    startDayOfWeek: 1, // Monday
+  },
   {
     name: 'July 2026',
     year: 2026,
@@ -247,11 +267,40 @@ const CALENDAR_MONTHS = [
 
 export default function EventsView() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [calendarViewMode, setCalendarViewMode] = useState<'grid' | 'google-live'>('grid');
 
   // Calendar States
-  const [currentMonthIndex, setCurrentMonthIndex] = useState<number>(0); // Default July 2026
-  const [selectedDayNum, setSelectedDayNum] = useState<number | null>(18); // Default 18 (July 18 has event)
+  const [currentMonthIndex, setCurrentMonthIndex] = useState<number>(0); // Default June 2026
+  const [selectedDayNum, setSelectedDayNum] = useState<number | null>(23); // Default to tomorrow June 23 (has fun morning)
   
+  // Dynamic compiled events from Google Calendar
+  const [upcomingEventsList, setUpcomingEventsList] = useState<UpcomingEvent[]>(UPCOMING_EVENTS);
+
+  // Load live compiled calendar events from assets on mount
+  React.useEffect(() => {
+    fetch('/assets/residency-events.json')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setUpcomingEventsList(data);
+          
+          // Try to select the first upcoming event in June or the closest one to today (June 22, 2026)
+          const validEvent = data.find(e => e.date >= '2026-06-22') || data[0];
+          if (validEvent) {
+            const dateObj = new Date(validEvent.date);
+            const matchedMonthIdx = CALENDAR_MONTHS.findIndex(m => m.monthIndex === dateObj.getMonth());
+            if (matchedMonthIdx !== -1) {
+              setCurrentMonthIndex(matchedMonthIdx);
+              setSelectedDayNum(dateObj.getDate());
+            }
+          }
+        }
+      })
+      .catch(err => {
+        console.error("Error loading compiled residency events, falling back:", err);
+      });
+  }, []);
+
   // Past Video Simulation States
   const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
   const [videoProgress, setVideoProgress] = useState<number>(0);
@@ -278,6 +327,136 @@ export default function EventsView() {
     message: ''
   });
   const [rsvpSuccess, setRsvpSuccess] = useState<boolean>(false);
+
+  // Google Auth & Calendar States
+  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [needsAuth, setNeedsAuth] = useState<boolean>(true);
+  const [googleEvents, setGoogleEvents] = useState<GoogleCalendarEvent[]>([]);
+  const [residencyEvents, setResidencyEvents] = useState<GoogleCalendarEvent[]>([]);
+  const [isLoadingEvents, setIsLoadingEvents] = useState<boolean>(false);
+  const [syncStatus, setSyncStatus] = useState<{ [eventId: string]: 'idle' | 'syncing' | 'success' | 'error' }>({});
+
+  // Auth Listener
+  React.useEffect(() => {
+    const unsubscribe = initAuth(
+      (currentUser, accessToken) => {
+        setUser(currentUser);
+        setToken(accessToken);
+        setNeedsAuth(false);
+        loadUpcomingGoogleEvents(accessToken);
+      },
+      () => {
+        setUser(null);
+        setToken(null);
+        setNeedsAuth(true);
+        setGoogleEvents([]);
+        setResidencyEvents([]);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await googleSignIn();
+      if (result) {
+        setUser(result.user);
+        setToken(result.accessToken);
+        setNeedsAuth(false);
+        await loadUpcomingGoogleEvents(result.accessToken);
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const handleGoogleLogout = async () => {
+    try {
+      await logout();
+      setUser(null);
+      setToken(null);
+      setNeedsAuth(true);
+      setGoogleEvents([]);
+      setResidencyEvents([]);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const loadUpcomingGoogleEvents = async (accessToken: string) => {
+    setIsLoadingEvents(true);
+    try {
+      const [myEvents, officialEvents] = await Promise.all([
+        fetchUpcomingCalendarEvents(accessToken).catch(err => {
+          console.error("fetchUpcomingCalendarEvents failed:", err);
+          return [];
+        }),
+        fetchResidencyCalendarEvents(accessToken).catch(err => {
+          console.error("fetchResidencyCalendarEvents failed:", err);
+          return [];
+        })
+      ]);
+      setGoogleEvents(myEvents);
+      setResidencyEvents(officialEvents);
+    } catch (error: any) {
+      console.error("Error fetching calendar events:", error);
+      if (error.message === 'UNAUTHORIZED_TOKEN') {
+        handleGoogleLogout();
+      }
+    } finally {
+      setIsLoadingEvents(false);
+    }
+  };
+
+  const handleAddEventToCalendar = async (event: any) => {
+    let activeToken = token;
+    if (!activeToken) {
+      // If not logged in, trigger sign-in first
+      try {
+        const result = await googleSignIn();
+        if (result) {
+          setUser(result.user);
+          setToken(result.accessToken);
+          setNeedsAuth(false);
+          activeToken = result.accessToken;
+        } else {
+          return;
+        }
+      } catch (err) {
+        console.error("Auth sign in to sync failed:", err);
+        return;
+      }
+    }
+
+    if (!activeToken) return;
+
+    // Direct confirmation as mandated
+    const confirmed = window.confirm(
+      `Add "${event.title}" on ${event.date} (${event.time}) to your Google Calendar?`
+    );
+    if (!confirmed) return;
+
+    setSyncStatus(prev => ({ ...prev, [event.id]: 'syncing' }));
+    try {
+      await addEventToGoogleCalendar(activeToken, {
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        date: event.date,
+        time: event.time
+      });
+      setSyncStatus(prev => ({ ...prev, [event.id]: 'success' }));
+      // Reload Google events list
+      await loadUpcomingGoogleEvents(activeToken);
+    } catch (error: any) {
+      console.error("Error adding event to calendar:", error);
+      if (error.message === 'UNAUTHORIZED_TOKEN') {
+        handleGoogleLogout();
+      }
+      setSyncStatus(prev => ({ ...prev, [event.id]: 'error' }));
+    }
+  };
 
   // Toggle Video Simulation
   const handleToggleVideo = () => {
@@ -334,6 +513,53 @@ export default function EventsView() {
     setAudioProgress(0);
   };
 
+  // Convert Google Calendar Events to local UpcomingEvent structure so they integrate seamlessly with our UI
+  const parsedResidencyEvents = useMemo(() => {
+    return residencyEvents.map((gev) => {
+      // Extract date (YYYY-MM-DD)
+      let dateStr = '';
+      if (gev.start?.dateTime) {
+        dateStr = gev.start.dateTime.split('T')[0];
+      } else if (gev.start?.date) {
+        dateStr = gev.start.date; // already YYYY-MM-DD
+      }
+
+      // Format time range beautifully, e.g., "09:00 AM - 04:30 PM"
+      let timeStr = 'All Day';
+      if (gev.start?.dateTime) {
+        try {
+          const startD = new Date(gev.start.dateTime);
+          const endD = gev.end?.dateTime ? new Date(gev.end.dateTime) : null;
+          
+          const formatter = new Intl.DateTimeFormat('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          });
+          
+          const startFormatted = formatter.format(startD);
+          const endFormatted = endD ? formatter.format(endD) : '';
+          
+          timeStr = endFormatted ? `${startFormatted} - ${endFormatted}` : startFormatted;
+        } catch (e) {
+          console.error("Error formatting time for event:", gev.id, e);
+        }
+      }
+
+      return {
+        id: `google-${gev.id}`,
+        title: gev.summary,
+        date: dateStr,
+        time: timeStr,
+        location: gev.location || 'The Twelve Headquarters, Hillcrest',
+        category: 'Shared Assembly',
+        spotsLeft: 12,
+        isPrivate: false,
+        description: gev.description || 'This event is integrated directly from the official Google Calendar.'
+      } as UpcomingEvent;
+    });
+  }, [residencyEvents]);
+
   const activeMonth = CALENDAR_MONTHS[currentMonthIndex];
   
   // Format dates matching the selected month & day, and auto-add Mon-Thu Cohort Private Events
@@ -342,9 +568,15 @@ export default function EventsView() {
     const formattedDate = `2026-${monthNum < 10 ? '0' + monthNum : monthNum}-${day < 10 ? '0' + day : day}`;
     
     // 1. Search in explicit upcoming events
-    const explicitEvent = UPCOMING_EVENTS.find(e => e.date === formattedDate);
+    const explicitEvent = upcomingEventsList.find(e => e.date === formattedDate);
     if (explicitEvent) {
       return explicitEvent;
+    }
+
+    // 1b. Search in parsed residency Google Calendar events
+    const googleEvent = parsedResidencyEvents.find(e => e.date === formattedDate);
+    if (googleEvent) {
+      return googleEvent;
     }
 
     // 2. Check if day falls on Monday to Thursday (1 to 4)
@@ -425,14 +657,132 @@ export default function EventsView() {
       
       {/* 1. Header Hero Panel */}
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 border-b border-[#EADCC2]/60 pb-8">
-          <div className="space-y-2">
-            <h1 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight font-extrabold uppercase">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start border-b border-[#EADCC2]/60 pb-8">
+          <div className="lg:col-span-7 space-y-4">
+            <h1 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight font-extrabold uppercase col-span-full">
               CALENDAR
             </h1>
-            <p className="text-sm text-[#1C1917]/70 max-w-2xl font-light font-sans leading-relaxed">
+            <p className="text-sm text-[#1C1917]/70 leading-relaxed font-light font-sans">
               Explore the physical steps of our South Africa residency. Dwell in the recorded memories of past missions, toggle the creative interactive calendar, and register directly to attend public open events.
             </p>
+          </div>
+
+          {/* Google Calendar Hub */}
+          <div className="lg:col-span-12 xl:col-span-5 bg-[#FAF7EF] border border-[#EADCC2] rounded-3xl p-5 md:p-6 shadow-xs space-y-4 lg:self-stretch flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-5 h-5 text-[#9A7D3C]" />
+                <span className="font-serif text-sm font-bold uppercase tracking-wider text-[#1C1917]">
+                  Google Calendar Hub
+                </span>
+              </div>
+              {!needsAuth && user && (
+                <button
+                  onClick={handleGoogleLogout}
+                  className="text-xs text-red-700 hover:text-red-950 flex items-center gap-1 font-sans font-bold uppercase tracking-wider border border-red-200 hover:border-red-400 bg-red-50 py-1 px-2.5 rounded-xl cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Disconnect</span>
+                </button>
+              )}
+            </div>
+
+            {needsAuth ? (
+              <div className="space-y-4">
+                <p className="text-xs text-[#1C1917]/60 font-sans leading-relaxed">
+                  Sign in with Google to sync residency assemblies directly to your private Google Calendar and view your upcoming schedule.
+                </p>
+
+                {/* Google Sign In Material Button */}
+                <button 
+                  onClick={handleGoogleLogin}
+                  className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl py-2.5 px-4 shadow-xs transition-all cursor-pointer font-sans text-xs font-bold text-slate-700 hover:bg-slate-50"
+                >
+                  <svg className="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                  </svg>
+                  <span>Connect with Google Calendar</span>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3 bg-white/70 border border-[#EADCC2]/40 rounded-2xl p-3">
+                  {user?.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt={user.displayName || "User avatar"}
+                      referrerPolicy="no-referrer"
+                      className="w-10 h-10 rounded-full border border-[#9A7D3C]/30"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-[#9A7D3C]/20 flex items-center justify-center font-serif font-black text-[#9A7D3C]">
+                      {user?.displayName ? user.displayName.charAt(0) : "U"}
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <span className="font-serif text-xs font-bold text-[#1C1917]">
+                      {user?.displayName || "Connected Member"}
+                    </span>
+                    <span className="text-[10px] text-zinc-500 font-sans">
+                      {user?.email}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Listing of user's current Google Calendar Events */}
+                <div className="space-y-2">
+                  <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
+                    My Upcoming Calendar Plan
+                  </span>
+                  
+                  {isLoadingEvents ? (
+                    <div className="py-4 text-center">
+                      <div className="w-5 h-5 border-2 border-[#9A7D3C] border-t-transparent rounded-full animate-spin mx-auto" />
+                    </div>
+                  ) : googleEvents.length === 0 ? (
+                    <div className="text-center py-4 bg-white/50 border border-dashed border-[#EADCC2]/50 rounded-2xl">
+                      <p className="text-[10px] text-zinc-400 font-sans">
+                        No upcoming calendar events detected.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
+                      {googleEvents.map((gev) => (
+                        <a
+                          key={gev.id}
+                          href={gev.htmlLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block bg-white hover:bg-[#FAF7EF] border border-[#EADCC2]/30 hover:border-[#9A7D3C]/30 rounded-xl p-2.5 transition-all text-left"
+                        >
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-serif font-bold text-[#1C1917] truncate max-w-[200px] block">
+                              {gev.summary}
+                            </span>
+                            <span className="text-[9px] font-sans text-[#9A7D3C] block shrink-0 font-semibold uppercase">
+                              {gev.start?.dateTime 
+                                ? new Date(gev.start.dateTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+                                : gev.start?.date 
+                                ? new Date(gev.start.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+                                : ''}
+                            </span>
+                          </div>
+                          {gev.location && (
+                            <div className="flex items-center gap-1 mt-0.5 text-[10px] text-zinc-500 font-sans truncate">
+                              <MapPin className="w-3 h-3 text-zinc-400 shrink-0" />
+                              <span className="truncate">{gev.location}</span>
+                            </div>
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -442,17 +792,45 @@ export default function EventsView() {
         
         {/* upcoming/calendar block (Visually ordered after past events) */}
         <div className="order-2 w-full space-y-8">
-          <div className="border-b border-[#EADCC2]/60 pb-2">
-            <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
-              UPCOMING ASSEMBLIES & SCHEDULING
-            </span>
-            <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">
-              Interactive Portal & Calendar
-            </h2>
+          <div className="border-b border-[#EADCC2]/60 pb-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-1">
+              <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
+                UPCOMING ASSEMBLIES & SCHEDULING
+              </span>
+              <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">
+                Interactive Portal & Calendar
+              </h2>
+            </div>
+
+            {/* View Mode Switcher */}
+            <div className="flex bg-[#FAF7EF] p-1 rounded-2xl border border-[#EADCC2]/60 shrink-0 self-start sm:self-auto shadow-xs">
+              <button
+                onClick={() => setCalendarViewMode('grid')}
+                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-[10px] md:text-xs font-serif uppercase tracking-wider transition-all cursor-pointer ${
+                  calendarViewMode === 'grid'
+                    ? 'bg-[#1C1917] text-white font-bold'
+                    : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
+                }`}
+              >
+                <span>Interactive Grid</span>
+              </button>
+              <button
+                onClick={() => setCalendarViewMode('google-live')}
+                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-[10px] md:text-xs font-serif uppercase tracking-wider transition-all cursor-pointer ${
+                  calendarViewMode === 'google-live'
+                    ? 'bg-[#1C1917] text-white font-bold text-shadow-sm'
+                    : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
+                }`}
+              >
+                <Radio className="w-3 h-3 text-[#9A7D3C]" />
+                <span>Live Google Calendar</span>
+              </button>
+            </div>
           </div>
 
-          <motion.div
-            key="upcoming-panel"
+          {calendarViewMode === 'grid' ? (
+            <motion.div
+              key="upcoming-panel"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
@@ -660,6 +1038,35 @@ export default function EventsView() {
                         </div>
                       )}
 
+                      {/* Google Calendar Sync button */}
+                      <div className="mt-4 pt-4 border-t border-white/10 flex flex-col space-y-2">
+                        <button
+                          onClick={() => handleAddEventToCalendar(selectedEvent)}
+                          className={`uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-all cursor-pointer ${
+                            syncStatus[selectedEvent.id] === 'success'
+                              ? 'bg-emerald-950/50 border border-emerald-500/50 text-emerald-300'
+                              : syncStatus[selectedEvent.id] === 'syncing'
+                              ? 'bg-[#9A7D3C]/30 border border-[#9A7D3C] text-white/70 animate-pulse'
+                              : 'bg-transparent border border-white/20 hover:bg-white/5 text-white'
+                          }`}
+                          disabled={syncStatus[selectedEvent.id] === 'syncing'}
+                        >
+                          {syncStatus[selectedEvent.id] === 'success' ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Added to Google Calendar</span>
+                            </>
+                          ) : syncStatus[selectedEvent.id] === 'syncing' ? (
+                            <span>Adding to Calendar...</span>
+                          ) : (
+                            <>
+                              <Calendar className="w-3.5 h-3.5 text-[#9A7D3C]" />
+                              <span>Add to Google Calendar</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
                     </motion.div>
                   ) : (
                     <motion.div
@@ -683,41 +1090,102 @@ export default function EventsView() {
                     Timeline Sequence of Open Dates
                   </h4>
 
-                  <div className="space-y-4">
-                    {UPCOMING_EVENTS.filter(e => !e.isPrivate).map((ev) => (
-                      <div 
-                        key={ev.id}
-                        className="flex items-start space-x-3.5 relative border-l border-[#EADCC2] pl-4 pb-2 group"
-                      >
-                        {/* Bullet point indicator */}
-                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-[#9A7D3C] block ring-4 ring-[#FAF7EF]" />
+                  <div className="space-y-4 max-h-[480px] overflow-y-auto pr-1">
+                    {upcomingEventsList.filter(e => !e.isPrivate).slice(0, 15).map((ev) => {
+                      // Parse YYYY-MM-DD date safely
+                      const parts = ev.date.split('-');
+                      const displayDate = parts.length === 3 
+                        ? new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : ev.date;
 
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-sans font-black text-[#9A7D3C]">
-                            {new Date(ev.date).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' })}
-                          </span>
-                          <h5 
-                            onClick={() => {
-                              const dateObj = new Date(ev.date);
-                              setCurrentMonthIndex(dateObj.getFullYear() === 2026 && dateObj.getMonth() === 7 ? 1 : 0);
-                              setSelectedDayNum(dateObj.getDate());
-                            }}
-                            className="font-serif text-xs font-bold text-[#1C1917] hover:text-[#9A7D3C] cursor-pointer transition-colors"
-                          >
-                            {ev.title}
-                          </h5>
-                          <p className="text-[10px] text-[#1C1917]/60 block font-light leading-snug">
-                            {ev.location}
-                          </p>
+                      return (
+                        <div 
+                          key={ev.id}
+                          className="flex items-start space-x-3.5 relative border-l border-[#EADCC2] pl-4 pb-2 group"
+                        >
+                          {/* Bullet point indicator */}
+                          <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-[#9A7D3C] block ring-4 ring-[#FAF7EF]" />
+
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-sans font-black text-[#9A7D3C]">
+                              {displayDate}
+                            </span>
+                            <h5 
+                              onClick={() => {
+                                const parseParts = ev.date.split('-');
+                                if (parseParts.length === 3) {
+                                  const year = parseInt(parseParts[0]);
+                                  const monthIdx = parseInt(parseParts[1]) - 1;
+                                  const day = parseInt(parseParts[2]);
+                                  const matchedMonthIdx = CALENDAR_MONTHS.findIndex(m => m.monthIndex === monthIdx && m.year === year);
+                                  if (matchedMonthIdx !== -1) {
+                                    setCurrentMonthIndex(matchedMonthIdx);
+                                  }
+                                  setSelectedDayNum(day);
+                                }
+                              }}
+                              className="font-serif text-xs font-bold text-[#1C1917] hover:text-[#9A7D3C] cursor-pointer transition-colors"
+                            >
+                              {ev.title}
+                            </h5>
+                            <p className="text-[10px] text-[#1C1917]/60 block font-light leading-snug">
+                              {ev.location}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
               </div>
 
             </motion.div>
+          ) : (
+            <motion.div
+              key="google-live-panel"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+              className="bg-[#FAF7EF] border border-[#EADCC2]/80 rounded-3xl p-6 md:p-8 shadow-sm space-y-6"
+            >
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#EADCC2]/50 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
+                    Google Calendar Integration
+                  </span>
+                  <h3 className="font-serif text-xl font-bold text-[#1C1917] uppercase">
+                    Residency Live Feed
+                  </h3>
+                </div>
+                <a
+                  href={`https://calendar.google.com/calendar/u/0?cid=${encodeURIComponent(RESIDENCY_CALENDAR_ID)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#9A7D3C] hover:text-[#7D642D] font-bold uppercase tracking-wider flex items-center gap-1.5 border border-[#EADCC2]/60 bg-white py-1.5 px-3.5 rounded-xl cursor-pointer"
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Open in Google Calendar</span>
+                </a>
+              </div>
+
+              {/* Iframe container */}
+              <div className="relative w-full rounded-2xl overflow-hidden border border-[#EADCC2]/60 bg-white" style={{ height: '620px' }}>
+                <iframe
+                  src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(RESIDENCY_CALENDAR_ID)}&ctz=Africa%2FJohannesburg&mode=MONTH&wkst=1&bgcolor=%23ffffff&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=1`}
+                  style={{ border: 0, width: '100%', height: '100%' }}
+                  frameBorder="0"
+                  scrolling="no"
+                  title="Residency Calendar Grid"
+                />
+              </div>
+
+              <div className="bg-[#FAF7EF]/85 p-4 rounded-2xl border border-[#EADCC2]/40 text-xs text-[#1C1917]/70 font-sans leading-relaxed">
+                <strong>Sync Note:</strong> The calendar grid above displays live official events. Connecting your Google Account using the "Google Calendar Hub" on the top of this page will automatically synchronize these dates directly to your custom interactive view as well!
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* past-panel block (Visually ordered first before upcoming calendar) */}
