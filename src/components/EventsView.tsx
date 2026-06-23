@@ -31,7 +31,8 @@ import {
   ArrowRight,
   Sparkle,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react';
 
 import { 
@@ -336,6 +337,12 @@ export default function EventsView() {
   const [residencyEvents, setResidencyEvents] = useState<GoogleCalendarEvent[]>([]);
   const [isLoadingEvents, setIsLoadingEvents] = useState<boolean>(false);
   const [syncStatus, setSyncStatus] = useState<{ [eventId: string]: 'idle' | 'syncing' | 'success' | 'error' }>({});
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isInIframe, setIsInIframe] = useState<boolean>(false);
+
+  React.useEffect(() => {
+    setIsInIframe(window.self !== window.top);
+  }, []);
 
   // Auth Listener
   React.useEffect(() => {
@@ -344,6 +351,7 @@ export default function EventsView() {
         setUser(currentUser);
         setToken(accessToken);
         setNeedsAuth(false);
+        setAuthError(null);
         loadUpcomingGoogleEvents(accessToken);
       },
       () => {
@@ -358,6 +366,7 @@ export default function EventsView() {
   }, []);
 
   const handleGoogleLogin = async () => {
+    setAuthError(null);
     try {
       const result = await googleSignIn();
       if (result) {
@@ -365,9 +374,18 @@ export default function EventsView() {
         setToken(result.accessToken);
         setNeedsAuth(false);
         await loadUpcomingGoogleEvents(result.accessToken);
+        
+        // Open the specific shared Google Calendar link so they are prompted to add and sync it with their Google account
+        window.open("https://calendar.google.com/calendar/u/0?cid=Y180OGVlMTFhZDRhNDliYjc4ZTVkY2ZiNmM4ODQ1ZGI1NjZmZDhlOGI0ZDRjYjFiYjk5MDYwYzFkOGM5Nzk4NmI1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20", "_blank");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+      let errMsg = error?.message || String(error);
+      if (errMsg.includes("web-storage-unsupported") || errMsg.includes("iframe") || errMsg.includes("popup")) {
+        setAuthError("Google Sign-In is restricted inside preview iframes. Please launch the application in a new tab to authorize.");
+      } else {
+        setAuthError(errMsg);
+      }
     }
   };
 
@@ -688,17 +706,17 @@ export default function EventsView() {
             </div>
 
             {needsAuth ? (
-              <div className="space-y-4">
-                <p className="text-xs text-[#1C1917]/60 font-sans leading-relaxed">
+              <div className="space-y-4 font-sans">
+                <p className="text-xs text-[#1C1917]/60 leading-relaxed font-sans">
                   Sign in with Google to sync residency assemblies directly to your private Google Calendar and view your upcoming schedule.
                 </p>
 
                 {/* Google Sign In Material Button */}
                 <button 
                   onClick={handleGoogleLogin}
-                  className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl py-2.5 px-4 shadow-xs transition-all cursor-pointer font-sans text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 rounded-2xl py-2.5 px-4 shadow-xs transition-all cursor-pointer text-xs font-bold text-slate-700 hover:bg-slate-50"
                 >
-                  <svg className="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                  <svg className="w-5 h-5 flex-shrink-0" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
@@ -706,6 +724,44 @@ export default function EventsView() {
                   </svg>
                   <span>Connect with Google Calendar</span>
                 </button>
+
+                {/* Helpful prompt when inside an iframe */}
+                {isInIframe && (
+                  <div className="p-3.5 bg-amber-50/70 border border-amber-200/60 rounded-2xl flex items-start gap-2 text-[11px] text-amber-800 leading-normal">
+                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="font-bold">Iframe Preview Restriction Alert</p>
+                      <p>
+                        Web browsers restrict cross-domain popups and authentication inside preview frames. Please launch this application in a direct tab to connect your Google Calendar:
+                      </p>
+                      <button
+                        onClick={() => window.open(window.location.href, '_blank')}
+                        className="inline-flex items-center gap-1 font-bold text-[#9A7D3C] hover:text-[#1C1917] transition-colors underline cursor-pointer mt-1"
+                      >
+                        <span>Open App in New Tab</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Highly descriptive active authentication errors */}
+                {authError && (
+                  <div className="p-3.5 bg-red-50/70 border border-red-200/60 rounded-2xl flex items-start gap-2 text-[11px] text-red-800 leading-normal">
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="font-bold">Google Auth Blocked</p>
+                      <p>{authError}</p>
+                      <button
+                        onClick={() => window.open(window.location.href, '_blank')}
+                        className="inline-flex items-center gap-1 font-bold text-red-950 hover:underline transition-colors cursor-pointer mt-1"
+                      >
+                        <span>Try in a New Tab</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="space-y-4">
@@ -780,6 +836,19 @@ export default function EventsView() {
                       ))}
                     </div>
                   )}
+
+                  <div className="pt-2 border-t border-[#EADCC2]/40">
+                    <a
+                      href="https://calendar.google.com/calendar/u/0?cid=Y180OGVlMTFhZDRhNDliYjc4ZTVkY2ZiNmM4ODQ1ZGI1NjZmZDhlOGI0ZDRjYjFiYjk5MDYwYzFkOGM5Nzk4NmI1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 bg-[#FAF7EF] hover:bg-[#EADCC2]/20 border border-[#EADCC2]/50 rounded-xl py-2 px-3 text-[10px] font-sans font-bold text-[#9A7D3C] hover:text-[#7D642D] transition-all cursor-pointer"
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-[#9A7D3C]" />
+                      <span>Add / Sync The Twelve Calendar</span>
+                      <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
