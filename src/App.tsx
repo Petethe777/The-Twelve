@@ -103,16 +103,6 @@ export default function App() {
             <ul className="space-y-2 text-xs font-semibold">
               <li>
                 <a 
-                  href="http://www.thetwelve.co.za" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="text-white/70 hover:text-[#9A7D3C] transition-colors"
-                >
-                  🌐 www.thetwelve.co.za (Legacy Registry)
-                </a>
-              </li>
-              <li>
-                <a 
                   href="http://www.cityhillchurch.co.za" 
                   target="_blank" 
                   rel="noreferrer" 
@@ -154,8 +144,17 @@ export default function App() {
 
         {/* Back to top scroll and licensing */}
         <div className="w-full max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] uppercase font-bold tracking-widest text-white/30 space-y-4 sm:space-y-0">
-          <div>
-            © {new Date().getFullYear()} The Twelve Discipleship. All rights sacred.
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <span>© {new Date().getFullYear()} The Twelve Discipleship. All rights sacred.</span>
+            <span className="hidden sm:inline text-white/10">•</span>
+            <a 
+              href="https://wa.me/27731595846?text=Hi%20Peter%2C%20I%20saw%20your%20work%20on%20The%20Twelve%20website%20and%20would%20love%20to%20chat%20about%20a%20website%20project!" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[#9A7D3C] hover:text-[#C5A869] transition-colors hover:underline tracking-widest uppercase font-bold text-[9.5px]"
+            >
+              Developed by Peter
+            </a>
           </div>
           
           <button 

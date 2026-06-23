@@ -76,6 +76,28 @@ interface UpcomingEvent {
 // Data Sets
 const PAST_EVENTS: PastEvent[] = [
   {
+    id: 'past-embo-teaching-2026',
+    title: 'Inhlangano School Weekly Ministry',
+    date: 'Ongoing Weekly',
+    category: 'Community Outreach',
+    location: 'Inhlangano Primary School, Embo, Durban, SA',
+    description: 'In partnership with Inhlangano Primary School in Embo, The Twelve team conducts vital classroom ministries twice a week. We teach Grade 5 learners core academic foundation modules in Mathematics and English, integrated with motivational life skills and character discipleship. Supporting these joyful students is a highlight of our weekly mission.',
+    mediaType: 'video',
+    mediaUrl: '/assets/Embo.mp4',
+    duration: '00:24'
+  },
+  {
+    id: 'past-cityhill-kids-2026',
+    title: 'Cityhill Kids Weekly Ministry',
+    date: 'Ongoing Weekly',
+    category: 'Kids Ministry',
+    location: 'Cityhill Church, Hillcrest, Durban, South Africa',
+    description: 'The Twelve routinely serves with the Cityhill Kids ministry at Cityhill Church in Hillcrest. It is an immense joy to partner with the children’s ministry team to teach, mentor, and build up the next generation of believers in a vibrant, faith-filled environment.',
+    mediaType: 'video',
+    mediaUrl: '/assets/CityHill.mp4',
+    duration: '00:06'
+  },
+  {
     id: 'past-trust-building-2026',
     title: 'Trust Building Morning',
     date: 'May 21, 2026',
@@ -110,14 +132,25 @@ const PAST_EVENTS: PastEvent[] = [
     duration: '00:10'
   },
   {
+    id: 'past-victoria-falls-2026',
+    title: 'Victoria Falls Mission Reflection',
+    date: 'April 12, 2026',
+    category: 'Global Missions',
+    location: 'Victoria Falls, Livingstone, Zambia',
+    description: 'Following their intensive outreach operations, The Twelve visited the majestic Victoria Falls. Witnessing the awe-inspiring cascade of the world’s largest waterfall, the team was thoroughly drenched by the legendary canyon mist—a memorable, joy-filled experience of team fellowship and reflection on the grandeur of God’s creation.',
+    mediaType: 'photo-gallery',
+    images: ['/assets/images/Victoria_Falls.png', '/assets/images/Victoria.png']
+  },
+  {
     id: 'past-zambia-mission-2026',
     title: 'Missions Trip to Zambia',
     date: 'April 11, 2026',
     category: 'Global Missions',
     location: 'Zambia',
-    description: 'The Twelve embarked on a powerful, cross-border church partnership and outreach mission to Zambia. The team participated in outdoor ministry coordinates, helped with building development setups, and formed strong local community ties.',
+    description: 'Joining the Baptist mission church of Zambia for an outreach feeding program. Where we served food to a group of kids in the local village outside of Lusaka. Lusaka, Zambia. What a privilege it was to serve these little kids and see them smile. A real eye-opener and a time that really just crested a heart of gratitude in ourselves as a team',
     mediaType: 'video',
     mediaUrls: ['/assets/Zambia_Mission_Trip_Part_1.mp4', '/assets/Zambia_Mission_Trip_Part_2.mp4'],
+    images: ['/assets/images/Zambia_Trip.png'],
     duration: '00:11 & 00:09'
   },
   {
@@ -125,10 +158,11 @@ const PAST_EVENTS: PastEvent[] = [
     title: 'Missions Trip to Botswana',
     date: 'April 02, 2026',
     category: 'Global Missions',
-    location: 'Botswana',
-    description: 'The Twelve travelled to Botswana for an intensive week of cross-border outreach and regional ministry support. The team engaged in local youth mentorship programs, facilitated active community workshops, and partnered with regional leaders to build lasting discipleship structures.',
+    location: 'Marapong Village, Botswana',
+    description: 'We embarked on a powerful school ministry outreach and feeding program at a local village boarding school in Marapong. This journey marked the very first time our discipleship team stepped out in complete faith, letting us see firsthand how God truly secures provision and paths when we learn to depend entirely on Him.',
     mediaType: 'video',
     mediaUrl: '/assets/Botswana_Missions_Trip.mp4',
+    images: ['/assets/images/school.png'],
     duration: '00:16'
   }
 ];
@@ -1480,6 +1514,21 @@ export default function EventsView() {
                             {/* CASE A: REAL VIDEO PLAYER */}
                             {event.mediaType === 'video' && (event.mediaUrls || event.mediaUrl) ? (
                               <div className="flex flex-col gap-4 w-full h-full justify-center">
+                                {event.images && event.images.map((imgUrl, imgIdx) => (
+                                  <div key={`img-${imgIdx}`} className="w-full bg-[#FAF7EF] rounded-2xl border border-[#EADCC2]/50 shadow-xs overflow-hidden flex flex-col p-2 bg-[#FDFBF7]">
+                                    <img 
+                                      src={imgUrl} 
+                                      alt={`${event.title} Highlight`} 
+                                      className="w-full h-48 object-cover rounded-xl"
+                                      referrerPolicy="no-referrer"
+                                    />
+                                    <div className="flex items-center justify-between text-[10px] text-[#9A7D3C] font-mono mt-2.5 px-1.5 font-bold uppercase tracking-wider">
+                                      <span>{event.id === 'past-botswana-mission-2026' ? 'School Ministry Outreach' : 'Outreach Feeding Program'}</span>
+                                      <span className="text-[#1C1917]/40">{event.location}</span>
+                                    </div>
+                                  </div>
+                                ))}
+
                                 {event.mediaUrls ? (
                                   event.mediaUrls.map((url, urlIndex) => (
                                     <div key={urlIndex} className="w-full bg-zinc-950 rounded-2xl border border-zinc-930 shadow-sm relative overflow-hidden flex flex-col justify-center p-1 bg-black">

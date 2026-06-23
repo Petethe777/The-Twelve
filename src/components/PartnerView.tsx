@@ -215,6 +215,9 @@ export default function PartnerView() {
     e.preventDefault();
     if (!formName || !formEmail) return;
     
+    // Securely trigger the direct Yoco credit card payment portal
+    window.open(`https://pay.yoco.com/the-twelve-experience?amount=${pledgeAmount}`, '_blank');
+    
     // Simulate API storage / communication
     setPledgeSuccess(true);
   };
@@ -328,6 +331,34 @@ export default function PartnerView() {
           </p>
         </div>
 
+        {/* Banking Details Corner - Alternative Way to Partner */}
+        <div id="banking-details" className="bg-[#FAF7EF] border-2 border-[#9A7D3C]/20 rounded-3xl p-5 md:p-6 shadow-xs relative overflow-hidden flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[#9A7D3C]/5 rounded-full translate-x-8 -translate-y-8 animate-pulse" />
+          <div className="space-y-2 flex-1 text-left">
+            <div className="inline-flex items-center gap-1 bg-[#1C1917]/5 text-[#1C1917]/70 px-2.5 py-1 rounded-md text-[9px] uppercase tracking-wider font-bold font-mono">
+              <Info className="w-3 h-3 text-[#9A7D3C]" />
+              <span>Alternative Covenant Path • South African EFT</span>
+            </div>
+            <h2 className="font-serif text-base font-bold text-[#1C1917] tracking-tight">
+              Official Corporate Banking Details
+            </h2>
+            <p className="text-[11px] text-[#1C1917]/60 leading-normal font-light max-w-xl">
+              Should you prefer to partner through manual electronic funds transfer (EFT) directly, please utilize the non-profit registration account below. We encourage you to message David Hunter once you've completed the transaction so we can confirm allocations.
+            </p>
+          </div>
+          <div className="font-mono text-[10.5px] text-[#1C1917]/90 bg-white grid grid-cols-1 gap-1.5 p-4 md:p-5 rounded-2xl border border-[#E9D5B8]/80 min-w-full md:min-w-[340px] shadow-2xs relative z-10 text-left">
+            <div><strong>Recipient:</strong> <span className="font-sans font-medium text-[#1C1917]/70">The Twelve Experience NPC</span></div>
+            <div><strong>Bank Name:</strong> <span className="text-[#9A7D3C] font-black">Bank Zero</span></div>
+            <div><strong>Branch Code:</strong> <span className="text-stone-700">888000</span></div>
+            <div className="border-t border-stone-100 pt-1.5 mt-0.5">
+              <strong>Account Number:</strong>{" "}
+              <span className="text-xs bg-[#FAF7EF] px-1.5 py-0.5 rounded font-black text-[#1C1917]">
+                80205326191
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* 
           =========================================
           DYNAMIC GRID: SECTIONS 1 & 2
@@ -401,14 +432,15 @@ export default function PartnerView() {
                   {currentMissions.tiers.map((t, idx) => (
                     <button
                       key={idx}
+                      type="button"
                       onClick={() => handleOpenPledge('missions', t.amt)}
-                      className="p-3 text-left bg-[#FDFBF7] hover:bg-[#FAF7EF] border border-[#E9D5B8]/60 hover:border-[#9A7D3C] rounded-xl flex items-center justify-between transition-colors group cursor-pointer"
+                      className="p-3 text-left bg-[#FDFBF7] hover:bg-[#FAF7EF] border border-[#E9D5B8]/60 hover:border-[#9A7D3C] rounded-xl flex items-center justify-between transition-colors group cursor-pointer w-full text-left"
                     >
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 text-left">
                         <span className="text-[11px] text-[#1C1917] font-semibold block">{t.desc}</span>
                         <span className="text-[9.5px] text-[#1C1917]/60 block leading-none font-light">Audited allocation receipt offered</span>
                       </div>
-                      <div className="flex items-center space-x-1.5">
+                      <div className="flex items-center space-x-1.5 flex-shrink-0">
                         <span className="font-mono text-xs font-black text-[#9A7D3C] group-hover:underline">R {t.amt}</span>
                         <ArrowRight className="w-3.5 h-3.5 text-[#9A7D3C]" />
                       </div>
@@ -421,6 +453,7 @@ export default function PartnerView() {
 
             <div className="pt-6 border-t border-[#E9D5B8]/40 mt-6 shrink-0">
               <button
+                type="button"
                 onClick={() => handleOpenPledge('missions', 1500)}
                 className="w-full py-3.5 bg-[#9A7D3C] hover:bg-[#1C1917] text-[#FAF7EF] rounded-xl font-serif text-xs font-bold uppercase tracking-widest transition-all text-center flex items-center justify-center space-x-2 shadow-xs cursor-pointer group"
               >
@@ -552,6 +585,7 @@ export default function PartnerView() {
 
             <div className="pt-6 border-t border-[#E9D5B8]/40 mt-6 shrink-0">
               <button
+                type="button"
                 onClick={() => handleOpenPledge('member', currentMemberTier.cost)}
                 className="w-full py-3.5 bg-[#1C1917] hover:bg-[#9A7D3C] text-white rounded-xl font-serif text-xs font-bold uppercase tracking-widest transition-all text-center flex items-center justify-center space-x-2 shadow-xs cursor-pointer group"
               >
@@ -798,6 +832,7 @@ export default function PartnerView() {
                 </p>
                 {/* Button to pledge this amount */}
                 <button
+                  type="button"
                   onClick={() => handleOpenPledge('member', customAmount)}
                   className="mt-3 inline-flex items-center space-x-2 px-4 py-2.5 bg-[#9A7D3C] hover:bg-[#1C1917] text-white rounded-xl text-[11px] font-serif font-bold uppercase tracking-wider transition-colors cursor-pointer"
                 >
@@ -906,11 +941,12 @@ export default function PartnerView() {
                     Back to Partner Page
                   </button>
                   <button
+                    type="button"
                     onClick={() => {
                       setSelectedTestimony(null);
                       handleOpenPledge('member', 500);
                     }}
-                    className="flex-1 sm:flex-none px-7 py-3.5 bg-[#9A7D3C] hover:bg-white text-white hover:text-black rounded-xl text-xs font-serif font-black uppercase tracking-widest transition-all shadow-lg shadow-[#9A7D3C]/10 flex items-center justify-center space-x-2 cursor-pointer group"
+                    className="flex-1 sm:flex-none px-7 py-3.5 bg-[#9A7D3C] hover:bg-white text-white hover:text-black rounded-xl text-xs font-serif font-black uppercase tracking-widest transition-all shadow-lg shadow-[#9A7D3C]/10 flex items-center justify-center space-x-2 cursor-pointer group text-center"
                   >
                     <span>Commit Direct Support</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -1066,26 +1102,52 @@ export default function PartnerView() {
                       type="submit"
                       className="flex-1 py-3 bg-[#9A7D3C] hover:bg-[#1C1917] text-white rounded-xl text-xs uppercase font-serif font-extrabold tracking-widest transition-colors cursor-pointer text-center"
                     >
-                      Proceed Pledge
+                      Process Payment
                     </button>
                   </div>
 
                 </form>
               ) : (
-                <div className="py-8 text-center space-y-4 animate-fade-in">
-                  <div className="w-14 h-14 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 border border-emerald-500/30">
-                    <ThumbsUp className="w-6 h-6 animate-bounce" />
+                <div className="py-6 text-center space-y-4 animate-fade-in">
+                  <div className="w-14 h-14 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1 border border-emerald-500/30">
+                    <ThumbsUp className="w-5 h-5 animate-bounce" />
                   </div>
                   
                   <h4 className="font-serif text-lg font-black text-[#1C1917]">Covenant Partner Registered!</h4>
                   
-                  <div className="bg-[#FAF7EF] p-4 rounded-2xl text-[11px] text-[#1C1917]/70 leading-relaxed space-y-2 font-light">
+                  <div className="bg-[#FAF7EF] p-4 rounded-2xl text-[11px] text-[#1C1917]/75 leading-relaxed space-y-2.5 font-light text-left border border-[#E9D5B8]/40">
                     <p>
-                      <strong>Thank you, {formName}!</strong> Your commitment to support <strong>{pledgeType === 'missions' ? 'Global Outreaches' : 'Team Disciples'}</strong> with <strong>R {pledgeAmount}</strong> is recorded.
+                      <strong>Thank you so much, {formName}!</strong> Your commitment to support <strong>{pledgeType === 'missions' ? 'Global Outreaches' : 'Team Disciples'}</strong> with <strong>R {pledgeAmount}</strong> is recorded.
                     </p>
-                    <p className="text-stone-500">
-                      We have sent a comprehensive stewardship prospectus and bank allocation details to <strong>{formEmail}</strong>. Welcome to the covenant partnership!
+                    <p className="text-stone-500 text-[10.5px]">
+                      We have opened the secure Yoco credit card checkout in a new window. If the payment portal did not open, click below to proceed.
                     </p>
+                    
+                    <div className="pt-2 space-y-2 border-t border-stone-200/50 mt-2">
+                      <a
+                        href={`https://pay.yoco.com/the-twelve-experience?amount=${pledgeAmount}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center space-x-2 w-full py-2.5 bg-[#9A7D3C] hover:bg-[#1C1917] hover:text-white text-stone-100 rounded-xl text-xs font-mono font-bold uppercase tracking-widest transition-all text-center"
+                      >
+                        <span>Open Secure Yoco Checkout (R {pledgeAmount})</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-stone-100" />
+                      </a>
+
+                      <p className="text-[10px] text-[#1C1917]/70 font-semibold pt-1">
+                        ★ Once completed, please message David Hunter on WhatsApp to confirm so we can safely log and allocate your contribution:
+                      </p>
+
+                      <a
+                        href={`https://wa.me/27815411335?text=Hi%20David%2C%20I%27ve%20just%20completed%20a%20financial%20transaction%20of%20R${pledgeAmount}%20via%20Yoco%20to%20partner%20with%20The%20Twelve%20Experience!`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center space-x-2 w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-mono font-bold uppercase tracking-widest transition-colors shadow-2xs"
+                      >
+                        <MessageCircle className="w-4 h-4 fill-white text-white" />
+                        <span>Message David on WhatsApp</span>
+                      </a>
+                    </div>
                   </div>
 
                   <button
