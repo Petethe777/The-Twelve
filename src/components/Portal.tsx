@@ -221,9 +221,14 @@ export default function Portal({ onEnter }: PortalProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-xs tracking-[0.25em] text-[#9A7D3C] font-extrabold uppercase"
+            className="space-y-2.5"
           >
-            Premier Youth Discipleship Program
+            <div className="text-xs tracking-[0.25em] text-[#9A7D3C] font-extrabold uppercase">
+              Premier Youth Discipleship Program
+            </div>
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#9A7D3C]/10 border border-[#9A7D3C]/30 text-[#9A7D3C] text-[9px] font-mono font-black uppercase tracking-widest animate-pulse">
+              <span>📅 Applications open until 1 September</span>
+            </div>
           </motion.div>
           
           <motion.h1 

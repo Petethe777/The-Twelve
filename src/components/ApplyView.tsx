@@ -188,9 +188,12 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
         <h1 className="font-serif text-3xl md:text-5xl font-black text-[#1C1917] tracking-tight">
           Apply for the Next Team
         </h1>
+        <div className="bg-amber-500/10 border border-[#EADCC2] rounded-2xl px-5 py-3 text-[#9A7D3C] text-xs font-serif font-black uppercase tracking-wider max-w-xl mx-auto shadow-xs select-none">
+          ✨ Applications are now OPEN until the 1st of September!
+        </div>
         <p className="text-xs md:text-sm text-[#1C1917]/70 leading-relaxed font-light">
           Commit one year of your life to absolute accountability, rigorous spiritual growth, 
-          and community service. Review policies, study the core schedules, and register.
+          and community service. Applications for our next 12-member residency intake are open until September 1st. Review policies, study the core schedules, and register below.
         </p>
 
         {/* Printable resources download drawer immediately visible at top for high availability */}
@@ -716,6 +719,9 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         ][formStep - 1]}
                       </h4>
                       <p className="text-[9px] sm:text-[10px] text-[#9A7D3C] font-mono font-bold uppercase tracking-widest mt-1">TEAM ENROLLMENT SHEET</p>
+                      <div className="flex items-center space-x-1.5 mt-1.5 text-[9px] sm:text-[10px] text-amber-800 bg-amber-500/10 border border-amber-200/40 rounded-lg px-2.5 py-1 w-fit select-none font-sans font-bold">
+                        <span>📅 INTAKE WINDOW: APPLICATIONS CLOSE 1 SEPTEMBER 2026</span>
+                      </div>
                     </div>
 
                     <AnimatePresence mode="wait">

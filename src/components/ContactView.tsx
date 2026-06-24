@@ -117,7 +117,7 @@ export default function ContactView() {
                 📅 APPLICATIONS WINDOW
               </span>
               <p className="text-[11px] text-[#1C1917]/70 leading-normal font-light">
-                Applications for the upcoming 12-member capacity team cycle are currently <strong>OPEN</strong>. 
+                Applications for the upcoming 12-member capacity team cycle are currently <strong>OPEN until the 1st of September</strong>. 
                 Our team conducts selection panels quarterly in South Africa.
               </p>
             </div>
