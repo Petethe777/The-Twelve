@@ -88,11 +88,11 @@ const PAST_EVENTS: PastEvent[] = [
   },
   {
     id: 'past-cityhill-kids-2026',
-    title: 'Cityhill Kids Weekly Ministry',
-    date: 'Ongoing Weekly',
+    title: 'Cityhill Kids Monthly Ministry',
+    date: 'Ongoing Monthly',
     category: 'Kids Ministry',
     location: 'Cityhill Church, Hillcrest, Durban, South Africa',
-    description: 'The Twelve routinely serves with the Cityhill Kids ministry at Cityhill Church in Hillcrest. It is an immense joy to partner with the children’s ministry team to teach, mentor, and build up the next generation of believers in a vibrant, faith-filled environment.',
+    description: 'The Twelve routinely serves with the Cityhill Kids ministry at Cityhill Church in Hillcrest every month. It is an immense joy to partner with the children’s ministry team to teach, mentor, and build up the next generation of believers in a vibrant, faith-filled environment.',
     mediaType: 'video',
     mediaUrl: '/assets/CityHill.mp4',
     duration: '00:06'
@@ -386,7 +386,7 @@ const getGoogleCalendarTemplateUrl = (event: any) => {
 
 export default function EventsView() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
-  const [calendarViewMode, setCalendarViewMode] = useState<'grid' | 'google-live'>('grid');
+  const [calendarViewMode, setCalendarViewMode] = useState<'grid' | 'google-live'>('google-live');
 
   // Calendar States
   const [currentMonthIndex, setCurrentMonthIndex] = useState<number>(0); // Default June 2026
@@ -1025,33 +1025,8 @@ export default function EventsView() {
                 UPCOMING ASSEMBLIES & SCHEDULING
               </span>
               <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">
-                Interactive Portal & Calendar
+                Live Official Calendar
               </h2>
-            </div>
-
-            {/* View Mode Switcher */}
-            <div className="flex bg-[#FAF7EF] p-1 rounded-2xl border border-[#EADCC2]/60 shrink-0 self-start sm:self-auto shadow-xs">
-              <button
-                onClick={() => setCalendarViewMode('grid')}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-[10px] md:text-xs font-serif uppercase tracking-wider transition-all cursor-pointer ${
-                  calendarViewMode === 'grid'
-                    ? 'bg-[#1C1917] text-white font-bold'
-                    : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
-                }`}
-              >
-                <span>Interactive Grid</span>
-              </button>
-              <button
-                onClick={() => setCalendarViewMode('google-live')}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-[10px] md:text-xs font-serif uppercase tracking-wider transition-all cursor-pointer ${
-                  calendarViewMode === 'google-live'
-                    ? 'bg-[#1C1917] text-white font-bold text-shadow-sm'
-                    : 'text-[#1C1917]/75 hover:bg-[#EBDCC2]/40 font-medium'
-                }`}
-              >
-                <Radio className="w-3 h-3 text-[#9A7D3C]" />
-                <span>Live Google Calendar</span>
-              </button>
             </div>
           </div>
 

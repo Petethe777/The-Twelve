@@ -729,11 +729,11 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         {/* STEP 1: PERSONAL INFO */}
                         {formStep === 1 && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                            <div className="space-y-1.5 col-span-1 sm:col-span-1">
                               <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">First Name(s): *</label>
                               <input required type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                             </div>
-                            <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                            <div className="space-y-1.5 col-span-1 sm:col-span-1">
                               <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Last Name / Surname: *</label>
                               <input required type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                             </div>
@@ -762,7 +762,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               <input type="text" name="passportNumber" value={formData.passportNumber} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                             </div>
 
-                            <div className="col-span-2 space-y-2">
+                            <div className="col-span-1 sm:col-span-2 space-y-2">
                               <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Gender: *</label>
                               <div className="flex gap-4">
                                 {['Male', 'Female'].map((g) => (
@@ -774,7 +774,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               </div>
                             </div>
 
-                            <div className="col-span-2 space-y-2">
+                            <div className="col-span-1 sm:col-span-2 space-y-2">
                               <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Current Status: *</label>
                               <div className="flex flex-wrap gap-4">
                                 {['Scholar', 'Student', 'Employee', 'Other'].map((status) => (
@@ -789,7 +789,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               )}
                             </div>
 
-                            <div className="col-span-2 grid grid-cols-2 gap-4">
+                            <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Hoody Size: *</label>
                                 <select required value={hoodySize} onChange={(e) => setHoodySize(e.target.value)} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white">
@@ -822,7 +822,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         {formStep === 2 && (
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-2 border-b pb-1">Applicant Contact Info</h5>
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Applicant Contact Info</h5>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Phone Number: *</label>
                                 <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
@@ -831,7 +831,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Email Address: *</label>
                                 <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
-                              <div className="space-y-1.5 col-span-2">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Physical Street Address: *</label>
                                 <textarea required name="physicalAddress" value={formData.physicalAddress} onChange={handleInputChange} rows={2} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -846,7 +846,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-2 border-b pb-1">Person Account Responsibility (Finances)</h5>
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Person Account Responsibility (Finances)</h5>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Name: *</label>
                                 <input required type="text" name="accountName" value={formData.accountName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
@@ -863,7 +863,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Phone Number: *</label>
                                 <input required type="tel" name="accountPhone" value={formData.accountPhone} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
-                              <div className="space-y-1.5 col-span-2">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Email: *</label>
                                 <input required type="email" name="accountEmail" value={formData.accountEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -875,7 +875,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         {formStep === 3 && (
                           <div className="space-y-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <div className="space-y-1.5 col-span-2">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Home Church: *</label>
                                 <input required type="text" name="homeChurch" value={formData.homeChurch} onChange={handleInputChange} placeholder="e.g. CityHill Church Durban" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -998,8 +998,8 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         {formStep === 5 && (
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-2 border-b pb-1">Parent & Guardian Contact Details</h5>
-                              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Parent & Guardian Contact Details</h5>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-1">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Guardian Name & Initials: *</label>
                                 <input required type="text" name="parentName" value={formData.parentName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -1015,15 +1015,15 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Email Address: *</label>
                                 <input required type="email" name="parentEmail" value={formData.parentEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] text-xs" />
                               </div>
-                              <div className="space-y-1.5 col-span-2">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">How does your family feel about your application? *</label>
                                 <textarea required name="familyFeelings" value={formData.familyFeelings} onChange={handleInputChange} rows={2} placeholder="Explain guardian support level..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-2 border-b pb-1">Highest Level of Education</h5>
-                              <div className="space-y-1.5 col-span-2">
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Highest Level of Education</h5>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">High School Attended: *</label>
                                 <input required type="text" name="highschool" value={formData.highschool} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -1036,7 +1036,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <input required type="number" name="matricYear" value={formData.matricYear} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
 
-                              <div className="col-span-2 space-y-2">
+                              <div className="col-span-1 sm:col-span-2 space-y-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Have you completed tertiary / college study? *</label>
                                 <div className="flex gap-4">
                                   {['Yes', 'No'].map((op) => (
@@ -1058,7 +1058,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         {formStep === 6 && (
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <div className="col-span-2 space-y-2">
+                              <div className="col-span-1 sm:col-span-2 space-y-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Rate Your General Health: *</label>
                                 <div className="flex flex-wrap gap-4">
                                   {['Excellent', 'Good', 'Fair', 'Poor'].map((hl) => (
@@ -1070,12 +1070,12 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 </div>
                               </div>
 
-                              <div className="space-y-1.5 col-span-2">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">List any allergies & details of medical warnings:</label>
                                 <textarea name="allergies" value={formData.allergies} onChange={handleInputChange} rows={2} placeholder="e.g. Peanuts, Penicillin (leave blank if none)..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
 
-                              <div className="col-span-2 space-y-2 border-t pt-3">
+                              <div className="col-span-1 sm:col-span-2 space-y-2 border-t pt-3">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Do you have any physical limitations? *</label>
                                 <div className="flex gap-4">
                                   {['Yes', 'No'].map((op) => (
@@ -1090,7 +1090,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 )}
                               </div>
 
-                              <div className="col-span-2 space-y-2 border-t pt-3">
+                              <div className="col-span-1 sm:col-span-2 space-y-2 border-t pt-3">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Are you taking any medication? *</label>
                                 <div className="flex gap-4">
                                   {['Yes', 'No'].map((op) => (
@@ -1105,7 +1105,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 )}
                               </div>
 
-                              <div className="col-span-2 space-y-2 border-t pt-3">
+                              <div className="col-span-1 sm:col-span-2 space-y-2 border-t pt-3">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Are you covered on medical aid? *</label>
                                 <div className="flex gap-4">
                                   {['Yes', 'No'].map((op) => (
@@ -1116,7 +1116,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                   ))}
                                 </div>
                                 {medicalAid === 'Yes' && (
-                                  <div className="grid grid-cols-2 gap-4 mt-2 bg-[#FAF7EF]/20 p-3 rounded-lg border">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2 bg-[#FAF7EF]/20 p-3 rounded-lg border">
                                     <div className="space-y-1.5">
                                       <label className="text-[9px] font-mono font-black uppercase text-[#1C1917]">Medical Aid Plan Name:</label>
                                       <input type="text" name="medicalAidName" value={formData.medicalAidName} onChange={handleInputChange} className="w-full p-2 border rounded text-xs bg-white" />
@@ -1129,7 +1129,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 )}
                               </div>
 
-                              <div className="space-y-1.5 col-span-2 border-t pt-3">
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2 border-t pt-3">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Rate your fitness level & activity routines: *</label>
                                 <textarea required name="fitnessLevel" value={formData.fitnessLevel} onChange={handleInputChange} rows={2} placeholder="Explain how you stay active, participate in sports, or gym routines..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
@@ -1195,31 +1195,31 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                     </AnimatePresence>
 
                     {/* Step buttons row */}
-                    <div className="flex justify-between items-center border-t border-[#FAF7EF] pt-5">
+                    <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 border-t border-[#FAF7EF] pt-5">
                       {formStep > 1 ? (
                         <button
                           type="button"
                           onClick={handlePrevStep}
-                          className="px-5 py-2.5 border border-stone-200 text-stone-700 rounded-lg text-xs font-serif uppercase tracking-wider hover:bg-stone-50 cursor-pointer"
+                          className="px-5 py-2.5 border border-stone-200 text-stone-700 rounded-lg text-[10px] sm:text-xs font-serif uppercase tracking-wider hover:bg-stone-50 cursor-pointer text-center"
                         >
                           Back
                         </button>
                       ) : (
-                        <div />
+                        <div className="hidden sm:block" />
                       )}
 
                       {formStep < 7 ? (
                         <button
                           type="button"
                           onClick={handleNextStep}
-                          className="px-6 py-2.5 bg-[#1C1917] text-white rounded-lg text-xs font-serif uppercase tracking-wider hover:bg-[#9A7D3C] transition-colors cursor-pointer"
+                          className="px-6 py-2.5 bg-[#1C1917] text-white rounded-lg text-[10px] sm:text-xs font-serif uppercase tracking-wider hover:bg-[#9A7D3C] transition-colors cursor-pointer text-center"
                         >
                           Next Step
                         </button>
                       ) : (
                         <button
                           type="submit"
-                          className="px-7 py-3 bg-[#9A7D3C] hover:bg-black text-white rounded-lg text-xs font-serif uppercase tracking-widest font-black transition-colors shadow-lg cursor-pointer flex items-center space-x-1"
+                          className="px-4 sm:px-7 py-3 bg-[#9A7D3C] hover:bg-black text-white rounded-lg text-[10px] sm:text-xs font-serif uppercase tracking-widest font-black transition-colors shadow-lg cursor-pointer flex items-center justify-center space-x-1"
                         >
                           <span>Complete & Submit Registration</span>
                         </button>
