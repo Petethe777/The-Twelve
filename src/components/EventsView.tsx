@@ -1031,6 +1031,26 @@ export default function EventsView() {
             </div>
           </div>
 
+          {/* WhatsApp RSVP / Contact Invitation Card */}
+          <div className="bg-[#FAF7EF] border border-[#EADCC2] rounded-3xl p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
+            <div className="space-y-1.5 text-left">
+              <span className="text-[10px] font-mono font-black text-[#9A7D3C] uppercase tracking-widest block">Want to join or attend any event?</span>
+              <h4 className="font-serif text-base md:text-lg font-bold text-[#1C1917] uppercase">Connect with David Hunter directly</h4>
+              <p className="text-xs text-[#1C1917]/70 font-sans font-light leading-relaxed max-w-2xl">
+                Interested in participating in our upcoming services, mission trips, or community projects? Reach out to David Hunter on WhatsApp to confirm your attendance, check available visitor passes, or coordinate logistics.
+              </p>
+            </div>
+            <a
+              href="https://wa.me/27815411335?text=Hi%20David%2C%20I%27m%20viewing%20the%20Official%20Calendar%20on%20The%20Twelve%20website%20and%20would%20love%20to%20attend%20an%20upcoming%20event!"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#25D366] hover:bg-[#20ba56] text-white uppercase text-[10.5px] tracking-widest font-black py-3 px-6 rounded-2xl flex items-center justify-center space-x-2.5 transition-all cursor-pointer shadow-md hover:shadow-emerald-500/10 text-center shrink-0 self-start md:self-auto"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Connect on WhatsApp</span>
+            </a>
+          </div>
+
           {calendarViewMode === 'grid' ? (
             <motion.div
               key="upcoming-panel"
