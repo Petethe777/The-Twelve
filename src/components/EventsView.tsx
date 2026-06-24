@@ -32,7 +32,8 @@ import {
   Sparkle,
   LogOut,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  MessageCircle
 } from 'lucide-react';
 
 import { 
@@ -1226,17 +1227,38 @@ export default function EventsView() {
                           <button
                             id="reserve-pass-btn"
                             onClick={() => openRsvpModal(selectedEvent)}
-                            className="bg-white text-[#1C1917] hover:bg-[#FAF7EF] uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2"
+                            className="bg-white text-[#1C1917] hover:bg-[#FAF7EF] uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-colors cursor-pointer"
                           >
                             <UserPlus className="w-3.5 h-3.5" />
                             <span>Reserve Free Guest Pass</span>
                           </button>
+
+                          <a
+                            href={`https://wa.me/27815411335?text=Hi%20David%2C%20I%20would%20love%20to%20join%20the%20upcoming%20event%20"${encodeURIComponent(selectedEvent.title)}"%20on%20${encodeURIComponent(selectedEvent.date)}!`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-[#25D366] hover:bg-[#20ba56] text-white uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-colors cursor-pointer text-center"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>Contact David to Join</span>
+                          </a>
                         </div>
                       ) : (
-                        <div className="mt-6 pt-4 border-t border-white/5 bg-red-950/20 rounded-2xl p-3 border border-red-500/20">
-                          <p className="text-[10px] text-red-200 leading-relaxed text-center font-bold">
-                            🔒 Closed Attendance: This is a private evaluation covenant panel for resident students and program guardians only. 
-                          </p>
+                        <div className="mt-6 pt-4 border-t border-white/5 flex flex-col space-y-3">
+                          <div className="bg-red-950/20 rounded-2xl p-3 border border-red-500/20">
+                            <p className="text-[10px] text-red-200 leading-relaxed text-center font-bold">
+                              🔒 Closed Attendance: This is a private evaluation covenant panel for resident students and program guardians only. 
+                            </p>
+                          </div>
+                          <a
+                            href={`https://wa.me/27815411335?text=Hi%20David%2C%20I%20have%20a%20question%20about%20the%20private%20assembly%20"${encodeURIComponent(selectedEvent.title)}"%20on%20${encodeURIComponent(selectedEvent.date)}.`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-zinc-800 hover:bg-zinc-750 text-zinc-300 hover:text-white uppercase text-[10px] tracking-widest font-black py-3 px-5 rounded-2xl w-full flex items-center justify-center space-x-2 transition-colors cursor-pointer text-center"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>Inquire via David</span>
+                          </a>
                         </div>
                       )}
 
@@ -1756,6 +1778,24 @@ export default function EventsView() {
                     <p className="text-[10px] text-[#1C1917]/60 leading-relaxed font-sans font-light">
                       Provide your coordinates below to join <strong className="text-[#1C1917] font-semibold">{rsvpEvent.title}</strong> in KwaZulu-Natal. Since capacity is restricted to support intense fellowship density, guest slot allocations require matching contact records.
                     </p>
+
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200/60 gap-3">
+                      <div className="text-left select-none">
+                        <span className="text-[9px] font-sans font-black text-emerald-800 uppercase tracking-wider block">Prefer Direct Messaging?</span>
+                        <p className="text-[9.5px] text-emerald-700 font-sans font-light leading-snug">
+                          Chat with Director David Hunter on WhatsApp to coordinate your seat instantly.
+                        </p>
+                      </div>
+                      <a
+                        href={`https://wa.me/27815411335?text=Hi%20David%2C%20I%20would%20love%20to%20join%20the%20upcoming%20event%20"${encodeURIComponent(rsvpEvent.title)}"%20on%20${encodeURIComponent(rsvpEvent.date)}!`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#25D366] hover:bg-[#20ba56] text-white uppercase text-[9px] tracking-widest font-black py-2.5 px-4 rounded-xl transition-colors cursor-pointer text-center shrink-0 flex items-center justify-center space-x-1.5"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Chat WhatsApp</span>
+                      </a>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Full Name */}
