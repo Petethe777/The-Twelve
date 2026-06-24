@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SACRED_VALUES, ASH_VALUES } from '../data';
 import { Sparkles, Trophy, Heart, Flame, Shield, ArrowUpRight, Scale, Users, CheckCircle, ExternalLink } from 'lucide-react';
 
-const davidHunterImg = "/assets/images/David Hunter.png";
+const davidHunterImg = "/assets/images/Hunter.png";
 
 const DAVID_FACTS = [
   {
@@ -727,7 +727,9 @@ export default function Charter() {
                   <div className="flex-1 w-full relative overflow-hidden">
                     <img 
                       src={memberImg} 
-                      className="w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700" 
+                      className={`w-full h-full object-cover grayscale-[15%] hover:scale-105 transition-transform duration-700 ${
+                        selectedMember === 'DAVID' ? 'object-[22%_10%]' : 'object-center'
+                      }`} 
                       alt={selectedMember === 'DAVID' ? "David Hunter" : selectedMember === 'JOSH' ? 'Josh Munn' : "Zoe Padbury"} 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
