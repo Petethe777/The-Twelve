@@ -1434,7 +1434,7 @@ export default function EventsView() {
         <div className="order-1 w-full space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EADCC2]/60 pb-2">
             <div className="space-y-1">
-              <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans animate-pulse">
+              <span className="text-[10px] text-[#9A7D3C] font-extrabold uppercase tracking-widest block font-sans">
                 RECORDS & ARCHIVES
               </span>
               <h2 className="font-serif text-2xl md:text-3xl font-black text-[#1C1917] uppercase">

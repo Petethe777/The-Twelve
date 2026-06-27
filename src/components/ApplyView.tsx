@@ -299,26 +299,56 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
     fData.append('entry.237090248', formData.parentDate);
     fData.append('entry.220679956', formData.parentID);
 
-    fetch('https://docs.google.com/forms/d/e/1FAIpQLSdXO4imsA_PLOg2JCwJ0PejbTMiau4oX9NC5q-zyD4Z-e-Q_Q/formResponse', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: fData.toString()
-    })
-    .then(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      if (onSuccessSubmit) {
-        onSuccessSubmit();
-      }
-      const formHeader = document.getElementById('application-form-portal');
-      if (formHeader) {
-        formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    })
-    .catch((err) => {
+    // 1. Create a hidden iframe
+    const iframeId = 'hidden_iframe_apply_' + Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.id = iframeId;
+    iframe.name = iframeId;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    // 2. Create a hidden form
+    const form = document.createElement('form');
+    form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSdXO4imsA_PLOg2JCwJ0PejbTMiau4oX9NC5q-zyD4Z-e-Q_Q/formResponse';
+    form.method = 'POST';
+    form.target = iframeId;
+    form.style.display = 'none';
+
+    // 3. Add all fields from fData to the form as hidden inputs
+    fData.forEach((value, key) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+
+    try {
+      // 4. Submit the form
+      form.submit();
+
+      // 5. Clean up after a short delay and proceed
+      setTimeout(() => {
+        try {
+          document.body.removeChild(form);
+          document.body.removeChild(iframe);
+        } catch (e) {
+          console.error("Clean up error:", e);
+        }
+        
+        setIsSubmitting(false);
+        setSubmitted(true);
+        if (onSuccessSubmit) {
+          onSuccessSubmit();
+        }
+        const formHeader = document.getElementById('application-form-portal');
+        if (formHeader) {
+          formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 1000);
+    } catch (err) {
       console.error("Team Application submission error:", err);
       setIsSubmitting(false);
       setSubmitted(true);
@@ -329,7 +359,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
       if (formHeader) {
         formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    });
+    }
   };
 
   // Schedule Timeline representation for "Life of a Member"

@@ -116,7 +116,7 @@ export default function Navbar({ currentTab, onSelectTab, onRestart }: NavbarPro
           <div className="flex items-center space-x-3">
             <button 
               onClick={() => handleTabClick('apply')}
-              className="hidden sm:inline-block px-4 py-1.5 rounded-full border border-[#9A7D3C]/60 text-[#9A7D3C] hover:bg-[#9A7D3C] hover:text-[#FDFBF7] transition-colors text-[10px] tracking-wider uppercase font-bold cursor-pointer"
+              className="hidden sm:inline-block px-4 py-1.5 rounded-full border border-[#9A7D3C]/60 text-[#9A7D3C] hover:bg-[#9A7D3C] hover:text-[#FDFBF7] transition-all text-[10px] tracking-wider uppercase font-bold cursor-pointer animate-gentle-glow"
             >
               Apply
             </button>
@@ -254,7 +254,7 @@ export default function Navbar({ currentTab, onSelectTab, onRestart }: NavbarPro
                   onClick={() => { handleTabClick('home'); }}
                   className="w-full py-3 rounded-xl bg-[#292523] hover:bg-[#9A7D3C]/20 border border-[#9A7D3C]/30 text-[#9A7D3C] text-xs font-serif tracking-widest uppercase font-bold transition-all text-center block cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <Flame className="w-3.5 h-3.5 animate-pulse" />
+                  <Flame className="w-3.5 h-3.5 text-[#9A7D3C]" />
                   <span>Restart Welcome Portal</span>
                 </button>
 

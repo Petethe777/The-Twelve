@@ -236,8 +236,8 @@ export default function Witness() {
 
       {/* Hero Sub-Header */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <span className="inline-flex items-center space-x-2 px-3 py-1 bg-[#9A7D3C]/10 border border-[#9A7D3C]/20 rounded-full text-xs font-bold tracking-widest text-[#9A7D3C] uppercase animate-pulse">
-          <Feather className="w-3.5 h-3.5 animate-bounce" />
+        <span className="inline-flex items-center space-x-2 px-3 py-1 bg-[#9A7D3C]/10 border border-[#9A7D3C]/20 rounded-full text-xs font-bold tracking-widest text-[#9A7D3C] uppercase">
+          <Feather className="w-3.5 h-3.5 text-[#9A7D3C]" />
           <span>The Living Experiences</span>
         </span>
         <h2 className="font-serif text-3xl md:text-5xl text-[#1C1917] tracking-tight leading-tight font-extrabold uppercase">

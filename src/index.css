@@ -11,8 +11,21 @@
   }
 }
 
+@keyframes gentleGlow {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.2), 0 0 0px rgba(154, 125, 60, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 4px rgba(154, 125, 60, 0.3);
+  }
+}
+
 @utility animate-fade-in {
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-gentle-glow {
+  animation: gentleGlow 2s ease-in-out infinite;
 }
 
 /* Custom premium scrollbar styling */
