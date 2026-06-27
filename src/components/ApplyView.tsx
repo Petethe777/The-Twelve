@@ -44,6 +44,14 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
   const [agreedIndemnity, setAgreedIndemnity] = useState<boolean>(false);
   const [agreedParents, setAgreedParents] = useState<boolean>(false);
   
+  // Document checklist and validation states
+  const [checkedIDDoc, setCheckedIDDoc] = useState<boolean>(false);
+  const [checkedPassport, setCheckedPassport] = useState<boolean>(false);
+  const [checkedLicense, setCheckedLicense] = useState<boolean>(false);
+  const [checkedMedicalCard, setCheckedMedicalCard] = useState<boolean>(false);
+  const [maxStepReached, setMaxStepReached] = useState<number>(1);
+  const [stepErrors, setStepErrors] = useState<string[]>([]);
+  
   // Text inputs states (prevent reset)
   const [formData, setFormData] = useState({
     firstName: '',
@@ -131,16 +139,188 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const validateStep = (step: number): string[] => {
+    const errors: string[] = [];
+    
+    if (step === 1) {
+      if (!formData.firstName.trim()) errors.push("First Name is required.");
+      if (!formData.lastName.trim()) errors.push("Last Name / Surname is required.");
+      if (!formData.countryBirth.trim()) errors.push("Country of Birth is required.");
+      if (!formData.citizenship.trim()) errors.push("Citizenship is required.");
+      if (!formData.age.trim()) {
+        errors.push("Age is required.");
+      } else {
+        const ageNum = parseInt(formData.age);
+        if (isNaN(ageNum) || ageNum <= 0) {
+          errors.push("Please enter a valid age.");
+        }
+      }
+      if (!formData.idNumber.trim()) errors.push("ID Number / National ID is required.");
+      if (!gender) errors.push("Gender selection is required.");
+      if (!personType) errors.push("Current Status selection is required.");
+      if (!hoodySize) errors.push("Hoody Size is required.");
+      if (!tShirtSize) errors.push("T-Shirt Size is required.");
+    }
+    
+    else if (step === 2) {
+      if (!formData.phone.trim()) errors.push("Applicant Phone Number is required.");
+      if (!formData.email.trim()) {
+        errors.push("Applicant Email Address is required.");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+        errors.push("Applicant Email Address must be a valid email format.");
+      }
+      if (!formData.physicalAddress.trim()) errors.push("Physical Street Address is required.");
+      if (!formData.postalAddress.trim()) errors.push("Postal Address is required.");
+      if (!formData.city.trim()) errors.push("Town / City is required.");
+      if (!formData.postalCode.trim()) errors.push("Postal Code is required.");
+      
+      if (!formData.primaryContactPhone.trim()) errors.push("Primary Contact Cell Number is required.");
+      if (!formData.primaryContactEmail.trim()) {
+        errors.push("Primary Contact Email is required.");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.primaryContactEmail.trim())) {
+        errors.push("Primary Contact Email must be a valid email format.");
+      }
+      if (!formData.primaryContactAddress.trim()) errors.push("Primary Contact Residential Address is required.");
+      if (!formData.primaryContactCity.trim()) errors.push("Primary Contact Town / City is required.");
+      if (!formData.primaryContactPostalCode.trim()) errors.push("Primary Contact Postal Code is required.");
+      
+      if (!formData.accountName.trim()) errors.push("Sponsor Name is required.");
+      if (!formData.accountSurname.trim()) errors.push("Sponsor Surname is required.");
+      if (!formData.accountRelation.trim()) errors.push("Relationship to Applicant is required.");
+      if (!formData.accountPhone.trim()) errors.push("Sponsor Phone Number is required.");
+      if (!formData.accountEmail.trim()) {
+        errors.push("Sponsor Email is required.");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.accountEmail.trim())) {
+        errors.push("Sponsor Email must be a valid email format.");
+      }
+      if (!formData.accountID.trim()) errors.push("Sponsor ID / Passport Number is required.");
+      if (!formData.accountAddress.trim()) errors.push("Sponsor Physical Address is required.");
+      if (!formData.accountCity.trim()) errors.push("Sponsor Town / City is required.");
+      if (!formData.accountPostalCode.trim()) errors.push("Sponsor Postal Code is required.");
+    }
+    
+    else if (step === 3) {
+      if (!formData.homeChurch.trim()) errors.push("Home Church is required.");
+      if (!formData.leadPastor.trim()) errors.push("Lead Pastor / Elder is required.");
+      if (!formData.attendDuration.trim()) errors.push("Duration of Church Attendance is required.");
+      if (!formData.churchAddress.trim()) errors.push("Church Physical Address is required.");
+      if (!formData.churchCity.trim()) errors.push("Church Town / City is required.");
+      if (!formData.churchPostalCode.trim()) errors.push("Church Postal Code is required.");
+      if (!formData.whyJoin.trim()) errors.push("Please explain why you want to join 'The Twelve'.");
+      if (!formData.programExpectations.trim()) errors.push("Please explain your program expectations.");
+      if (!formData.walkExplanation.trim()) errors.push("Please explain why you rated your walk with Jesus that way.");
+    }
+    
+    else if (step === 4) {
+      if (!worshipBand) errors.push("Worship team participation question is required.");
+      if (!soundTeam) errors.push("AV / Sound team participation question is required.");
+      if (!kidsTeam) errors.push("Youth / Kids ministry participation question is required.");
+      if (!baristaTeam) errors.push("Coffee Shop / Barista team participation question is required.");
+    }
+    
+    else if (step === 5) {
+      if (!formData.parentTitle.trim()) errors.push("Parent Title is required.");
+      if (!formData.parentInitials.trim()) errors.push("Parent Initials are required.");
+      if (!formData.parentName.trim()) errors.push("Guardian First Name is required.");
+      if (!formData.parentSurname.trim()) errors.push("Guardian Surname is required.");
+      if (!formData.parentRelation.trim()) errors.push("Relationship to Applicant is required.");
+      if (!formData.parentOccupation.trim()) errors.push("Parent Occupation is required.");
+      if (!formData.parentPhone.trim()) errors.push("Guardian Telephone / Mobile is required.");
+      if (!formData.parentEmail.trim()) {
+        errors.push("Guardian Email Address is required.");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.parentEmail.trim())) {
+        errors.push("Guardian Email Address must be a valid email format.");
+      }
+      if (!formData.parentPhysicalAddress.trim()) errors.push("Parent Residential Address is required.");
+      if (!formData.parentPostalCode.trim()) errors.push("Parent Postal Code is required.");
+      if (!formData.familyFeelings.trim()) errors.push("Family support feelings explanation is required.");
+      
+      if (!formData.highschool.trim()) errors.push("High School Attended is required.");
+      if (!formData.schoolCity.trim()) errors.push("School City is required.");
+      if (!formData.highestGrade.trim()) errors.push("Highest Grade Passed is required.");
+      if (!formData.matricYear.trim()) {
+        errors.push("Year of Matriculation is required.");
+      } else {
+        const yearNum = parseInt(formData.matricYear);
+        if (isNaN(yearNum) || yearNum < 1900 || yearNum > 2030) {
+          errors.push("Please enter a valid Year of Matriculation.");
+        }
+      }
+      if (!formData.schoolActivities.trim()) errors.push("School achievements or sport activities are required.");
+      if (!formData.furtherStudies.trim()) errors.push("Further studies explanation is required.");
+      if (!completedStudy) errors.push("Completed tertiary/college study question is required.");
+      
+      if (completedStudy === 'Yes') {
+        if (!formData.tertiaryDetails.trim()) errors.push("Tertiary institution details are required.");
+        if (!formData.yearsAttended.trim()) errors.push("Years attended at tertiary institution are required.");
+        if (!formData.qualificationObtained.trim()) errors.push("Qualification obtained is required.");
+      }
+    }
+    
+    else if (step === 6) {
+      if (!rateHealth) errors.push("General Health rating is required.");
+      if (!physicalLimitation) {
+        errors.push("Physical limitations question is required.");
+      } else if (physicalLimitation === 'Yes' && !formData.explainLimitations.trim()) {
+        errors.push("Please describe your physical limitations.");
+      }
+      if (!takingMedication) {
+        errors.push("Chronic medication question is required.");
+      } else if (takingMedication === 'Yes' && !formData.explainMedications.trim()) {
+        errors.push("Please detail your chronic medication details.");
+      }
+      if (!medicalAid) {
+        errors.push("Medical aid coverage question is required.");
+      } else if (medicalAid === 'Yes') {
+        if (!formData.medicalAidName.trim()) errors.push("Medical Aid Plan Name is required when covered.");
+        if (!formData.medicalAidNumber.trim()) errors.push("Medical Aid Member Number is required when covered.");
+      }
+      if (!formData.fitnessLevel.trim()) errors.push("Fitness level & activity routines explanation is required.");
+      if (!formData.hearAboutUs.trim()) errors.push("How you heard about us is required.");
+    }
+    
+    else if (step === 7) {
+      if (!agreedIndemnity) errors.push("You must agree to the Covenant, Agreement & Indemnity terms.");
+      if (!agreedParents) errors.push("You must check that your parents / sponsors agree to the contributions.");
+      if (!checkedIDDoc) errors.push("You must acknowledge copy of ID Document ready to be submitted.");
+      if (!checkedPassport) errors.push("You must acknowledge copy of Passport ready to be submitted.");
+      
+      if (!formData.applicantFullName.trim()) errors.push("Full name of Applicant (Signature) is required.");
+      if (!formData.agreementDate) errors.push("Date of signature is required.");
+      if (!formData.parentFullName.trim()) errors.push("Full name of Parent / Guardian is required.");
+      if (!formData.parentDate) errors.push("Date of Parent Signature is required.");
+      if (!formData.parentID.trim()) errors.push("Parent ID / Passport Number is required.");
+    }
+
+    return errors;
+  };
+
   const handleNextStep = () => {
-    // Scroll to form header gently
+    const errors = validateStep(formStep);
+    if (errors.length > 0) {
+      setStepErrors(errors);
+      const formHeader = document.getElementById('application-form-portal');
+      if (formHeader) {
+        formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+    
+    setStepErrors([]);
+    const nextStep = formStep + 1;
+    setFormStep(nextStep);
+    if (nextStep > maxStepReached) {
+      setMaxStepReached(nextStep);
+    }
+    
     const formHeader = document.getElementById('application-form-portal');
     if (formHeader) {
       formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    setFormStep(prev => prev + 1);
   };
 
   const handlePrevStep = () => {
+    setStepErrors([]);
     const formHeader = document.getElementById('application-form-portal');
     if (formHeader) {
       formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -150,15 +330,17 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
 
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!agreedIndemnity) {
-      alert("Please accept the Agreement & Indemnity term to proceed.");
-      return;
-    }
-    if (!agreedParents) {
-      alert("Please accept the Parent/Sponsor Financial Agreement term to proceed.");
+    const errors = validateStep(7);
+    if (errors.length > 0) {
+      setStepErrors(errors);
+      const formHeader = document.getElementById('application-form-portal');
+      if (formHeader) {
+        formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       return;
     }
 
+    setStepErrors([]);
     setIsSubmitting(true);
 
     const fData = new URLSearchParams();
@@ -314,7 +496,10 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
     fetch('https://docs.google.com/forms/d/e/1FAIpQLSdXO4imsA_PLOg2JCwJ0PejbTMiau4oX9NC5q-zyD4Z-e-Q_Q/formResponse', {
       method: 'POST',
       mode: 'no-cors',
-      body: fData
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: fData.toString()
     })
     .then(() => {
       setIsSubmitting(false);
@@ -860,8 +1045,23 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         key={st.step}
                         type="button"
                         onClick={() => {
-                          if (st.step < formStep || agreedIndemnity || true) {
+                          if (st.step <= formStep) {
                             setFormStep(st.step);
+                            setStepErrors([]);
+                          } else if (st.step <= maxStepReached) {
+                            const errors = validateStep(formStep);
+                            if (errors.length > 0) {
+                              setStepErrors(errors);
+                              const formHeader = document.getElementById('application-form-portal');
+                              if (formHeader) {
+                                formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              }
+                            } else {
+                              setStepErrors([]);
+                              setFormStep(st.step);
+                            }
+                          } else if (st.step === formStep + 1) {
+                            handleNextStep();
                           }
                         }}
                         className={`flex-shrink-0 flex items-center space-x-2 p-2 px-3 md:px-2 rounded-xl transition-all cursor-pointer text-left ${
@@ -903,6 +1103,20 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                         <span>📅 INTAKE WINDOW: APPLICATIONS CLOSE 1 SEPTEMBER 2026</span>
                       </div>
                     </div>
+
+                    {stepErrors.length > 0 && (
+                      <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl space-y-1 text-left">
+                        <div className="flex items-center space-x-2 text-rose-800 font-bold text-xs uppercase font-mono tracking-wider">
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                          <span>Please correct the following errors:</span>
+                        </div>
+                        <ul className="list-disc list-inside text-[11px] text-rose-700 font-light space-y-0.5 pl-1 font-sans">
+                          {stepErrors.map((err, i) => (
+                            <li key={i}>{err}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     <AnimatePresence mode="wait">
                       <motion.div
@@ -1021,6 +1235,10 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Physical Street Address: *</label>
                                 <textarea required name="physicalAddress" value={formData.physicalAddress} onChange={handleInputChange} rows={2} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Postal Address: *</label>
+                                <textarea required name="postalAddress" value={formData.postalAddress} onChange={handleInputChange} rows={2} placeholder="Postal Address (or write 'Same as Physical')" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Town / City: *</label>
                                 <input required type="text" name="city" value={formData.city} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
@@ -1031,7 +1249,32 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               </div>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {/* Primary Contact (Next of Kin) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#FAF7EF] pt-4">
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Primary Contact (Next of Kin) Details</h5>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Primary Contact Cell Number: *</label>
+                                <input required type="tel" name="primaryContactPhone" value={formData.primaryContactPhone} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Primary Contact Email: *</label>
+                                <input required type="email" name="primaryContactEmail" value={formData.primaryContactEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Primary Contact Residential Address: *</label>
+                                <textarea required name="primaryContactAddress" value={formData.primaryContactAddress} onChange={handleInputChange} rows={2} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Primary Contact Town / City: *</label>
+                                <input required type="text" name="primaryContactCity" value={formData.primaryContactCity} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Primary Contact Postal Code: *</label>
+                                <input required type="text" name="primaryContactPostalCode" value={formData.primaryContactPostalCode} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#FAF7EF] pt-4">
                               <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Person Account Responsibility (Finances)</h5>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Name: *</label>
@@ -1053,6 +1296,22 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Email: *</label>
                                 <input required type="email" name="accountEmail" value={formData.accountEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor ID / Passport Number: *</label>
+                                <input required type="text" name="accountID" value={formData.accountID} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Physical Address: *</label>
+                                <textarea required name="accountAddress" value={formData.accountAddress} onChange={handleInputChange} rows={2} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Town / City: *</label>
+                                <input required type="text" name="accountCity" value={formData.accountCity} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Sponsor Postal Code: *</label>
+                                <input required type="text" name="accountPostalCode" value={formData.accountPostalCode} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
                             </div>
                           </div>
                         )}
@@ -1072,6 +1331,18 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">How long have you attended this church? *</label>
                                 <input required type="text" name="attendDuration" value={formData.attendDuration} onChange={handleInputChange} placeholder="e.g., 3 years" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Church Physical Address: *</label>
+                                <textarea required name="churchAddress" value={formData.churchAddress} onChange={handleInputChange} rows={1} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Church Town / City: *</label>
+                                <input required type="text" name="churchCity" value={formData.churchCity} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Church Postal Code: *</label>
+                                <input required type="text" name="churchPostalCode" value={formData.churchPostalCode} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                             </div>
 
@@ -1185,13 +1456,29 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Parent & Guardian Contact Details</h5>
-                              <div className="space-y-1.5 col-span-1 sm:col-span-1">
-                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Guardian Name & Initials: *</label>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent Title (e.g., Mr, Mrs, Dr): *</label>
+                                <input required type="text" name="parentTitle" value={formData.parentTitle} onChange={handleInputChange} placeholder="e.g. Mrs" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent Initials: *</label>
+                                <input required type="text" name="parentInitials" value={formData.parentInitials} onChange={handleInputChange} placeholder="e.g. J.M." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Guardian First Name: *</label>
                                 <input required type="text" name="parentName" value={formData.parentName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
-                              <div className="space-y-1.5 col-span-1 sm:col-span-1">
+                              <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Guardian Surname: *</label>
                                 <input required type="text" name="parentSurname" value={formData.parentSurname} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Relationship to Applicant: *</label>
+                                <input required type="text" name="parentRelation" value={formData.parentRelation} onChange={handleInputChange} placeholder="e.g. Mother, Father, Aunt" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent Occupation: *</label>
+                                <input required type="text" name="parentOccupation" value={formData.parentOccupation} onChange={handleInputChange} placeholder="e.g. Teacher, Manager" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Telephone / Mobile: *</label>
@@ -1199,7 +1486,15 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               </div>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Email Address: *</label>
-                                <input required type="email" name="parentEmail" value={formData.parentEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] text-xs" />
+                                <input required type="email" name="parentEmail" value={formData.parentEmail} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent Residential Address: *</label>
+                                <textarea required name="parentPhysicalAddress" value={formData.parentPhysicalAddress} onChange={handleInputChange} rows={2} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent Postal Code: *</label>
+                                <input required type="text" name="parentPostalCode" value={formData.parentPostalCode} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                               <div className="space-y-1.5 col-span-1 sm:col-span-2">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">How does your family feel about your application? *</label>
@@ -1207,11 +1502,32 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                               </div>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Highest Level of Education</h5>
+                            {/* Second Parent (Optional) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#FAF7EF] pt-4">
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">Second Parent / Alternative Contact Details (Optional)</h5>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Second Parent First Name:</label>
+                                <input type="text" name="otherParentName" value={formData.otherParentName} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Second Parent Surname:</label>
+                                <input type="text" name="otherParentSurname" value={formData.otherParentSurname} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
                               <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Second Parent Cell Number:</label>
+                                <input type="tel" name="otherParentPhone" value={formData.otherParentPhone} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#FAF7EF] pt-4">
+                              <h5 className="font-serif font-black text-xs uppercase tracking-wider text-stone-500 col-span-1 sm:col-span-2 border-b pb-1">High School Education Background</h5>
+                              <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">High School Attended: *</label>
                                 <input required type="text" name="highschool" value={formData.highschool} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">School City: *</label>
+                                <input required type="text" name="schoolCity" value={formData.schoolCity} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Highest Grade Passed: *</label>
@@ -1221,8 +1537,16 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Year of Matriculation: *</label>
                                 <input required type="number" name="matricYear" value={formData.matricYear} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">School leadership, sports, or creative achievements: *</label>
+                                <textarea required name="schoolActivities" value={formData.schoolActivities} onChange={handleInputChange} rows={2} placeholder="Detail achievements, captaincy, prefect roles..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Are you planning any further studies next year? *</label>
+                                <input required type="text" name="furtherStudies" value={formData.furtherStudies} onChange={handleInputChange} placeholder="Specify plans or 'No'" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
 
-                              <div className="col-span-1 sm:col-span-2 space-y-2">
+                              <div className="col-span-1 sm:col-span-2 space-y-2 border-t border-[#FAF7EF] pt-4">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider block">Have you completed tertiary / college study? *</label>
                                 <div className="flex gap-4">
                                   {['Yes', 'No'].map((op) => (
@@ -1233,7 +1557,22 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                   ))}
                                 </div>
                                 {completedStudy === 'Yes' && (
-                                  <textarea name="tertiaryDetails" value={formData.tertiaryDetails} onChange={handleInputChange} rows={2} placeholder="Specify institution name, major, and degree obtained..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs mt-2 bg-white" />
+                                  <div className="space-y-4 mt-3 bg-[#FAF7EF]/20 border border-[#EADCC2]/40 rounded-xl p-4">
+                                    <div className="space-y-1.5">
+                                      <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Institution & Major Details: *</label>
+                                      <textarea required name="tertiaryDetails" value={formData.tertiaryDetails} onChange={handleInputChange} rows={2} placeholder="Specify institution name, major, and degree obtained..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white" />
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                      <div className="space-y-1.5">
+                                        <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Years Attended: *</label>
+                                        <input required={completedStudy === 'Yes'} type="text" name="yearsAttended" value={formData.yearsAttended} onChange={handleInputChange} placeholder="e.g. 2021 - 2023" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white" />
+                                      </div>
+                                      <div className="space-y-1.5">
+                                        <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Qualification Obtained: *</label>
+                                        <input required={completedStudy === 'Yes'} type="text" name="qualificationObtained" value={formData.qualificationObtained} onChange={handleInputChange} placeholder="e.g. Bachelor of Arts" className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white" />
+                                      </div>
+                                    </div>
+                                  </div>
                                 )}
                               </div>
                             </div>
@@ -1319,6 +1658,11 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Rate your fitness level & activity routines: *</label>
                                 <textarea required name="fitnessLevel" value={formData.fitnessLevel} onChange={handleInputChange} rows={2} placeholder="Explain how you stay active, participate in sports, or gym routines..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
+
+                              <div className="space-y-1.5 col-span-1 sm:col-span-2 border-t pt-3">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">How did you hear about The Twelve Discipleship Program? *</label>
+                                <textarea required name="hearAboutUs" value={formData.hearAboutUs} onChange={handleInputChange} rows={2} placeholder="e.g. Church announcement, friend, social media, pastor..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
                             </div>
                           </div>
                         )}
@@ -1352,19 +1696,19 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
 
                               <div className="space-y-2 text-xs font-light text-stone-800">
                                 <label className="flex items-center gap-2.5 cursor-pointer">
-                                  <input type="checkbox" required className="accent-[#9A7D3C]" />
+                                  <input type="checkbox" checked={checkedIDDoc} onChange={(e) => setCheckedIDDoc(e.target.checked)} className="accent-[#9A7D3C]" />
                                   <span>1. Copy of Applicant&apos;s National ID or ID Document Equivalent</span>
                                 </label>
                                 <label className="flex items-center gap-2.5 cursor-pointer">
-                                  <input type="checkbox" required className="accent-[#9A7D3C]" />
+                                  <input type="checkbox" checked={checkedPassport} onChange={(e) => setCheckedPassport(e.target.checked)} className="accent-[#9A7D3C]" />
                                   <span>2. Copy of Applicant&apos;s Passport (required for global missions builds)</span>
                                 </label>
                                 <label className="flex items-center gap-2.5 cursor-pointer">
-                                  <input type="checkbox" className="accent-[#9A7D3C]" />
+                                  <input type="checkbox" checked={checkedLicense} onChange={(e) => setCheckedLicense(e.target.checked)} className="accent-[#9A7D3C]" />
                                   <span>3. Copy of Driver&apos;s License (if applicable)</span>
                                 </label>
                                 <label className="flex items-center gap-2.5 cursor-pointer">
-                                  <input type="checkbox" className="accent-[#9A7D3C]" />
+                                  <input type="checkbox" checked={checkedMedicalCard} onChange={(e) => setCheckedMedicalCard(e.target.checked)} className="accent-[#9A7D3C]" />
                                   <span>4. Copy of Medical Aid Membership Card (if applicable)</span>
                                 </label>
                               </div>
