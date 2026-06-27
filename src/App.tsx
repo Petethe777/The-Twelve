@@ -145,7 +145,7 @@ export default function App() {
         {/* Back to top scroll and licensing */}
         <div className="w-full max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] uppercase font-bold tracking-widest text-white/30 space-y-4 sm:space-y-0">
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <span>© {new Date().getFullYear()} The Twelve Discipleship. All rights sacred.</span>
+            <span>© {new Date().getFullYear()} The Twelve Discipleship. All rights reserved.</span>
             <span className="hidden sm:inline text-white/10">•</span>
             <a 
               href="https://wa.me/27731595846?text=Hi%20Peter%2C%20I%20saw%20your%20work%20on%20The%20Twelve%20website%20and%20would%20love%20to%20chat%20about%20a%20website%20project!" 
