@@ -16,45 +16,45 @@ const DAVID_FACTS = [
     short: "Born 28 Aug 2003 and lives in Hillcrest, SA (also lived in the US)",
     category: "Roots & Travel",
     extended: "David brings a global perspective to our South African base. Having experienced collegiate fellowship and outreach work in both North America and KwaZulu-Natal, he integrates top-tier administrative discipline with local community roots.",
-    noteX: 18, noteY: 10,
-    targetX: 43, targetY: 34,
-    arrowD: "M 18 10 Q 30 18 43 34"
+    noteX: 14, noteY: 10,
+    targetX: 26, targetY: 12,
+    arrowD: "M 14 10 Q 20 11 26 12"
   },
   {
     id: 2,
     short: "Same hairstyle for 12 years",
     category: "Personal Signature",
     extended: "A testament to unwavering consistency! David jokes that solid leadership requires stable foundations, but some things—like a reliable childhood haircut—remain proudly unchanged.",
-    noteX: 16, noteY: 26,
-    targetX: 42, targetY: 28,
-    arrowD: "M 16 26 Q 28 20 42 28"
+    noteX: 14, noteY: 26,
+    targetX: 26, targetY: 26,
+    arrowD: "M 14 26 Q 20 26 26 26"
   },
   {
     id: 3,
     short: "Oldest of 4 (2 sisters, 1 brother)",
     category: "Family Roots",
     extended: "Being the eldest sibling taught David early responsibility. Balancing household chores and resolving sibling disputes was perfect preparation for managing twelve passionate, high-energy young leaders.",
-    noteX: 16, noteY: 42,
-    targetX: 41, targetY: 45,
-    arrowD: "M 16 42 Q 28 40 41 45"
+    noteX: 14, noteY: 42,
+    targetX: 26, targetY: 42,
+    arrowD: "M 14 42 Q 20 42 26 42"
   },
   {
     id: 4,
     short: "Hobbies: Soccer, music... and annoying his sisters",
     category: "Recreation",
     extended: "Active leadership stays fresh through play. Whether leading a high-tempo football match on the lawn or playing acoustic worship songs around the student hearth, David keeps community joy alive.",
-    noteX: 18, noteY: 58,
-    targetX: 38, targetY: 60,
-    arrowD: "M 18 58 Q 28 62 38 60"
+    noteX: 14, noteY: 58,
+    targetX: 26, targetY: 58,
+    arrowD: "M 14 58 Q 20 58 26 58"
   },
   {
     id: 5,
     short: "Fun Facts: • Broke his arm tripping over a wire • Led worship around the world",
     category: "Memorable Incidents",
     extended: "A beautiful combination of human clumsiness and high-purpose service! Tripping over wire led to a fractured cast as a teen, but didn't stop him from traveling globally to lead deep acoustic worship.",
-    noteX: 18, noteY: 74,
-    targetX: 36, targetY: 78,
-    arrowD: "M 18 74 Q 26 80 36 78"
+    noteX: 14, noteY: 74,
+    targetX: 26, targetY: 74,
+    arrowD: "M 14 74 Q 20 74 26 74"
   },
   {
     id: 6,
@@ -70,45 +70,45 @@ const DAVID_FACTS = [
     short: "Bucket list: shark cage diving, skydiving, and travelling to Norway, Italy, and Australia.",
     category: "High Ambition",
     extended: "An adventurous spirit is infectious. David urges the team to target monumental dreams, refuse comfort-zone security, and approach their personal calling with deep faith.",
-    noteX: 82, noteY: 10,
-    targetX: 58, targetY: 30,
-    arrowD: "M 82 10 Q 70 18 58 30"
+    noteX: 86, noteY: 10,
+    targetX: 74, targetY: 12,
+    arrowD: "M 86 10 Q 80 11 74 12"
   },
   {
     id: 8,
     short: "Favourite colour: Lumo Green",
     category: "Creative Signature",
     extended: "Vibrant, high-visibility, and full of positive energy. A bright, neon hallmark that inspires our team and reflects active engagement across our community plans.",
-    noteX: 84, noteY: 26,
-    targetX: 58, targetY: 42,
-    arrowD: "M 84 26 Q 72 35 58 42"
+    noteX: 86, noteY: 26,
+    targetX: 74, targetY: 26,
+    arrowD: "M 86 26 Q 80 26 74 26"
   },
   {
     id: 9,
     short: "Ice cream and lasagne lover",
     category: "Culinary Comfort",
     extended: "Nightly shared fellowship tables are crucial to us, and David firmly believes that a warm lasagna tray and fine ice cream are unparalleled for bringing students together to debrief.",
-    noteX: 84, noteY: 42,
-    targetX: 58, targetY: 53,
-    arrowD: "M 84 42 Q 72 48 58 53"
+    noteX: 86, noteY: 42,
+    targetX: 74, targetY: 42,
+    arrowD: "M 86 42 Q 80 42 74 42"
   },
   {
     id: 10,
     short: "Favourite Disney movie: The Lion King",
     category: "Inspirational Movie",
     extended: "A classic narrative of family duties, restoring heritage, and rising to active community responsibility. Simba's growth from avoidance to mature service aligns directly with our mentoring ethos.",
-    noteX: 84, noteY: 58,
-    targetX: 58, targetY: 65,
-    arrowD: "M 84 58 Q 72 63 58 65"
+    noteX: 86, noteY: 58,
+    targetX: 74, targetY: 58,
+    arrowD: "M 86 58 Q 80 58 74 58"
   },
   {
     id: 11,
     short: "Comfort = worship + cartoons + hot choc",
     category: "Unwind Routine",
     extended: "Slowing down is essential for long-term endurance. After rigorous outdoor mentoring, David's favorite reset button is steaming cocoa, cartoons, and peaceful worship space.",
-    noteX: 80, noteY: 74,
-    targetX: 59, targetY: 82,
-    arrowD: "M 80 74 Q 70 80 59 82"
+    noteX: 86, noteY: 74,
+    targetX: 74, targetY: 74,
+    arrowD: "M 86 74 Q 80 74 74 74"
   },
   {
     id: 12,
@@ -461,8 +461,7 @@ export default function Charter() {
           <h3 className="font-serif text-xl md:text-2xl text-[#1C1917] font-semibold">The Dual Philosophy of Sacred Ash</h3>
           <p className="text-sm text-[#1C1917]/80 leading-relaxed font-light">
             <strong>&quot;Sacred&quot;</strong> represents the absolute, intrinsic value of every individual—possessing unique, unrepeatable potential and deserving of the highest dignity. 
-            <strong>&quot;Ash&quot;</strong> represents deep humility and realistic self-awareness—realizing our shared human fragility, and learning to keep the ego grounded. When 
-            <strong>focused energy</strong> and professional drive align, this duality allows our collective team to burn with productive focus and drive exceptional, selfless results.
+            <strong>&quot;Ash&quot;</strong> represents deep humility and realistic self-awareness—realizing our shared human fragility, and learning to keep the ego grounded. When focused energy and professional drive align, this duality allows our collective team to burn with productive focus and drive exceptional, selfless results.
           </p>
         </div>
       </div>

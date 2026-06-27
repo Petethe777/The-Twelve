@@ -62,6 +62,8 @@ export default function PartnerView() {
   const [nonFinancialInterest, setNonFinancialInterest] = useState('Mentoring & Tutoring');
   const [nonFinancialMessage, setNonFinancialMessage] = useState('');
   const [nonFinancialSuccess, setNonFinancialSuccess] = useState(false);
+  const [isSubmittingNonFinancial, setIsSubmittingNonFinancial] = useState(false);
+  const [isSubmittingPledge, setIsSubmittingPledge] = useState(false);
 
   // Floating Reviews & Testimonies arranged strategically to populate the whole page background
   const testimoniesList: FloatingTestimony[] = [
@@ -215,11 +217,81 @@ export default function PartnerView() {
     e.preventDefault();
     if (!formName || !formEmail) return;
     
-    // Securely trigger the direct Yoco credit card payment portal
-    window.open(`https://pay.yoco.com/the-twelve-experience?amount=${pledgeAmount}`, '_blank');
+    setIsSubmittingPledge(true);
+
+    const formData = new URLSearchParams();
+    formData.append('entry.1589603500', formFrequency === 'monthly' ? 'Financial Support Plan' : 'One-Time Contribution');
+    formData.append('entry.1396181422', pledgeAmount.toString());
+    formData.append('entry.113255617', formName);
+    formData.append('entry.123844499', formEmail);
+    formData.append('entry.1163785364', formFrequency === 'monthly' ? 'Monthly Contribution' : 'One-Time');
+    formData.append('entry.1982374079', formNotes);
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSd3AKeUZaTkJ0YhSCy_kDF4-exB_po9tu4f7MgDUZIZuyrAKA/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formData.toString()
+    })
+    .then(() => {
+      // Securely trigger the direct Yoco credit card payment portal
+      window.open(`https://pay.yoco.com/the-twelve-experience?amount=${pledgeAmount}`, '_blank');
+      setIsSubmittingPledge(false);
+      setPledgeSuccess(true);
+    })
+    .catch((err) => {
+      console.error("Pledge submission error:", err);
+      // Still allow Yoco portal fallback
+      window.open(`https://pay.yoco.com/the-twelve-experience?amount=${pledgeAmount}`, '_blank');
+      setIsSubmittingPledge(false);
+      setPledgeSuccess(true);
+    });
+  };
+
+  const handleNonFinancialSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nonFinancialName || !nonFinancialEmail) return;
     
-    // Simulate API storage / communication
-    setPledgeSuccess(true);
+    setIsSubmittingNonFinancial(true);
+
+    // Map the selected option to one of the Google Form radio box choices
+    let mappedInterest = "Corporate partnership";
+    if (["Mentoring & Tutoring", "Special Guest Speaker Lessons", "Media & Creative Tech"].includes(nonFinancialInterest)) {
+      mappedInterest = "Skill training & coaching";
+    } else if (["Host a Mission Team", "Catering & Cooking supplies", "Construction & Physical Chores"].includes(nonFinancialInterest)) {
+      mappedInterest = "Missions logistics assistance";
+    } else if (nonFinancialInterest === "Prayer Partner") {
+      mappedInterest = "Prayer support team";
+    }
+
+    const fullMessage = `Selected Option: ${nonFinancialInterest}\n\nMessage:\n${nonFinancialMessage}`;
+
+    const formData = new URLSearchParams();
+    formData.append('entry.921283023', nonFinancialName);
+    formData.append('entry.1114857538', nonFinancialEmail);
+    formData.append('entry.1337436646', nonFinancialPhone);
+    formData.append('entry.340245205', mappedInterest);
+    formData.append('entry.1301889687', fullMessage);
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSepiDLxsr2GAanej8iXfLHILopj9cSbENZU3rP-tlAplARUDQ/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formData.toString()
+    })
+    .then(() => {
+      setIsSubmittingNonFinancial(false);
+      setNonFinancialSuccess(true);
+    })
+    .catch((err) => {
+      console.error("Non-financial submit error:", err);
+      setIsSubmittingNonFinancial(false);
+      setNonFinancialSuccess(true);
+    });
   };
 
   const getSponsorshipImpact = (amount: number) => {
@@ -657,11 +729,7 @@ export default function PartnerView() {
               
               {!nonFinancialSuccess ? (
                 <form 
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (!nonFinancialName || !nonFinancialEmail) return;
-                    setNonFinancialSuccess(true);
-                  }}
+                  onSubmit={handleNonFinancialSubmit}
                   className="space-y-3"
                 >
                   <div className="space-y-1">
@@ -730,9 +798,17 @@ export default function PartnerView() {
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#1C1917] hover:bg-[#9A7D3C] text-white rounded-xl font-serif text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer text-center"
+                    disabled={isSubmittingNonFinancial}
+                    className="w-full py-2.5 bg-[#1C1917] hover:bg-[#9A7D3C] text-white rounded-xl font-serif text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer text-center flex items-center justify-center space-x-2"
                   >
-                    Register My Support
+                    {isSubmittingNonFinancial ? (
+                      <>
+                        <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Submitting...</span>
+                      </>
+                    ) : (
+                      <span>Register My Support</span>
+                    )}
                   </button>
                 </form>
               ) : (
@@ -1100,9 +1176,17 @@ export default function PartnerView() {
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 py-3 bg-[#9A7D3C] hover:bg-[#1C1917] text-white rounded-xl text-xs uppercase font-serif font-extrabold tracking-widest transition-colors cursor-pointer text-center"
+                      disabled={isSubmittingPledge}
+                      className="flex-1 py-3 bg-[#9A7D3C] hover:bg-[#1C1917] text-white rounded-xl text-xs uppercase font-serif font-extrabold tracking-widest transition-colors cursor-pointer text-center flex items-center justify-center space-x-2"
                     >
-                      Process Payment
+                      {isSubmittingPledge ? (
+                        <>
+                          <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                          <span>Processing...</span>
+                        </>
+                      ) : (
+                        <span>Process Payment</span>
+                      )}
                     </button>
                   </div>
 

@@ -23,6 +23,7 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
   // Application Form Steps
   const [formStep, setFormStep] = useState<number>(1);
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Application Form States
   const [gender, setGender] = useState<string>('');
@@ -153,14 +154,182 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
       alert("Please accept the Agreement & Indemnity term to proceed.");
       return;
     }
-    setSubmitted(true);
-    if (onSuccessSubmit) {
-      onSuccessSubmit();
+    if (!agreedParents) {
+      alert("Please accept the Parent/Sponsor Financial Agreement term to proceed.");
+      return;
     }
-    const formHeader = document.getElementById('application-form-portal');
-    if (formHeader) {
-      formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    setIsSubmitting(true);
+
+    const fData = new URLSearchParams();
+    
+    // Map status from ['Scholar', 'Student', 'Employee', 'Other'] to ['Student', 'Working', 'Other']
+    let mappedPersonType = "Other";
+    if (personType === "Student" || personType === "Scholar") {
+      mappedPersonType = "Student";
+    } else if (personType === "Employee" || personType === "Working") {
+      mappedPersonType = "Working";
     }
+
+    // Map clothing sizes to prevent XS from failing (Google Form expects S, M, L, XL, XXL, XXXL)
+    const mappedHoodySize = hoodySize === "XS" ? "S" : (hoodySize || "M");
+    const mappedTShirtSize = tShirtSize === "XS" ? "S" : (tShirtSize || "M");
+
+    // Fallback required conditional paragraph fields to prevent empty submission rejection
+    const finalAllergies = formData.allergies ? formData.allergies.trim() : "None";
+    const finalLimitations = (physicalLimitation === "Yes" && formData.explainLimitations) ? formData.explainLimitations.trim() : "None";
+    const finalMedications = (takingMedication === "Yes" && formData.explainMedications) ? formData.explainMedications.trim() : "None";
+
+    // Personal Details
+    fData.append('entry.1721206686', formData.firstName);
+    fData.append('entry.2022678153', formData.lastName);
+    fData.append('entry.918057323', gender);
+    fData.append('entry.730457230', mappedPersonType);
+    fData.append('entry.1913500626', mappedHoodySize);
+    fData.append('entry.2082584212', mappedTShirtSize);
+    fData.append('entry.1527415857', formData.countryBirth);
+    fData.append('entry.1475629743', formData.citizenship);
+    fData.append('entry.2015283221', formData.dualCitizenship || "N/A");
+    fData.append('entry.1943092007', formData.currentEmployer || "N/A");
+    fData.append('entry.93229397', formData.age);
+    fData.append('entry.380947936', formData.idNumber || "N/A");
+    fData.append('entry.753142074', formData.passportNumber || "N/A");
+    fData.append('entry.628207579', formData.phone);
+    fData.append('entry.610245851', formData.email);
+
+    // Address & Contact
+    fData.append('entry.1150981166', formData.postalAddress);
+    fData.append('entry.350136708', formData.city);
+    fData.append('entry.568000857', formData.postalCode);
+    fData.append('entry.1793631439', formData.physicalAddress);
+
+    // Primary Contact / Next of Kin
+    fData.append('entry.442377206', formData.primaryContactPhone);
+    fData.append('entry.2074188828', formData.primaryContactEmail);
+    fData.append('entry.1510599489', formData.primaryContactAddress);
+    fData.append('entry.1990139778', formData.primaryContactCity);
+    fData.append('entry.121201262', formData.primaryContactPostalCode);
+
+    // Financial Sponsor
+    fData.append('entry.583178236', formData.accountName);
+    fData.append('entry.218817604', formData.accountSurname);
+    fData.append('entry.1037042618', formData.accountPhone);
+    fData.append('entry.1485592035', formData.accountEmail);
+    fData.append('entry.932166327', formData.accountID);
+    fData.append('entry.505817280', formData.accountRelation);
+    fData.append('entry.253639990', formData.accountAddress);
+    fData.append('entry.1365340191', formData.accountCity);
+    fData.append('entry.513855516', formData.accountPostalCode);
+
+    // Church Background
+    fData.append('entry.312184430', formData.homeChurch);
+    fData.append('entry.1615940777', formData.churchAddress);
+    fData.append('entry.651155361', formData.leadPastor);
+    fData.append('entry.362380958', formData.churchCity);
+    fData.append('entry.663885731', formData.churchPostalCode);
+    fData.append('entry.42060825', formData.attendDuration);
+
+    // Christian Walk
+    fData.append('entry.523652397', formData.whyJoin);
+    fData.append('entry.35364723', formData.programExpectations);
+    fData.append('entry.796610505', formData.walkExplanation);
+
+    // Talents & Team Interest
+    fData.append('entry.979693630', worshipBand);
+    fData.append('entry.1083495190', soundTeam);
+    fData.append('entry.689669377', kidsTeam);
+    fData.append('entry.1609176685', baristaTeam);
+    fData.append('entry.1893375446', rateWalk.toString());
+    fData.append('entry.255053463', agreedParents ? "Yes" : "No");
+    fData.append('entry.498353553', completedStudy);
+
+    // Skill & Involvement Details
+    fData.append('entry.539362386', formData.bandSkills || "None");
+    fData.append('entry.1857918955', formData.soundSkills || "None");
+    fData.append('entry.1996778939', formData.kidsInvolvement || "None");
+    fData.append('entry.831100902', formData.baristaInvolvement || "None");
+    fData.append('entry.1416218522', formData.otherInvolvement || "None");
+
+    // Parent Details
+    fData.append('entry.2107454271', formData.parentName);
+    fData.append('entry.993414812', formData.parentSurname);
+    fData.append('entry.1196780558', formData.parentTitle);
+    fData.append('entry.665489275', formData.parentInitials);
+    fData.append('entry.570292942', formData.parentPostalCode);
+    fData.append('entry.1124622603', formData.parentPhysicalAddress);
+    fData.append('entry.641503217', formData.parentPhone);
+    fData.append('entry.1600937956', formData.parentEmail);
+    fData.append('entry.1540104936', formData.parentOccupation);
+    fData.append('entry.1289693618', formData.parentRelation);
+    fData.append('entry.1300943057', formData.otherParentName || "None");
+    fData.append('entry.1215866932', formData.otherParentSurname || "None");
+    fData.append('entry.144815182', formData.otherParentPhone || "None");
+    fData.append('entry.1223019104', formData.familyFeelings);
+
+    // Educational Background
+    fData.append('entry.342472716', formData.highschool);
+    fData.append('entry.1602353319', formData.schoolCity);
+    fData.append('entry.892057020', formData.highestGrade);
+    fData.append('entry.591243203', formData.matricYear);
+    fData.append('entry.650513513', formData.furtherStudies || "None");
+    fData.append('entry.90996832', formData.schoolActivities || "None");
+    fData.append('entry.1602000274', formData.tertiaryDetails || "None");
+    fData.append('entry.737238292', formData.yearsAttended || "None");
+    fData.append('entry.1666876641', formData.qualificationObtained || "None");
+
+    // Medical Details
+    fData.append('entry.153592161', formData.hearAboutUs);
+    fData.append('entry.323413491', rateHealth);
+    fData.append('entry.393031118', finalAllergies);
+    fData.append('entry.1006579210', physicalLimitation);
+    fData.append('entry.1818749097', finalLimitations);
+    fData.append('entry.1338751556', takingMedication);
+    fData.append('entry.681559463', finalMedications);
+    fData.append('entry.2043104280', medicalAid);
+    fData.append('entry.1385005585', formData.medicalAidName || "None");
+    fData.append('entry.253437544', formData.medicalAidNumber || "None");
+    fData.append('entry.1744246008', formData.fitnessLevel);
+
+    // Declaration & Signature
+    fData.append('entry.1124862885', agreedIndemnity ? "Yes, I Agree" : "No");
+    fData.append('entry.1023124759', agreedParents ? "Yes, I Agree" : "No");
+    fData.append('entry.2113753954', formData.applicantFullName);
+    fData.append('entry.2019931466', formData.agreementDate);
+    fData.append('entry.1963727298', formData.parentFullName);
+    fData.append('entry.237090248', formData.parentDate);
+    fData.append('entry.220679956', formData.parentID);
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSdXO4imsA_PLOg2JCwJ0PejbTMiau4oX9NC5q-zyD4Z-e-Q_Q/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: fData.toString()
+    })
+    .then(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      if (onSuccessSubmit) {
+        onSuccessSubmit();
+      }
+      const formHeader = document.getElementById('application-form-portal');
+      if (formHeader) {
+        formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    })
+    .catch((err) => {
+      console.error("Team Application submission error:", err);
+      setIsSubmitting(false);
+      setSubmitted(true);
+      if (onSuccessSubmit) {
+        onSuccessSubmit();
+      }
+      const formHeader = document.getElementById('application-form-portal');
+      if (formHeader) {
+        formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   };
 
   // Schedule Timeline representation for "Life of a Member"
@@ -800,24 +969,24 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Hoody Size: *</label>
                                 <select required value={hoodySize} onChange={(e) => setHoodySize(e.target.value)} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white">
                                   <option value="">Select Size</option>
-                                  <option value="XS">XS</option>
                                   <option value="S">S</option>
                                   <option value="M">M</option>
                                   <option value="L">L</option>
                                   <option value="XL">XL</option>
                                   <option value="XXL">XXL</option>
+                                  <option value="XXXL">XXXL</option>
                                 </select>
                               </div>
                               <div className="space-y-1.5">
                                 <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">T-Shirt Size: *</label>
                                 <select required value={tShirtSize} onChange={(e) => setTShirtSize(e.target.value)} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs bg-white">
                                   <option value="">Select Size</option>
-                                  <option value="XS">XS</option>
                                   <option value="S">S</option>
                                   <option value="M">M</option>
                                   <option value="L">L</option>
                                   <option value="XL">XL</option>
                                   <option value="XXL">XXL</option>
+                                  <option value="XXXL">XXXL</option>
                                 </select>
                               </div>
                             </div>
@@ -1158,6 +1327,11 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <input required type="checkbox" checked={agreedIndemnity} onChange={(e) => setAgreedIndemnity(e.target.checked)} className="mt-1 accent-[#9A7D3C]" />
                                 <span>I, the applicant, declare and agree to abide by all the rules & regulations of The Twelve Discipleship.</span>
                               </label>
+
+                              <label className="flex items-start gap-2 text-xs font-semibold cursor-pointer text-left block text-[#1C1917] mt-2">
+                                <input required type="checkbox" checked={agreedParents} onChange={(e) => setAgreedParents(e.target.checked)} className="mt-1 accent-[#9A7D3C]" />
+                                <span>My parents / sponsors agree to the financial contributions and rules of the program.</span>
+                              </label>
                             </div>
 
                             {/* Required Documents checks */}
@@ -1195,6 +1369,21 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                                 <input required type="date" name="agreementDate" value={formData.agreementDate} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
                               </div>
                             </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t pt-4 mt-4">
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Full name of Parent / Guardian (Signature): *</label>
+                                <input required type="text" name="parentFullName" value={formData.parentFullName} onChange={handleInputChange} placeholder="Type parent's full name..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Date of Parent Signature: *</label>
+                                <input required type="date" name="parentDate" value={formData.parentDate} onChange={handleInputChange} className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-mono font-black text-[#1C1917] uppercase tracking-wider">Parent ID / Passport Number: *</label>
+                                <input required type="text" name="parentID" value={formData.parentID} onChange={handleInputChange} placeholder="ID or Passport number..." className="w-full p-2.5 border border-[#EADCC2] rounded-lg text-xs" />
+                              </div>
+                            </div>
                           </div>
                         )}
                       </motion.div>
@@ -1225,9 +1414,17 @@ export default function ApplyView({ onSuccessSubmit }: ApplyViewProps) {
                       ) : (
                         <button
                           type="submit"
-                          className="px-4 sm:px-7 py-3 bg-[#9A7D3C] hover:bg-black text-white rounded-lg text-[10px] sm:text-xs font-serif uppercase tracking-widest font-black transition-colors shadow-lg cursor-pointer flex items-center justify-center space-x-1"
+                          disabled={isSubmitting}
+                          className="px-4 sm:px-7 py-3 bg-[#9A7D3C] hover:bg-black text-white rounded-lg text-[10px] sm:text-xs font-serif uppercase tracking-widest font-black transition-colors shadow-lg cursor-pointer flex items-center justify-center space-x-1.5"
                         >
-                          <span>Complete & Submit Registration</span>
+                          {isSubmitting ? (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                              <span>Submitting Application...</span>
+                            </>
+                          ) : (
+                            <span>Complete & Submit Registration</span>
+                          )}
                         </button>
                       )}
                     </div>
